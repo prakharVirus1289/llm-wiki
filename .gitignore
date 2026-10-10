@@ -1,0 +1,19 @@
+# SQLite WAL & Database Files
+raw_firehose.db*
+*.db
+*.db-wal
+*.db-shm
+
+# Python cache & virtualenvs
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Scratch and intermediate artifacts
+scratch/
+*.log
+.DS_Store
+Thumbs.db
