@@ -352,9 +352,31 @@ def query_section(db_path: Path, query_text: str):
         conn.close()
 
 
+def query_firehose(db_path: Path, keyword: str, limit: int = 5):
+    conn = get_connection(db_path)
+    try:
+        cursor = conn.execute("""
+            SELECT r.id, r.platform, r.title, r.canonical_url, snippet(firehose_fts, 1, '<b>', '</b>', '...', 15)
+            FROM firehose_fts f
+            JOIN raw_firehose r ON f.rowid = r.rowid
+            WHERE firehose_fts MATCH ?
+            LIMIT ?;
+        """, (keyword, limit))
+        rows = cursor.fetchall()
+        if not rows:
+            print(f"[NOT FOUND] No raw posts matched keyword: '{keyword}'")
+            return
+        print(f"[FIREHOSE MATCHES] Found {len(rows)} raw posts:")
+        for r in rows:
+            print(f"  - [{r[1]}] {r[2]}")
+            print(f"    URL: {r[3]}")
+            print(f"    Snippet: {r[4]}")
+    finally:
+        conn.close()
+
 def main():
     parser = argparse.ArgumentParser(description="SQLite Manager")
-    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "backlinks", "related", "dangling"])
+    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "query-firehose", "backlinks", "related", "dangling"])
     parser.add_argument("--db", default="raw_firehose.db", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--wiki-dir", default=Path("wiki"), type=Path)
@@ -379,6 +401,11 @@ def main():
             print("Error: --query is required for query-section.")
             sys.exit(1)
         query_section(args.db, args.query)
+    elif args.action == "query-firehose":
+        if not args.query:
+            print("Error: --query is required for query-firehose.")
+            sys.exit(1)
+        query_firehose(args.db, args.query, limit=args.limit)
     elif args.action == "backlinks":
         if not args.concept:
             print("Error: --concept is required for backlinks.")
