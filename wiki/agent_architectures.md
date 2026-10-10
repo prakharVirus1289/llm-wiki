@@ -15464,3 +15464,13 @@ It's a schema standard — a specification for how an LLM-compiled knowledge bas
 - **Synthesis & Architectural Value:**
   Battle-tested production pattern: implementation, lint | Published: N/A Author: N/A ```md # Architecture llmwiki has two overlapping structures: 1. The **Karpathy three-layer wiki** (conceptual): `raw/` → `wiki/` → `site/` 2. The **eight-layer build** (implementation): how responsibilities are distributed across Python modules, HTML templates, scripts, C
 ```
+
+
+### [[Agent Memory via Plain Markdown Vaults and Relational Shadow Indices]]
+- **Platform:** Reddit (r/r/ObsidianMD)
+- **URL:** https://www.reddit.com/r/ObsidianMD/comments/1wai7xm
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 65, tech: 8) | Production deployments demonstrate why advanced coding agents abandon monolithic vector memory and opaque vector databases in favor of plain Markdown vaults paired with relational shadow indices:
+  1. **Inspection & Human Auditability:** Storing episodic memory as flat Markdown files with frontmatter and `[[wikilinks]]` allows human engineers to directly inspect, debug, and prune stale facts with standard text editors.
+  2. **Sub-5ms Shadow Filtering:** Maintaining an SQLite shadow index over Markdown metadata eliminates vector embedding compute costs and achieves $< 5\text{ms}$ lookup latency, slashing context ingestion overhead by over $85\%$.
+  3. **Context Drift Mitigation:** Persisting structured execution telemetry (success/failure records per step) directly in frontmatter prevents autonomous agents from repeating dead-end reasoning cycles.
