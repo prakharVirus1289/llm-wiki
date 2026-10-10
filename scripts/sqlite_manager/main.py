@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""
+SQLite Manager CLI Entry Point
+Dispatches commands across database initialization, maintenance, indexing, search, and graph analysis.
+"""
+
+import sys
+import argparse
+from pathlib import Path
+
+# Ensure package import works when invoked directly as a script (e.g. python scripts/sqlite_manager/main.py)
+pkg_dir = Path(__file__).resolve().parent
+if str(pkg_dir.parent) not in sys.path:
+    sys.path.insert(0, str(pkg_dir.parent))
+
+from sqlite_manager.connection import get_connection, init_db, truncate_wal, snapshot_db, logger
+from sqlite_manager.indexer import normalize_slug, parse_wikilink, index_wiki
+from sqlite_manager.search import get_embedding_model, query_section, query_firehose, query_hybrid
+from sqlite_manager.graph import get_backlinks, get_related_concepts, get_dangling_links
+
+
+def main():
+    parser = argparse.ArgumentParser(description="SQLite Manager Modular CLI")
+    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "query-firehose", "query-hybrid", "backlinks", "related", "dangling"])
+    parser.add_argument("--db", default="raw_firehose.db", type=Path)
+    parser.add_argument("--out", type=Path)
+    parser.add_argument("--wiki-dir", default=Path("wiki"), type=Path)
+    parser.add_argument("--query", type=str)
+    parser.add_argument("--concept", type=str)
+    parser.add_argument("--limit", default=20, type=int)
+    parser.add_argument("--embed", action="store_true", help="Generate vector embeddings for new/modified sections")
+    args = parser.parse_args()
+
+    if args.action == "init":
+        init_db(args.db)
+    elif args.action == "truncate":
+        truncate_wal(args.db)
+    elif args.action == "snapshot":
+        if not args.out:
+            print("Error: --out is required for snapshot.")
+            sys.exit(1)
+        snapshot_db(args.db, args.out)
+    elif args.action == "index-wiki":
+        index_wiki(args.db, args.wiki_dir, embed=args.embed)
+    elif args.action == "query-section":
+        if not args.query:
+            print("Error: --query is required for query-section.")
+            sys.exit(1)
+        query_section(args.db, args.query, limit=args.limit)
+    elif args.action == "query-hybrid":
+        if not args.query:
+            print("Error: --query is required for query-hybrid.")
+            sys.exit(1)
+        query_hybrid(args.db, args.query, limit=args.limit)
+    elif args.action == "query-firehose":
+        if not args.query:
+            print("Error: --query is required for query-firehose.")
+            sys.exit(1)
+        query_firehose(args.db, args.query, limit=args.limit)
+    elif args.action == "backlinks":
+        if not args.concept:
+            print("Error: --concept is required for backlinks.")
+            sys.exit(1)
+        bls = get_backlinks(args.db, args.concept)
+        print(f"[BACKLINKS] Found {len(bls)} citing sections for '{args.concept}':")
+        for b in bls:
+            print(f"  - {b['source_file']} -> {b['source_heading']} (scope: {b['domain_scope']}, alias: {b['link_alias']})")
+    elif args.action == "related":
+        if not args.concept:
+            print("Error: --concept is required for related.")
+            sys.exit(1)
+        rel = get_related_concepts(args.db, args.concept)
+        print(f"[RELATED] Concepts co-cited with '{args.concept}':")
+        for r in rel:
+            print(f"  - {r['target_concept']} ({r['domain_scope']}): {r['co_citation_count']} co-citations")
+    elif args.action == "dangling":
+        dang = get_dangling_links(args.db, limit=args.limit)
+        print(f"[DANGLING] Top {len(dang)} uncategorized / dangling concepts:")
+        for d in dang:
+            print(f"  - [[{d['target_concept']}]] ({d['domain_scope']}): cited {d['incoming_citations']} times by {d['citing_files']}")
+
+
+if __name__ == "__main__":
+    main()
