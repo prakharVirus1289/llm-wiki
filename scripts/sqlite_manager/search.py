@@ -9,6 +9,7 @@ import re
 import time
 from pathlib import Path
 from .connection import get_connection, logger
+from .firehose import query_firehose_raw
 
 _embedding_model = None
 
@@ -26,10 +27,12 @@ def get_embedding_model():
     return _embedding_model
 
 
-def query_section(db_path: Path, query_text: str, limit: int = 20):
-    """Executes high-speed lexical search on wiki_sections_fts."""
-    logger.info("FTS5 query_section executing for query: '%s' (limit=%d)", query_text, limit)
-    t0 = time.perf_counter()
+def search_section(db_path: Path, query_text: str, limit: int = 20) -> list[dict]:
+    """Executes high-speed lexical search on wiki_sections_fts and returns structured dict list."""
+    if not db_path.exists():
+        return []
+
+    logger.debug("FTS5 search_section executing for query: '%s' (limit=%d)", query_text, limit)
     conn = get_connection(db_path)
     try:
         cursor = conn.execute("""
@@ -38,54 +41,59 @@ def query_section(db_path: Path, query_text: str, limit: int = 20):
             WHERE wiki_sections_fts MATCH ?
             LIMIT ?;
         """, (query_text, limit))
-        rows = cursor.fetchall()
-        elapsed_ms = (time.perf_counter() - t0) * 1000
-        logger.info("FTS5 query_section returned %d matching sections in %.2f ms", len(rows), elapsed_ms)
-        if not rows:
-            print(f"[NOT FOUND] No sections matched query: '{query_text}'")
-            return
-        print(f"[MATCHES] Found {len(rows)} matching sections:")
-        for r in rows:
-            print(f"  - File: {r[0]} | Heading: {r[1]}")
-            print(f"    Snippet: {r[2]}")
+        return [
+            {"file": row[0], "heading": row[1], "snippet": row[2]}
+            for row in cursor.fetchall()
+        ]
+    except Exception as e:
+        logger.warning("search_section error: %s", e)
+        return []
     finally:
         conn.close()
+
+
+def query_section(db_path: Path, query_text: str, limit: int = 20):
+    """CLI wrapper: executes lexical search on wiki_sections_fts and prints results."""
+    t0 = time.perf_counter()
+    rows = search_section(db_path, query_text, limit)
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    logger.info("FTS5 query_section returned %d matching sections in %.2f ms", len(rows), elapsed_ms)
+    if not rows:
+        print(f"[NOT FOUND] No sections matched query: '{query_text}'")
+        return
+    print(f"[MATCHES] Found {len(rows)} matching sections:")
+    for r in rows:
+        print(f"  - File: {r['file']} | Heading: {r['heading']}")
+        print(f"    Snippet: {r['snippet']}")
 
 
 def query_firehose(db_path: Path, keyword: str, limit: int = 5):
-    """Executes lexical search on raw_firehose via firehose_fts."""
-    logger.info("FTS5 query_firehose executing for keyword: '%s' (limit=%d)", keyword, limit)
+    """CLI wrapper: executes lexical search on raw_firehose and prints results."""
+    t0 = time.perf_counter()
+    rows = query_firehose_raw(db_path, keyword, limit)
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    logger.info("FTS5 query_firehose returned %d raw items in %.2f ms", len(rows), elapsed_ms)
+    if not rows:
+        print(f"[NOT FOUND] No raw posts matched keyword: '{keyword}'")
+        return
+    print(f"[FIREHOSE MATCHES] Found {len(rows)} raw posts:")
+    for r in rows:
+        print(f"  - [{r['platform']}] {r['title']}")
+        print(f"    URL: {r['url']}")
+        print(f"    Snippet: {r['snippet']}")
+
+
+def search_hybrid(db_path: Path, query_text: str, limit: int = 20) -> list[dict]:
+    """Executes hybrid search fusing FTS5 lexical ranking with vector cosine similarity via RRF, returning structured dict list."""
+    if not db_path.exists():
+        return []
+
+    logger.debug("Hybrid search executing for query: '%s' (limit=%d)", query_text, limit)
     t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
-        cursor = conn.execute("""
-            SELECT r.id, r.platform, r.title, r.canonical_url, snippet(firehose_fts, 1, '<b>', '</b>', '...', 15)
-            FROM firehose_fts f
-            JOIN raw_firehose r ON f.rowid = r.rowid
-            WHERE firehose_fts MATCH ?
-            LIMIT ?;
-        """, (keyword, limit))
-        rows = cursor.fetchall()
-        elapsed_ms = (time.perf_counter() - t0) * 1000
-        logger.info("FTS5 query_firehose returned %d raw items in %.2f ms", len(rows), elapsed_ms)
-        if not rows:
-            print(f"[NOT FOUND] No raw posts matched keyword: '{keyword}'")
-            return
-        print(f"[FIREHOSE MATCHES] Found {len(rows)} raw posts:")
-        for r in rows:
-            print(f"  - [{r[1]}] {r[2]}")
-            print(f"    URL: {r[3]}")
-            print(f"    Snippet: {r[4]}")
-    finally:
-        conn.close()
+        import numpy as np
 
-
-def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
-    """Executes hybrid search fusing FTS5 lexical ranking with vector cosine similarity via RRF."""
-    logger.info("Hybrid search executing for query: '%s' (limit=%d)", query_text, limit)
-    t0 = time.perf_counter()
-    conn = get_connection(db_path)
-    try:
         # 1. Lexical FTS5 candidate matching
         keyword_ranks = {}
         fts_query = re.sub(r'[^\w\s]', ' ', query_text).strip()
@@ -115,7 +123,6 @@ def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
         meaning_ranks = {}
         if emb_rows:
             try:
-                import numpy as np
                 model = get_embedding_model()
                 q_emb = list(model.embed([query_text]))[0]
                 q_vec = np.array(q_emb, dtype=np.float32)
@@ -145,8 +152,7 @@ def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
         # 3. Reciprocal Rank Fusion (RRF)
         all_candidates = set(keyword_ranks.keys()).union(set(meaning_ranks.keys()))
         if not all_candidates:
-            print(f"[NOT FOUND] No sections matched query: '{query_text}'")
-            return
+            return []
 
         scored = []
         for cand in all_candidates:
@@ -162,12 +168,12 @@ def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
             mn_sim = mn_data[1] if mn_data else 0.0
 
             scored.append({
-                "file_path": cand[0],
+                "file": cand[0],
                 "heading": cand[1],
-                "rrf_score": rrf_score,
+                "rrf_score": round(rrf_score, 4),
                 "kw_rank": kw_rank,
-                "mn_rank": mn_rank,
-                "mn_sim": mn_sim,
+                "vector_rank": mn_rank,
+                "vector_similarity": round(mn_sim, 3) if mn_data else None,
                 "snippet": snippet_text
             })
 
@@ -175,14 +181,25 @@ def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
         top_results = scored[:limit]
 
         elapsed_ms = (time.perf_counter() - t0) * 1000
-        logger.info("Hybrid search returned %d candidates in %.2f ms", len(top_results), elapsed_ms)
-        print(f"[HYBRID MATCHES] Found {len(top_results)} candidates in {elapsed_ms:.2f} ms:")
-        for idx, res in enumerate(top_results, 1):
-            kw_label = f"KW Rank #{res['kw_rank']}" if res['kw_rank'] else "KW: None"
-            mn_label = f"Vector Rank #{res['mn_rank']} (sim: {res['mn_sim']:.3f})" if res['mn_rank'] else "Vector: None"
-            print(f"  {idx}. [{res['file_path']}] -> {res['heading']}")
-            print(f"     Score: {res['rrf_score']:.4f} | {kw_label} | {mn_label}")
-            if res['snippet']:
-                print(f"     Snippet: {res['snippet']}")
+        logger.info("search_hybrid returned %d candidates in %.2f ms", len(top_results), elapsed_ms)
+        return top_results
     finally:
         conn.close()
+
+
+def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
+    """CLI wrapper: executes hybrid search fusing FTS5 lexical ranking with vector cosine similarity and prints results."""
+    t0 = time.perf_counter()
+    top_results = search_hybrid(db_path, query_text, limit)
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    if not top_results:
+        print(f"[NOT FOUND] No sections matched query: '{query_text}'")
+        return
+    print(f"[HYBRID MATCHES] Found {len(top_results)} candidates in {elapsed_ms:.2f} ms:")
+    for idx, res in enumerate(top_results, 1):
+        kw_label = f"KW Rank #{res['kw_rank']}" if res['kw_rank'] else "KW: None"
+        mn_label = f"Vector Rank #{res['vector_rank']} (sim: {res['vector_similarity']:.3f})" if res['vector_rank'] else "Vector: None"
+        print(f"  {idx}. [{res['file']}] -> {res['heading']}")
+        print(f"     Score: {res['rrf_score']:.4f} | {kw_label} | {mn_label}")
+        if res['snippet']:
+            print(f"     Snippet: {res['snippet']}")

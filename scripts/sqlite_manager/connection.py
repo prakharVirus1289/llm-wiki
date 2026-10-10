@@ -150,7 +150,7 @@ def init_db(db_path: Path):
         logger.info("Database schema initialized with WAL, FTS5 & graph tables.")
     finally:
         conn.close()
-    print(f"[OK] Database initialized at {db_path} with WAL, FTS5 & wiki_links graph schema.")
+    print(f"[OK] Database initialized at {db_path} with WAL, FTS5 & wiki_links graph schema.", file=sys.stderr)
 
 
 def truncate_wal(db_path: Path):
@@ -162,10 +162,10 @@ def truncate_wal(db_path: Path):
         busy, log_frames, checkpointed_frames = cursor.fetchone()
         if busy:
             logger.warning("WAL checkpoint TRUNCATE blocked by active readers (frames: %d, ckpt: %d)", log_frames, checkpointed_frames)
-            print(f"[WARN] WAL checkpoint TRUNCATE blocked by active readers (frames: {log_frames}, ckpt: {checkpointed_frames})")
+            print(f"[WARN] WAL checkpoint TRUNCATE blocked by active readers (frames: {log_frames}, ckpt: {checkpointed_frames})", file=sys.stderr)
         else:
             logger.info("WAL checkpoint TRUNCATE successful: truncated to 0MB (%d frames checkpointed)", checkpointed_frames)
-            print(f"[OK] WAL file truncated to 0MB for {db_path} (checkpointed {checkpointed_frames} frames).")
+            print(f"[OK] WAL file truncated to 0MB for {db_path} (checkpointed {checkpointed_frames} frames).", file=sys.stderr)
     finally:
         conn.close()
 
@@ -180,4 +180,4 @@ def snapshot_db(db_path: Path, out_path: Path):
         logger.info("Crash-consistent snapshot saved successfully to %s", out_path)
     finally:
         conn.close()
-    print(f"[OK] Crash-consistent snapshot saved to {out_path}.")
+    print(f"[OK] Crash-consistent snapshot saved to {out_path}.", file=sys.stderr)

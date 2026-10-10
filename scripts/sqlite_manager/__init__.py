@@ -10,6 +10,10 @@ from .connection import (
     snapshot_db,
     logger,
 )
+from .firehose import (
+    ingest_candidates,
+    query_firehose_raw,
+)
 from .indexer import (
     normalize_slug,
     parse_wikilink,
@@ -17,8 +21,10 @@ from .indexer import (
 )
 from .search import (
     get_embedding_model,
+    search_section,
     query_section,
     query_firehose,
+    search_hybrid,
     query_hybrid,
 )
 from .graph import (
@@ -34,12 +40,16 @@ __all__ = [
     "truncate_wal",
     "snapshot_db",
     "logger",
+    "ingest_candidates",
+    "query_firehose_raw",
     "normalize_slug",
     "parse_wikilink",
     "index_wiki",
     "get_embedding_model",
+    "search_section",
     "query_section",
     "query_firehose",
+    "search_hybrid",
     "query_hybrid",
     "get_backlinks",
     "get_related_concepts",
