@@ -1,6 +1,6 @@
 # End-to-End LLM-Wiki Iteration Architecture
 
-The raw Mermaid diagram code below represents the full end-to-end iteration loop:
+The raw Mermaid diagram code below represents the full end-to-end iteration loop including the **`data-point-reasoning` (LLM-Council)** stage:
 
 ```text
 flowchart TD
@@ -11,14 +11,13 @@ flowchart TD
         User["User or Scheduled Timer"] -->|"Starts cycle"| SkillDWA["Skill: deep-web-analysis"]
         SkillDWA -->|"Runs script"| Runner["runner.py (Portable Scraper)"]
         Runner -->|"Scrapes Reddit, Twitter, GitHub"| RawJSON["harvested_candidates.json (Raw Posts)"]
-        RawJSON -->|"Agent inspects & discards low-quality noise"| AgentReview["Agent Filters Good Posts"]
     end
 
     %% ==========================================
     %% STAGE 2: DEDUPLICATION & STORAGE (MCP CALL)
     %% ==========================================
     subgraph S2 ["Stage 2: Save Posts & Stop Duplicates"]
-        AgentReview -->|"Tool Call: llm_wiki_firehose_ingest(items)"| MCPServer1["llm_wiki_mcp.py (Blackbox Server)"]
+        RawJSON -->|"Tool Call: llm_wiki_firehose_ingest(items)"| MCPServer1["llm_wiki_mcp.py (Blackbox Server)"]
         MCPServer1 -->|"Calls function"| SM_Firehose["sqlite_manager/firehose.py"]
         
         subgraph TX1 ["SQL Transaction: All-or-Nothing"]
@@ -27,14 +26,37 @@ flowchart TD
             SQL_InsertPost -->|"3. Refresh web post search index"| SQL_RebuildFTS1["INSERT INTO firehose_fts VALUES('rebuild')"]
         end
         
-        TX1 -->|"Returns: 15 saved, 35 duplicates skipped"| AgentReview
+        TX1 -->|"Returns: Clean Batch Ingested"| Stage3Trigger["Ready for In-Depth Reasoning"]
     end
 
     %% ==========================================
-    %% STAGE 3: READ EXISTING TEXTBOOK (ZERO BLOAT)
+    %% STAGE 3: DATA-POINT REASONING (LLM-COUNCIL)
     %% ==========================================
-    subgraph S3 ["Stage 3: Check Existing Knowledge"]
-        AgentReview -->|"Skill: wiki-reader"| SkillReader["wiki-reader"]
+    subgraph S3 ["Stage 3: Data-Point Reasoning (LLM-Council)"]
+        Stage3Trigger -->|"Skill: data-point-reasoning"| SkillDPR["Skill: data-point-reasoning"]
+        SkillDPR -->|"Partitions posts into atomic slices"| CouncilTool["council.py (Chunk Partitioning)"]
+        CouncilTool -->|"Splits into chunk files"| Chunks["chunk_1.txt to chunk_N.txt"]
+        
+        subgraph Phase1 ["Phase 1: Raw Data Council"]
+            Chunks -->|"invoke_subagent (Parallel Fleet)"| SubAgents1["Sub-Agent Fleet (50-100 Agents)"]
+            SubAgents1 -->|"Each agent reasons on 1 data point"| AtomicInsights["Atomic Evidence & Metrics"]
+        end
+        
+        AtomicInsights -->|"Synthesizes initial report"| InitialSynth["Initial Synthesis (V1 Draft)"]
+        
+        subgraph Phase2 ["Phase 2: Adversarial Review Council"]
+            InitialSynth -->|"invoke_subagent (Specialist Personas)"| ReviewCouncil["Review Council (10 Adversarial Agents)"]
+            ReviewCouncil -.->|"Architect, Infra Lead, QA, Ponytail critique"| BrutalCritique["Brutal Peer Critique"]
+        end
+        
+        BrutalCritique -->|"Hardens synthesis & discards hype"| HardenedFacts["Hardened Truth & Invariants"]
+    end
+
+    %% ==========================================
+    %% STAGE 4: READ EXISTING TEXTBOOK (ZERO BLOAT)
+    %% ==========================================
+    subgraph S4 ["Stage 4: Check Existing Knowledge"]
+        HardenedFacts -->|"Skill: wiki-reader"| SkillReader["Skill: wiki-reader"]
         SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query='caching')"| MCPServer2["llm_wiki_mcp.py"]
         MCPServer2 -->|"Calls function"| SM_Search["sqlite_manager/search.py"]
         
@@ -49,9 +71,9 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 4: SURGICAL FILE PATCH & RE-INDEXING
+    %% STAGE 5: SURGICAL FILE PATCH & RE-INDEXING
     %% ==========================================
-    subgraph S4 ["Stage 4: Surgical Patching & Re-indexing"]
+    subgraph S5 ["Stage 5: Surgical Patching & Re-indexing"]
         AgentComposer -->|"Writes updated section with [[wikilinks]]"| SkillPatch["Skill: ast-markdown-patcher"]
         SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, new_content)"| MCPServer4["llm_wiki_mcp.py"]
         
@@ -68,19 +90,19 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 5: SAVE TO GITHUB (ATOMIC PR)
+    %% STAGE 6: SAVE TO GITHUB (ATOMIC PR)
     %% ==========================================
-    subgraph S5 ["Stage 5: Instant Remote Backup"]
+    subgraph S6 ["Stage 6: Instant Remote Backup"]
         TX2 -->|"Tool Call: llm_wiki_git_commit_and_push(file, msg)"| MCPServer5["llm_wiki_mcp.py"]
         MCPServer5 -->|"Runs: git add & git commit"| GitLocal["Local Git Repository"]
         GitLocal -->|"Runs: git push origin main"| GitHub["GitHub Remote Repository"]
     end
 
     %% ==========================================
-    %% STAGE 6: DISCOVER GAPS FOR NEXT ITERATION
+    %% STAGE 7: DISCOVER GAPS FOR NEXT ITERATION
     %% ==========================================
-    subgraph S6 ["Stage 6: Spot Missing Topics for Next Round"]
-        GitHub -->|"Skill: iteration-reasoning"| SkillReasoning["iteration-reasoning"]
+    subgraph S7 ["Stage 7: Spot Missing Topics for Next Round"]
+        GitHub -->|"Skill: iteration-reasoning"| SkillReasoning["Skill: iteration-reasoning"]
         SkillReasoning -->|"Tool Call: llm_wiki_get_graph(action='dangling')"| MCPServer6["llm_wiki_mcp.py"]
         MCPServer6 -->|"Query knowledge gaps"| SQL_Gaps["SELECT * FROM wiki_dangling_links"]
         SQL_Gaps -->|"Identifies concepts linked often with no page"| NextTargets["New Priority Search Topics"]
@@ -92,9 +114,11 @@ flowchart TD
     classDef mcp fill:#4c51bf,stroke:#667eea,color:#fff,stroke-width:2px;
     classDef sql fill:#2c5282,stroke:#3182ce,color:#fff,stroke-width:2px;
     classDef disk fill:#276749,stroke:#38a169,color:#fff,stroke-width:2px;
+    classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
 
-    class SkillDWA,SkillReader,SkillPatch,SkillReasoning skill;
+    class SkillDWA,SkillDPR,SkillReader,SkillPatch,SkillReasoning skill;
     class MCPServer1,MCPServer2,MCPServer3,MCPServer4,MCPServer5,MCPServer6 mcp;
     class SQL_Dedup,SQL_InsertPost,SQL_RebuildFTS1,FTS_Match,VEC_Match,SQL_UpdateSec,SQL_Embed,SQL_RebuildFTS2,SQL_Links,SQL_Gaps sql;
     class RawJSON,DiskFile,GitLocal,GitHub disk;
+    class SubAgents1,ReviewCouncil,InitialSynth,HardenedFacts council;
 ```
