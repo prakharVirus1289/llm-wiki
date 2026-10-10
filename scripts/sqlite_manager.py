@@ -209,10 +209,6 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                     "INSERT OR REPLACE INTO wiki_sections_index (file_path, heading, level, content) VALUES (?, ?, ?, ?)",
                     (rel_path, heading, level, section_text)
                 )
-                conn.execute(
-                    "INSERT INTO wiki_sections_fts (rowid, file_path, heading, content) VALUES (last_insert_rowid(), ?, ?, ?)",
-                    (rel_path, heading, section_text)
-                )
                 count += 1
                 
                 # Extract [[wikilinks]] with slug normalization, anchors, aliases, and domain scoping
@@ -232,6 +228,8 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                             )
                             link_count += 1
                         
+        # Synchronize FTS5 external content table cleanly
+        conn.execute("INSERT INTO wiki_sections_fts(wiki_sections_fts) VALUES('rebuild');")
         conn.commit()
     finally:
         conn.close()
