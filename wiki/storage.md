@@ -1,14 +1,24 @@
 # Storage Engines & SQLite WAL
 
-*Deep dive into local persistence, ACID durability, SQLite WAL mode, B-Trees, and lock-free concurrency.*
-
-
+*Deep dive into local persistence, ACID durability, SQLite WAL mode, B-Trees, and serialized single-writer WAL concurrency.*
 
 **Total Compiled Empirical Assets:** `2360`
 
+---
 
+## SQLite WAL Concurrency: Reality vs Myth
+
+### The Single-Writer Invariant
+SQLite WAL mode provides multi-reader single-writer concurrency, **not** lock-free concurrency. While readers do not block writers and writers do not block readers, writes remain strictly serialized via the exclusive `WAL_WRITE_LOCK`. Multiple concurrent writers must be coordinated via explicit queuing or application-level serialization.
+
+### The Lock Escalation Deadlock Hazard
+Configuring `busy_timeout` (e.g., 5000ms) only mitigates contention when transactions acquire write locks at the outset. If transactions begin with naive deferred semantics (`BEGIN DEFERRED`), two concurrent connections executing read-then-write queries will simultaneously attempt to upgrade shared locks to reserved locks. SQLite detects this deadlock immediately and fails with `SQLITE_BUSY` without honoring `busy_timeout`. All write transactions must explicitly begin with `BEGIN IMMEDIATE`.
+
+### Reader Snapshot Pinning & WAL Bloat Mitigation
+Automatic WAL checkpoints (`PRAGMA wal_autocheckpoint`) execute in passive mode (`SQLITE_CHECKPOINT_PASSIVE`). If any reader maintains an active read transaction, the checkpoint cannot advance past the reader's read-mark in `-shm`. High-velocity writes will cause the `-wal` file to inflate silently (observed up to 10GB+), degrading read latency from <1ms to hundreds of milliseconds. Mitigating WAL bloat requires short-lived read transactions, isolated read connection pools, and dedicated checkpoint workers.
 
 ---
+
 
 
 

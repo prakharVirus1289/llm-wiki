@@ -22,9 +22,10 @@ WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 WIKI_DIR = WORKSPACE_ROOT / "wiki"
 DB_PATH = WORKSPACE_ROOT / "raw_firehose.db"
 
-# Import our AST Splicer utility
+# Import our AST Splicer and SQLite utility
 sys.path.append(str(WORKSPACE_ROOT / "scripts"))
 from ast_splicer import ASTSplicer
+from sqlite_manager import get_connection
 
 def handle_read_section(params: dict) -> dict:
     file_name = params.get("file", "")
@@ -57,7 +58,8 @@ def handle_query_firehose_fts(params: dict) -> dict:
     if not DB_PATH.exists():
         return {"results": [], "warning": "raw_firehose.db does not exist yet"}
 
-    with sqlite3.connect(DB_PATH) as conn:
+    conn = get_connection(DB_PATH)
+    try:
         cursor = conn.execute("""
             SELECT r.id, r.platform, r.title, r.canonical_url, snippet(firehose_fts, 1, '<b>', '</b>', '...', 15)
             FROM firehose_fts f
@@ -69,6 +71,8 @@ def handle_query_firehose_fts(params: dict) -> dict:
             {"id": row[0], "platform": row[1], "title": row[2], "url": row[3], "snippet": row[4]}
             for row in cursor.fetchall()
         ]
+    finally:
+        conn.close()
     return {"results": results}
 
 def handle_query_wiki_sections(params: dict) -> dict:
@@ -78,7 +82,8 @@ def handle_query_wiki_sections(params: dict) -> dict:
     if not DB_PATH.exists():
         return {"results": [], "warning": "raw_firehose.db does not exist yet"}
 
-    with sqlite3.connect(DB_PATH) as conn:
+    conn = get_connection(DB_PATH)
+    try:
         cursor = conn.execute("""
             SELECT file_path, heading, snippet(wiki_sections_fts, 2, '<b>', '</b>', '...', 12)
             FROM wiki_sections_fts
@@ -89,6 +94,8 @@ def handle_query_wiki_sections(params: dict) -> dict:
             {"file": row[0], "heading": row[1], "snippet": row[2]}
             for row in cursor.fetchall()
         ]
+    finally:
+        conn.close()
     return {"results": results}
 
 def handle_acquire_section_lease(params: dict) -> dict:
@@ -104,20 +111,26 @@ def handle_acquire_section_lease(params: dict) -> dict:
         from sqlite_manager import init_db
         init_db(DB_PATH)
 
-    with sqlite3.connect(DB_PATH) as conn:
-        try:
-            conn.execute("""
-                INSERT INTO active_leases (file_path, section_slug, agent_id, expires_at)
-                VALUES (?, ?, ?, ?)
-                ON CONFLICT(file_path, section_slug) DO UPDATE SET
-                    agent_id = excluded.agent_id,
-                    expires_at = excluded.expires_at
-                WHERE active_leases.expires_at < unixepoch();
-            """, (file_path, section_slug, agent_id, expires_at))
-            conn.commit()
+    conn = get_connection(DB_PATH)
+    try:
+        cursor = conn.execute("""
+            INSERT INTO active_leases (file_path, section_slug, agent_id, expires_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(file_path, section_slug) DO UPDATE SET
+                agent_id = excluded.agent_id,
+                expires_at = excluded.expires_at
+            WHERE active_leases.expires_at < unixepoch();
+        """, (file_path, section_slug, agent_id, expires_at))
+        conn.commit()
+        if cursor.rowcount > 0:
             return {"acquired": True, "expires_at": expires_at}
-        except sqlite3.OperationalError as e:
-            return {"acquired": False, "reason": str(e)}
+        else:
+            return {"acquired": False, "reason": "Lease currently held by another agent"}
+    except sqlite3.OperationalError as e:
+        return {"acquired": False, "reason": str(e)}
+    finally:
+        conn.close()
+
 
 def handle_stage_git_pr(params: dict) -> dict:
     branch = params.get("branch", "pr/automated-update")

@@ -17,19 +17,22 @@ if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 
+def get_connection(db_path: Path, timeout: float = 5.0) -> sqlite3.Connection:
+    """Connection factory ensuring connection-scoped PRAGMAs are executed on EVERY connection."""
+    conn = sqlite3.connect(db_path, timeout=timeout)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = NORMAL;")
+    conn.execute("PRAGMA wal_autocheckpoint = 4000;")  # 16MB threshold
+    conn.execute("PRAGMA busy_timeout = 5000;")
+    conn.execute("PRAGMA mmap_size = 268435456;")
+    conn.execute("PRAGMA cache_size = -64000;")
+    return conn
+
 def init_db(db_path: Path):
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(db_path)
+    conn = get_connection(db_path)
     try:
         conn.executescript("""
-            PRAGMA journal_mode = WAL;
-            PRAGMA synchronous = NORMAL;
-            PRAGMA page_size = 4096;
-            PRAGMA wal_autocheckpoint = 1000;
-            PRAGMA busy_timeout = 5000;
-            PRAGMA mmap_size = 268435456;
-            PRAGMA cache_size = -64000;
-
             CREATE TABLE IF NOT EXISTS raw_firehose (
                 id TEXT PRIMARY KEY,
                 platform TEXT NOT NULL,
@@ -84,33 +87,40 @@ def init_db(db_path: Path):
     print(f"[OK] Database initialized at {db_path} with WAL & FTS5.")
 
 def truncate_wal(db_path: Path):
-    conn = sqlite3.connect(db_path)
+    conn = get_connection(db_path)
     try:
-        conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+        cursor = conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+        busy, log_frames, checkpointed_frames = cursor.fetchone()
+        if busy:
+            print(f"[WARN] WAL checkpoint TRUNCATE blocked by active readers (frames: {log_frames}, ckpt: {checkpointed_frames})")
+        else:
+            print(f"[OK] WAL file truncated to 0MB for {db_path} (checkpointed {checkpointed_frames} frames).")
     finally:
         conn.close()
-    print(f"[OK] WAL file truncated to 0MB for {db_path}.")
 
 def snapshot_db(db_path: Path, out_path: Path):
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(db_path)
+    conn = get_connection(db_path)
     try:
         conn.execute(f"VACUUM INTO '{out_path.as_posix()}';")
     finally:
         conn.close()
     print(f"[OK] Crash-consistent snapshot saved to {out_path}.")
 
-
 def index_wiki(db_path: Path, wiki_dir: Path):
     init_db(db_path)
     heading_regex = re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE)
+    wikilink_regex = re.compile(r'\[\[(.+?)\]\]')
     
-    with sqlite3.connect(db_path) as conn:
-        # Clear existing section index
+    conn = get_connection(db_path)
+    try:
+        # Clear existing indexes
         conn.execute("DELETE FROM wiki_sections_index;")
         conn.execute("DELETE FROM wiki_sections_fts;")
+        conn.execute("DELETE FROM wiki_links;")
         
         count = 0
+        link_count = 0
         for md_file in wiki_dir.glob("*.md"):
             rel_path = md_file.name
             content = md_file.read_text(encoding="utf-8")
@@ -136,11 +146,24 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                 )
                 count += 1
                 
+                # Extract [[wikilinks]] and populate the relational shadow graph table
+                for wl in wikilink_regex.finditer(section_text):
+                    concept = wl.group(1).strip()
+                    if concept and concept != heading:
+                        conn.execute(
+                            "INSERT OR IGNORE INTO wiki_links (source_file, source_heading, target_concept) VALUES (?, ?, ?)",
+                            (rel_path, heading, concept)
+                        )
+                        link_count += 1
+                        
         conn.commit()
-    print(f"[OK] Indexed {count} sections across {wiki_dir} into SQLite FTS5.")
+    finally:
+        conn.close()
+    print(f"[OK] Indexed {count} sections and {link_count} graph edges into SQLite FTS5 & wiki_links.")
 
 def query_section(db_path: Path, query_text: str):
-    with sqlite3.connect(db_path) as conn:
+    conn = get_connection(db_path)
+    try:
         cursor = conn.execute("""
             SELECT file_path, heading, snippet(wiki_sections_fts, 2, '<b>', '</b>', '...', 12)
             FROM wiki_sections_fts
@@ -155,6 +178,9 @@ def query_section(db_path: Path, query_text: str):
         for r in rows:
             print(f"  - File: {r[0]} | Heading: {r[1]}")
             print(f"    Snippet: {r[2]}")
+    finally:
+        conn.close()
+
 
 def main():
     parser = argparse.ArgumentParser(description="SQLite Manager")

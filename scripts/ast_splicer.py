@@ -89,15 +89,18 @@ class ASTSplicer:
             after = content[target_sec["end_byte"]:]
             final_content = before + new_content.strip() + "\n\n" + after.lstrip("\n")
         
-        # Atomic file write to avoid torn pages on Windows
+        # Atomic file write to avoid torn pages on Windows with explicit disk sync
         dir_name = file_path.parent
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=dir_name, delete=False) as tf:
             tf.write(final_content)
+            tf.flush()
+            os.fsync(tf.fileno())
             temp_name = tf.name
         
         # Atomic replace
         os.replace(temp_name, file_path)
         return True
+
 
     @staticmethod
     def lint_file(file_path: Path) -> List[str]:

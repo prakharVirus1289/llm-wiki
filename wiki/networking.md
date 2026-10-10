@@ -2,13 +2,25 @@
 
 *High-throughput firehose ingestion, backpressure regulation, WebSocket multiplexing, and network partitioning.*
 
-
-
 **Total Compiled Empirical Assets:** `316`
 
+---
 
+## Firehose Ingestion Backpressure & Storage Engine Boundaries
+
+### The 16MB WAL Autocheckpoint Boundary
+Under high-velocity firehose ingestion, inserting raw posts generates secondary writes across dual FTS5 virtual tables (`firehose_fts` and `wiki_sections_fts`). To prevent disk I/O thrashing from sub-second checkpoint triggers, the autocheckpoint boundary must be tuned to `PRAGMA wal_autocheckpoint = 4000` (16MB threshold).
+
+### Memory-Mapped I/O (MMAP) Boundaries
+Setting `PRAGMA mmap_size = 268435456` (256MB) maps only the primary database file, **not** the active `-wal` file. Ingested data initially resides exclusively in the WAL; memory-mapped queries provide zero benefit until pages are successfully checkpointed back to the main database file. Furthermore, on Windows, memory-mapped sections hold kernel file handles that prevent truncate operations if readers remain open.
+
+### Regulated Backpressure Architecture
+To prevent uncheckpointed WAL inflation and writer starvation:
+1. **Batching & Chunking:** Firehose scrapers must ingest in bounded transactional batches (e.g., 50–100 items per `BEGIN IMMEDIATE` transaction) rather than per-item auto-commits.
+2. **Checkpointed Pacing:** Ingestion threads must pause intake when WAL frame counts exceed high-water marks, awaiting passive checkpoint completion before resuming.
 
 ---
+
 
 
 
