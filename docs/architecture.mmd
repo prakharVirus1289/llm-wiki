@@ -1,0 +1,94 @@
+flowchart TD
+    %% ==========================================
+    %% STAGE 1: WEB RESEARCH & HARVESTING
+    %% ==========================================
+    subgraph S1 ["Stage 1: Web Research & Harvesting"]
+        User["User or Scheduled Timer"] -->|"Starts cycle"| SkillDWA["Skill: deep-web-analysis"]
+        SkillDWA -->|"Runs script"| Runner["runner.py (Portable Scraper)"]
+        Runner -->|"Scrapes Reddit, Twitter, GitHub"| RawJSON["harvested_candidates.json (Raw Posts)"]
+        RawJSON -->|"Agent inspects & discards low-quality noise"| AgentReview["Agent Filters Good Posts"]
+    end
+
+    %% ==========================================
+    %% STAGE 2: DEDUPLICATION & STORAGE (MCP CALL)
+    %% ==========================================
+    subgraph S2 ["Stage 2: Save Posts & Stop Duplicates"]
+        AgentReview -->|"Tool Call: llm_wiki_firehose_ingest(items)"| MCPServer1["llm_wiki_mcp.py (Blackbox Server)"]
+        MCPServer1 -->|"Calls function"| SM_Firehose["sqlite_manager/firehose.py"]
+        
+        subgraph TX1 ["SQL Transaction: All-or-Nothing"]
+            SM_Firehose -->|"1. Checks if URL already exists"| SQL_Dedup["SELECT 1 FROM raw_firehose WHERE url = ?"]
+            SQL_Dedup -->|"2. If new, save post"| SQL_InsertPost["INSERT OR IGNORE INTO raw_firehose"]
+            SQL_InsertPost -->|"3. Refresh web post search index"| SQL_RebuildFTS1["INSERT INTO firehose_fts VALUES('rebuild')"]
+        end
+        
+        TX1 -->|"Returns: 15 saved, 35 duplicates skipped"| AgentReview
+    end
+
+    %% ==========================================
+    %% STAGE 3: READ EXISTING TEXTBOOK (ZERO BLOAT)
+    %% ==========================================
+    subgraph S3 ["Stage 3: Check Existing Knowledge"]
+        AgentReview -->|"Skill: wiki-reader"| SkillReader["wiki-reader"]
+        SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query='caching')"| MCPServer2["llm_wiki_mcp.py"]
+        MCPServer2 -->|"Calls function"| SM_Search["sqlite_manager/search.py"]
+        
+        SM_Search -->|"1. Word Match (2ms)"| FTS_Match["SELECT FROM wiki_sections_fts MATCH 'caching'"]
+        SM_Search -->|"2. Meaning Match (Vectors)"| VEC_Match["SELECT embedding FROM wiki_sections_index"]
+        FTS_Match & VEC_Match -->|"Blends both rankings"| TopSection["Found: caching.md -> ## Cache Invalidation"]
+        
+        TopSection -->|"Tool Call: llm_wiki_read_section(file, heading)"| MCPServer3["llm_wiki_mcp.py"]
+        MCPServer3 -->|"Calls"| AST_Reader["ast_splicer.py"]
+        AST_Reader -->|"Cuts out ONLY the 20 lines of that section"| SectionText["20 Lines of Section Text"]
+        SectionText -->|"Sent to Agent context (Zero token bloat)"| AgentComposer["Agent Compares Old vs New Data"]
+    end
+
+    %% ==========================================
+    %% STAGE 4: SURGICAL FILE PATCH & RE-INDEXING
+    %% ==========================================
+    subgraph S4 ["Stage 4: Surgical Patching & Re-indexing"]
+        AgentComposer -->|"Writes updated section with [[wikilinks]]"| SkillPatch["Skill: ast-markdown-patcher"]
+        SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, new_content)"| MCPServer4["llm_wiki_mcp.py"]
+        
+        MCPServer4 -->|"1. AST Surgery"| AST_Writer["ast_splicer.py"]
+        AST_Writer -->|"Slices out old 20 lines, pastes new 25 lines"| DiskFile["wiki/caching.md on Disk"]
+        AST_Writer -->|"Linter verifies: code fences & brackets closed"| LintPass["Syntax Validation Pass"]
+        
+        subgraph TX2 ["SQL Transaction: Search & Graph Sync"]
+            LintPass -->|"2. Update section text"| SQL_UpdateSec["INSERT OR UPDATE INTO wiki_sections_index"]
+            SQL_UpdateSec -->|"3. Calculate 384 vector numbers"| SQL_Embed["UPDATE SET embedding = new_vector"]
+            SQL_Embed -->|"4. Refresh chapter search index"| SQL_RebuildFTS2["INSERT INTO wiki_sections_fts VALUES('rebuild')"]
+            SQL_RebuildFTS2 -->|"5. Catalog all [[wikilinks]]"| SQL_Links["INSERT OR IGNORE INTO wiki_links"]
+        end
+    end
+
+    %% ==========================================
+    %% STAGE 5: SAVE TO GITHUB (ATOMIC PR)
+    %% ==========================================
+    subgraph S5 ["Stage 5: Instant Remote Backup"]
+        TX2 -->|"Tool Call: llm_wiki_git_commit_and_push(file, msg)"| MCPServer5["llm_wiki_mcp.py"]
+        MCPServer5 -->|"Runs: git add & git commit"| GitLocal["Local Git Repository"]
+        GitLocal -->|"Runs: git push origin main"| GitHub["GitHub Remote Repository"]
+    end
+
+    %% ==========================================
+    %% STAGE 6: DISCOVER GAPS FOR NEXT ITERATION
+    %% ==========================================
+    subgraph S6 ["Stage 6: Spot Missing Topics for Next Round"]
+        GitHub -->|"Skill: iteration-reasoning"| SkillReasoning["iteration-reasoning"]
+        SkillReasoning -->|"Tool Call: llm_wiki_get_graph(action='dangling')"| MCPServer6["llm_wiki_mcp.py"]
+        MCPServer6 -->|"Query knowledge gaps"| SQL_Gaps["SELECT * FROM wiki_dangling_links"]
+        SQL_Gaps -->|"Identifies concepts linked often with no page"| NextTargets["New Priority Search Topics"]
+        NextTargets -->|"Feeds into next iteration's search list"| SkillDWA
+    end
+
+    %% Styling
+    classDef skill fill:#2d3748,stroke:#4a5568,color:#fff,stroke-width:2px;
+    classDef mcp fill:#4c51bf,stroke:#667eea,color:#fff,stroke-width:2px;
+    classDef sql fill:#2c5282,stroke:#3182ce,color:#fff,stroke-width:2px;
+    classDef disk fill:#276749,stroke:#38a169,color:#fff,stroke-width:2px;
+
+    class SkillDWA,SkillReader,SkillPatch,SkillReasoning skill;
+    class MCPServer1,MCPServer2,MCPServer3,MCPServer4,MCPServer5,MCPServer6 mcp;
+    class SQL_Dedup,SQL_InsertPost,SQL_RebuildFTS1,FTS_Match,VEC_Match,SQL_UpdateSec,SQL_Embed,SQL_RebuildFTS2,SQL_Links,SQL_Gaps sql;
+    class RawJSON,DiskFile,GitLocal,GitHub disk;
