@@ -14,6 +14,7 @@ env/
 
 # Scratch and intermediate artifacts
 scratch/
+logs/
 *.log
 .DS_Store
 Thumbs.db

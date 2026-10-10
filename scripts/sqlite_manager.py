@@ -5,10 +5,14 @@ Enforces zero database lockouts, bounded 4MB disk footprints, and <1ms section l
 """
 
 import sys
+import os
 import re
+import time
 import sqlite3
+import logging
 import argparse
 from pathlib import Path
+from logging.handlers import RotatingFileHandler
 
 # Enforce UTF-8 on Windows stdout/stderr to support emojis and unicode in posts
 if hasattr(sys.stdout, 'reconfigure'):
@@ -16,9 +20,31 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
+LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+LOG_FILE = LOG_DIR / "sqlite_manager.log"
+
+logger = logging.getLogger("sqlite_manager")
+if not logger.handlers:
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        '[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    fh = RotatingFileHandler(LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=3, encoding="utf-8")
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    sh = logging.StreamHandler(sys.stderr)
+    sh.setLevel(logging.INFO)
+    sh.setFormatter(formatter)
+    logger.addHandler(sh)
+
 
 def get_connection(db_path: Path, timeout: float = 5.0) -> sqlite3.Connection:
     """Connection factory ensuring connection-scoped PRAGMAs are executed on EVERY connection."""
+    logger.debug("Opening SQLite connection to %s (timeout=%.1fs)", db_path, timeout)
     conn = sqlite3.connect(db_path, timeout=timeout)
     conn.execute("PRAGMA journal_mode = WAL;")
     conn.execute("PRAGMA synchronous = NORMAL;")
@@ -67,6 +93,7 @@ def parse_wikilink(raw_target: str, default_domain: str = None) -> tuple[str, st
     return domain, slug, raw_target
 
 def init_db(db_path: Path):
+    logger.info("Initializing SQLite database schema at %s", db_path)
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = get_connection(db_path)
     try:
@@ -76,6 +103,7 @@ def init_db(db_path: Path):
             col_cursor = conn.execute("PRAGMA table_info(wiki_links);")
             cols = {row[1] for row in col_cursor.fetchall()}
             if "target_anchor" not in cols or "domain_scope" not in cols:
+                logger.info("Migrating wiki_links table schema to include target_anchor and domain_scope")
                 conn.execute("DROP TABLE wiki_links;")
 
         conn.executescript("""
@@ -133,6 +161,8 @@ def init_db(db_path: Path):
                 content_rowid='rowid'
             );
 
+            CREATE INDEX IF NOT EXISTS idx_sections_heading ON wiki_sections_index(heading);
+
             DROP VIEW IF EXISTS wiki_dangling_links;
             CREATE VIEW wiki_dangling_links AS
             SELECT 
@@ -141,41 +171,47 @@ def init_db(db_path: Path):
                 COUNT(*) AS incoming_citations,
                 GROUP_CONCAT(DISTINCT l.source_file) AS citing_files
             FROM wiki_links l
-            LEFT JOIN wiki_sections_index s 
-              ON LOWER(s.heading) = LOWER(l.target_concept)
-              OR LOWER(REPLACE(REPLACE(s.heading, ' ', '_'), '-', '_')) = LOWER(l.target_concept)
-              OR LOWER(REPLACE(s.file_path, '.md', '')) = LOWER(l.target_concept)
-            WHERE s.heading IS NULL
+            WHERE NOT EXISTS (
+                SELECT 1 FROM wiki_sections_index s WHERE s.heading = l.target_concept
+            )
             GROUP BY l.target_concept, l.domain_scope
             ORDER BY incoming_citations DESC;
         """)
+        logger.info("Database schema initialized with WAL, FTS5 & graph tables.")
     finally:
         conn.close()
     print(f"[OK] Database initialized at {db_path} with WAL, FTS5 & wiki_links graph schema.")
 
 def truncate_wal(db_path: Path):
+    logger.info("Executing PRAGMA wal_checkpoint(TRUNCATE) on %s", db_path)
     conn = get_connection(db_path)
     try:
         cursor = conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
         busy, log_frames, checkpointed_frames = cursor.fetchone()
         if busy:
+            logger.warning("WAL checkpoint TRUNCATE blocked by active readers (frames: %d, ckpt: %d)", log_frames, checkpointed_frames)
             print(f"[WARN] WAL checkpoint TRUNCATE blocked by active readers (frames: {log_frames}, ckpt: {checkpointed_frames})")
         else:
+            logger.info("WAL checkpoint TRUNCATE successful: truncated to 0MB (%d frames checkpointed)", checkpointed_frames)
             print(f"[OK] WAL file truncated to 0MB for {db_path} (checkpointed {checkpointed_frames} frames).")
     finally:
         conn.close()
 
 def snapshot_db(db_path: Path, out_path: Path):
+    logger.info("Snapshotting SQLite database %s to %s via VACUUM INTO", db_path, out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     conn = get_connection(db_path)
     try:
         conn.execute(f"VACUUM INTO '{out_path.as_posix()}';")
+        logger.info("Crash-consistent snapshot saved successfully to %s", out_path)
     finally:
         conn.close()
     print(f"[OK] Crash-consistent snapshot saved to {out_path}.")
 
 def index_wiki(db_path: Path, wiki_dir: Path):
     init_db(db_path)
+    logger.info("Starting wiki indexing pass for directory: %s", wiki_dir)
+    t0 = time.perf_counter()
     heading_regex = re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE)
     # Support [[target#anchor|alias]] or [[domain/concept#anchor|alias]]
     wikilink_regex = re.compile(r'\[\[([^\]#|]+)(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]')
@@ -194,6 +230,7 @@ def index_wiki(db_path: Path, wiki_dir: Path):
             default_domain = md_file.stem
             content = md_file.read_text(encoding="utf-8")
             matches = list(heading_regex.finditer(content))
+            file_sections = 0
             
             for i, match in enumerate(matches):
                 level = len(match.group(1))
@@ -210,6 +247,7 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                     (rel_path, heading, level, section_text)
                 )
                 count += 1
+                file_sections += 1
                 
                 # Extract [[wikilinks]] with slug normalization, anchors, aliases, and domain scoping
                 for wl in wikilink_regex.finditer(section_text):
@@ -227,17 +265,23 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                                 (rel_path, heading, slug, anchor, alias or display, domain)
                             )
                             link_count += 1
+            logger.debug("Indexed %d sections from %s", file_sections, rel_path)
                         
         # Synchronize FTS5 external content table cleanly
+        logger.debug("Rebuilding FTS5 external content index...")
         conn.execute("INSERT INTO wiki_sections_fts(wiki_sections_fts) VALUES('rebuild');")
         conn.commit()
     finally:
         conn.close()
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    logger.info("Wiki indexing completed: %d sections, %d graph edges in %.2f ms", count, link_count, elapsed_ms)
     print(f"[OK] Indexed {count} sections and {link_count} graph edges into SQLite FTS5 & wiki_links.")
 
 def get_backlinks(db_path: Path, concept: str) -> list[dict]:
     """Returns all chapters and headings citing the given concept."""
     domain, slug, _ = parse_wikilink(concept)
+    logger.debug("Querying backlinks for concept='%s' (domain='%s', slug='%s')", concept, domain, slug)
+    t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
         if "/" in concept:
@@ -256,6 +300,7 @@ def get_backlinks(db_path: Path, concept: str) -> list[dict]:
             """, (slug,))
         rows = cursor.fetchall()
         if not rows:
+            logger.debug("No exact backlink match for '%s'; trying substring wildcard search", slug)
             cursor = conn.execute("""
                 SELECT source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope
                 FROM wiki_links
@@ -265,6 +310,8 @@ def get_backlinks(db_path: Path, concept: str) -> list[dict]:
             """, (f"%{slug}%",))
             rows = cursor.fetchall()
 
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("get_backlinks for '%s' returned %d citing sections in %.2f ms", concept, len(rows), elapsed_ms)
         return [
             {
                 "source_file": r[0],
@@ -282,6 +329,8 @@ def get_backlinks(db_path: Path, concept: str) -> list[dict]:
 def get_related_concepts(db_path: Path, concept: str, depth: int = 1) -> list[dict]:
     """Returns co-cited and graph-neighbor concepts for a given entity."""
     domain, slug, _ = parse_wikilink(concept)
+    logger.debug("Querying co-cited related concepts for '%s' (depth=%d)", concept, depth)
+    t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
         # Find concepts cited within the same sections that cite this concept (co-citation network)
@@ -298,6 +347,8 @@ def get_related_concepts(db_path: Path, concept: str, depth: int = 1) -> list[di
             LIMIT 15;
         """, (slug, slug, domain, slug))
         rows = cursor.fetchall()
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("get_related_concepts for '%s' returned %d co-citations in %.2f ms", concept, len(rows), elapsed_ms)
         return [
             {
                 "target_concept": r[0],
@@ -311,6 +362,8 @@ def get_related_concepts(db_path: Path, concept: str, depth: int = 1) -> list[di
 
 def get_dangling_links(db_path: Path, limit: int = 30) -> list[dict]:
     """Returns top cited concepts that do not yet have a defining section."""
+    logger.debug("Querying top %d dangling links from wiki_dangling_links view", limit)
+    t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
         cursor = conn.execute("""
@@ -319,6 +372,8 @@ def get_dangling_links(db_path: Path, limit: int = 30) -> list[dict]:
             LIMIT ?;
         """, (limit,))
         rows = cursor.fetchall()
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("get_dangling_links returned %d voids in %.2f ms", len(rows), elapsed_ms)
         return [
             {
                 "target_concept": r[0],
@@ -332,6 +387,8 @@ def get_dangling_links(db_path: Path, limit: int = 30) -> list[dict]:
         conn.close()
 
 def query_section(db_path: Path, query_text: str):
+    logger.info("FTS5 query_section executing for query: '%s'", query_text)
+    t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
         cursor = conn.execute("""
@@ -341,6 +398,8 @@ def query_section(db_path: Path, query_text: str):
             LIMIT 5;
         """, (query_text,))
         rows = cursor.fetchall()
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("FTS5 query_section returned %d matching sections in %.2f ms", len(rows), elapsed_ms)
         if not rows:
             print(f"[NOT FOUND] No sections matched query: '{query_text}'")
             return
@@ -353,6 +412,8 @@ def query_section(db_path: Path, query_text: str):
 
 
 def query_firehose(db_path: Path, keyword: str, limit: int = 5):
+    logger.info("FTS5 query_firehose executing for keyword: '%s' (limit=%d)", keyword, limit)
+    t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
         cursor = conn.execute("""
@@ -363,6 +424,8 @@ def query_firehose(db_path: Path, keyword: str, limit: int = 5):
             LIMIT ?;
         """, (keyword, limit))
         rows = cursor.fetchall()
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("FTS5 query_firehose returned %d raw items in %.2f ms", len(rows), elapsed_ms)
         if not rows:
             print(f"[NOT FOUND] No raw posts matched keyword: '{keyword}'")
             return

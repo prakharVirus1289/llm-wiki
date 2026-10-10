@@ -7,8 +7,10 @@ Prepares physical programmatic reads for the Milestone Review Council.
 import sys
 import re
 import sqlite3
+import logging
 from pathlib import Path
 from collections import defaultdict
+from logging.handlers import RotatingFileHandler
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -16,8 +18,29 @@ if hasattr(sys.stdout, 'reconfigure'):
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 WIKI_DIR = WORKSPACE_ROOT / "wiki"
 DB_PATH = WORKSPACE_ROOT / "raw_firehose.db"
+LOG_DIR = WORKSPACE_ROOT / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+LOG_FILE = LOG_DIR / "telemetry_audit.log"
+
+logger = logging.getLogger("telemetry_audit")
+if not logger.handlers:
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        '[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    fh = RotatingFileHandler(LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=3, encoding="utf-8")
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    sh = logging.StreamHandler(sys.stderr)
+    sh.setLevel(logging.INFO)
+    sh.setFormatter(formatter)
+    logger.addHandler(sh)
 
 def run_audit():
+    logger.info("Starting telemetry audit on database: %s", DB_PATH)
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 

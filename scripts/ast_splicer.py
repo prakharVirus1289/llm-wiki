@@ -9,9 +9,11 @@ import sys
 import os
 import re
 import json
+import logging
 import argparse
 import tempfile
 from pathlib import Path
+from logging.handlers import RotatingFileHandler
 from typing import Dict, List, Optional
 
 # Enforce UTF-8 on Windows stdout/stderr to support emojis and unicode in posts
@@ -20,10 +22,32 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
+LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+LOG_FILE = LOG_DIR / "ast_splicer.log"
+
+logger = logging.getLogger("ast_splicer")
+if not logger.handlers:
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        '[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    fh = RotatingFileHandler(LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=3, encoding="utf-8")
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    sh = logging.StreamHandler(sys.stderr)
+    sh.setLevel(logging.INFO)
+    sh.setFormatter(formatter)
+    logger.addHandler(sh)
+
 
 class ASTSplicer:
     @staticmethod
     def inspect_sections(file_path: Path) -> List[Dict]:
+        logger.debug("Inspecting sections in %s", file_path)
         content = file_path.read_text(encoding="utf-8")
         heading_regex = re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE)
         matches = list(heading_regex.finditer(content))
@@ -49,24 +73,31 @@ class ASTSplicer:
                 "end_byte": end_pos,
                 "length": end_pos - start_pos
             })
+        logger.debug("Discovered %d sections in %s", len(sections), file_path.name)
         return sections
 
     @staticmethod
     def read_section(file_path: Path, heading_title: str) -> Optional[str]:
+        logger.debug("Reading section '%s' from %s", heading_title, file_path.name)
         sections = ASTSplicer.inspect_sections(file_path)
         content = file_path.read_text(encoding="utf-8")
         norm_target = heading_title.lower().strip().lstrip("#").strip()
         
         for sec in sections:
             if sec["title"].lower().strip() == norm_target:
+                logger.info("Found section '%s' (%d bytes, range %d-%d) in %s", 
+                            sec['title'], sec['length'], sec['start_byte'], sec['end_byte'], file_path.name)
                 return content[sec["start_byte"]:sec["end_byte"]]
+        logger.warning("Section '%s' not found in %s", heading_title, file_path.name)
         return None
 
     @staticmethod
     def splice_section(file_path: Path, heading_title: str, new_content: str) -> bool:
+        logger.info("Initiating surgical splice of '%s' in %s", heading_title, file_path.name)
         if not file_path.exists():
             file_path.parent.mkdir(parents=True, exist_ok=True)
             file_path.write_text(new_content.strip() + "\n", encoding="utf-8")
+            logger.info("Created new file %s with section '%s'", file_path.name, heading_title)
             return True
 
         sections = ASTSplicer.inspect_sections(file_path)
@@ -81,10 +112,13 @@ class ASTSplicer:
                 
         if not target_sec:
             # If section doesn't exist, append cleanly at end of file
+            logger.info("Section '%s' does not exist in %s; appending to EOF", heading_title, file_path.name)
             separator = "\n\n" if content and not content.endswith("\n\n") else ""
             final_content = content + separator + new_content.strip() + "\n"
         else:
             # Surgical replacement of exact byte slice
+            logger.info("Surgically replacing %d bytes for section '%s' in %s", 
+                        target_sec['length'], target_sec['title'], file_path.name)
             before = content[:target_sec["start_byte"]]
             after = content[target_sec["end_byte"]:]
             final_content = before + new_content.strip() + "\n\n" + after.lstrip("\n")
@@ -99,11 +133,12 @@ class ASTSplicer:
         
         # Atomic replace
         os.replace(temp_name, file_path)
+        logger.info("Atomic fsync replace complete: %s updated cleanly", file_path.name)
         return True
-
 
     @staticmethod
     def lint_file(file_path: Path) -> List[str]:
+        logger.debug("Linting file syntax for %s", file_path.name)
         content = file_path.read_text(encoding="utf-8")
         errors = []
         
@@ -117,6 +152,10 @@ class ASTSplicer:
         if open_wikilinks != close_wikilinks:
             errors.append(f"Mismatched wikilink brackets: {open_wikilinks} '[[' vs {close_wikilinks} ']]'")
             
+        if errors:
+            logger.warning("Lint failed for %s with %d errors: %s", file_path.name, len(errors), errors)
+        else:
+            logger.debug("Lint passed cleanly for %s (0 errors)", file_path.name)
         return errors
 
 def main():

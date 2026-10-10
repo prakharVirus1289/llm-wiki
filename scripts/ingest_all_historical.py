@@ -10,8 +10,10 @@ import os
 import re
 import time
 import sqlite3
+import logging
 from pathlib import Path
 from collections import defaultdict
+from logging.handlers import RotatingFileHandler
 
 # Enforce UTF-8 on Windows stdout/stderr
 if hasattr(sys.stdout, 'reconfigure'):
@@ -22,6 +24,26 @@ if hasattr(sys.stderr, 'reconfigure'):
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 WIKI_DIR = WORKSPACE_ROOT / "wiki"
 DB_PATH = WORKSPACE_ROOT / "raw_firehose.db"
+LOG_DIR = WORKSPACE_ROOT / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+LOG_FILE = LOG_DIR / "ingest_historical.log"
+
+logger = logging.getLogger("ingest_historical")
+if not logger.handlers:
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        '[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    fh = RotatingFileHandler(LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=3, encoding="utf-8")
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    sh = logging.StreamHandler(sys.stderr)
+    sh.setLevel(logging.INFO)
+    sh.setFormatter(formatter)
+    logger.addHandler(sh)
 
 sys.path.append(str(WORKSPACE_ROOT / "scripts"))
 from ast_splicer import ASTSplicer
