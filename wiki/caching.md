@@ -4,7 +4,7 @@
 
 
 
-Total Empirical Assets: 388
+**Total Compiled Empirical Assets:** `391`
 
 
 
@@ -38,14 +38,6 @@ NativeLink offers powerful features such as:
 
 From the first LLaMA 33B I knew I wanted that magic-like intelligence locally, mine, so nobody could take it away when I needed it. I bought a 3090 for my home PC. Then LLaMA 65B appeared and I was dazzled, it looked like it had all the knowledge in the world. I made two copies, one local and one on my Synology NAS RAID, so I'd never lose
 
-### [[Locus An AI memory framework based on an open A2A communication protocol]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1t5efsh
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 92, tech: 5) | For the past 4 months I’ve been working on making AI behave more deterministic. Mainly because I’ve been trying to make small models (0.8b - 4b) do full agentic work, and on the pursuit of that I ended up developing a typed IR language for AI communication called STTP (Spatio-Temporal Transfer Protocol) 
-
-This was inspired by the layering of HTTP a
-
 ### [[R Seeking arXiv Endorsement for cs.AI Memento - A Fragment-Based Memory System f]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1roykna
@@ -70,12 +62,6 @@ Landing page / demo / repo:
 
 Instead of the usual RAW-TRUNCATE (“take the last N tokens
 
-### [[D Knowledge graph vs text summaryembedding for long term conversational memory]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/165pn1j
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 59, tech: 1) | Hi, I'm relatively new to the space of AI chatbots and I figured I'd get my hands wet with a small personal project. While researching the topic of long term conversational memory I noticed most people are using text embedding in combination with textual summary to generate a conversation history for the AI's prompt. However, this technique seems t
-
 ### [[Transformers vs RNNs vs SSMs Where Does Memory Actually Live D]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1wz71g3
@@ -94,7 +80,7 @@ the idea i've been sitting on is different from just "memory across sessions."
 
 what if the system built a dynamic personal database about you over time
 
-### [[Weve built memory into 4 different agent systems. Heres what actually works and ]]
+### [[Weve built memory into 4 different agent systems. Heres what actually works and]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1r21ojm
 - **Synthesis & Architectural Value:**
@@ -113,12 +99,6 @@ what if the system built a dynamic personal database about you over time
 You store something useful today, and two weeks later it is subtly wrong. As its tough to maintain fresh memory.
 
 If the memory layer keeps retrieving that old fact, it is worse than no memory. I’m storing r
-
-### [[Aionforge Memory - Long Term Agent Memory]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1u5oyzl
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 108, tech: 6) | TLDR -> Aionforge Memory is a Rust memory layer for agent systems. It stores episodes, facts, notes, skills, bad patterns, work items, core memory, and audit events in selene-db, then retrieves relevant context with lexical anchors, vector search, graph traversal, recency, importance, and trust signals. Embedded GraphDB with native JSON, Vector and
 
 ### [[Benchmarking persistent repo memory for coding agents on SWE-chat planning tasks]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -149,18 +129,6 @@ Most things I find fall into one of these categories:
   
 The problem we kept hitting: you've got multiple agents (or humans + agents) that need to share context, and that context changes. RAG on static docs works until your codebase updates or your API responses change — then you're manually re-indexing or your agents are
 
-### [[Memory system for AI agents that actually persists across context compaction]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1qrbs69
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 104, tech: 6) | Been running an AI assistant 24/7 for about a month now. Anyone else hit the wall where your context fills up, compaction kicks in, and suddenly your AI has amnesia?
-
-Spent way too many sessions trying to fix this. Here's what actually stuck:
-
-**What I ended up building:**
-
-- A "NOW.md" file that's basically a 200-line lifeline - always survives co
-
 ### [[Built a sentence graph based memory layer for AI agents on - heres the problem i]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1shejyn
@@ -189,6 +157,12 @@ And without missing a beat companies and frontie
   Verified High-Signal Technical Asset (matches: 81, tech: 2) | SurrealDB 3.0 just dropped, with a big focus on agent memory infra for AI agents: vector indexing + native file storage + a WASM extension system (Surrealism) that can run custom logic/models inside the DB. Embeddings + structured data + vector + graph context/knowledge/memory in one place.
 
 Details: [https://surrealdb.com/blog/introducing-surreald
+
+### [[I need tips on talking with a PM that doesnt know how things work in the existin]]
+- **Platform:** Reddit (r/r/ExperiencedDevs)
+- **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1qv9jqi
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 27, tech: 2) | I currently work in a short staffed company and I am the sole maintainer of a legacy .NET project, a little background on this project, this was outsourced to an Indian company and the development started back in 2008, the Indian company was involved from 2015 onwards, the current company I work with cut them off back in 2023 this was done before I
 
 ### [[How do you manage a delivery bottleneck that has shifted to the code review stag]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
@@ -245,16 +219,6 @@ My approach: Auto-commit every file save to a parallel local hidden
 \*\*What it does\*\*:
 
 \- 7 agent types wit
-
-### [[built a local memory system for AI that actually learns from your conversations ]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1rejuyw
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 102, tech: 7) | so i got tired of re-explaining my entire setup every time i start a new chat with an LLM. my pc specs, my file paths, my project context, all of it — gone every time. RAG exists but most of it is just search over text chunks. it stores stuff but doesn't actually \*learn\* anything.
-
-
-
-so i built this. it's an MCP server that gives any compatible c
 
 ### [[Built a persistent memory system for local LLMs -- selective routing retrieval n]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -330,12 +294,6 @@ A stack th
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 17, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[Show HN Basic Memory  Build a knowledge graph from Claude conversations]]
-- **Platform:** Hacker News
-- **URL:** https://github.com/basicmachines-co/basic-memory
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 57, tech: 1) | Points: 0 | Comments: 0 |
-
 ### [[Show HN Demarkus  De-centralized Markup for Usmemory for AI agents and humans]]
 - **Platform:** Hacker News
 - **URL:** https://github.com/latebit-io/demarkus
@@ -374,7 +332,7 @@ A lot of agent systems assume GPT access and aren't set up to use local models a
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 32, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[MCP Servers migrated to Rust -  PostgreSQL Filesystem KnowledgeGraph Memory Web ]]
+### [[MCP Servers migrated to Rust -  PostgreSQL Filesystem KnowledgeGraph Memory Web]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1ua6tv1
 - **Synthesis & Architectural Value:**
@@ -389,6 +347,16 @@ So far done with following (published on crates.io) :
 
 **mcp-postgres** — `github.com/corporatepiyush/mcp-pg-rust`  
 MCP server exposing 135 Postg
+
+### [[I shipped a desktop SSH/SFTP client in Rust  Tauri 2  Voltius beta]]
+- **Platform:** Reddit (r/r/rust)
+- **URL:** https://www.reddit.com/r/rust/comments/1tuu8ll
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 65, tech: 7) | Hi,
+
+For the past few months, I've been working on an open-source SSH and SFTP client to replace proprietary tools like Termius. My goal was to build something with a modern, fluid UI that doesn't suffer from Electron bloat.
+
+By leveraging Rust and Tauri, the entire desktop app compiles down to just \~30MB, uses minimal memory, and feels genuinely
 
 ### [[Cargo-Rail v0.20 - The Rust Monorepo Engine w/ New Build Cache]]
 - **Platform:** Reddit (r/r/rust)
@@ -460,30 +428,6 @@ I just released v0.2.0, which is the first version I feel more comfortab
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 17, tech: 1) |
 
-### [[FlashRT Towards Computationally and Memory Efficient Red-Teaming for Prompt Inje]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2604.28157
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 39, tech: 1) |
-
-### [[MeKi Memory-based Expert Knowledge Injection for Efficient LLM Scaling]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2602.03359
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 39, tech: 1) |
-
-### [[Hardware-Aware Parallel Prompt Decoding for Memory-Efficient Acceleration of LLM]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2405.18628
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 21, tech: 1) |
-
-### [[SmartSwap Swap-Based Memory Optimization for LLM Training under Varying Operator]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2509.11076
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 19, tech: 1) |
-
 ### [[MemGraphRAG Memory-based Multi-Agent System for Graph Retrieval-Augmented Genera]]
 - **Platform:** ArXiv
 - **URL:** https://arxiv.org/abs/2606.00610
@@ -548,18 +492,6 @@ MemPalace just hit 49K stars for one reason: it outperforms everything, runs loc
 
 Most AI memory systems work like a junk drawer. You throw everything in and hope semantic search finds the right thing. MemPalace organizes memory into a structured palace where people
 
-### [[Building memory for AI agents is less about storage and more about retrieval.  L]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2074470992651386957
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 110, tech: 5) | Building memory for AI agents is less about storage and more about retrieval.
-
-Let me explain...
-
-I'm building a personal assistant from scratch for my next book with Manning.
-
-And one challenge I faced was deciding how the agent retrieves (from unified memory) the appropriate information quickly, reliably, and with as little complexity as possible
-
 ### [[Memory is the real bottleneck for agents. Memoria inspired by mem0ai  is an a...]]
 - **Platform:** X (Twitter)
 - **URL:** https://x.com/i/status/2096863131054338355
@@ -611,7 +543,7 @@ five layers fix that:
 1. working memory - what it sees right now
 > the context win
 
-### [[Building an Open Source Edge Semantic Cache for LLMs in Rust/WASM  Sanity check ]]
+### [[Building an Open Source Edge Semantic Cache for LLMs in Rust/WASM  Sanity check]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1u3quwk
 - **Synthesis & Architectural Value:**
@@ -620,12 +552,6 @@ five layers fix that:
 I am planning out a new open-source infrastructure project and want to get some brutal feedback on the architecture and use-case validity from people running high volume LLM workloads in production.
 
 **The Problem:** Python-based proxies/gateways introduce too much latency overhead for real-time streaming agent steps or fast UI compl
-
-### [[Kovan wait-free memory reclamation for Rust TLA verified no_std with wait-free c]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1rblbbn
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 100, tech: 10) | After years of building production concurrent systems in Rust (databases, stream processors, ETL/ELT workflows) I ran into the fundamental limits of epoch-based reclamation: a single stalled thread can hold back memory reclamation for the entire process, and memory usage grows unbounded. This is a property of lock-free progress guarantees, not a bu
 
 ### [[The Memory Heist - How I tricked Claude into leaking your deepest darkest secret]]
 - **Platform:** Reddit (r/r/netsec)
@@ -645,13 +571,33 @@ I am planning out a new open-source infrastructure project and want to get some 
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 28, tech: 2) | Is It CitrixBleed4? Well, No. Is It Good? Also, No. (Citrix NetScaler Memory Leak & RXSS CVE-2025-12101) - watchTowr Labs
 
-### [[Any good tools/services for debugging production NestJS node memory usage issues]]
+### [[A quality assurance story we can learn from]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
-- **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1o7c0oa
+- **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1r56g55
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 38, tech: 2) | Like the title says I've been looking into this for some time now and haven't found any real solutions. I've tried out Sentry's profiling but it basically just showed overall memory usage which was nowhere near granular enough.
+  Verified High-Signal Technical Asset (matches: 42, tech: 6) | I spent 6 hours fixing a memory leak working on an app. 6 hours! It was a one-liner fix. 6 hours is on me not having any skill for this kind of things and my skills in debugging memory leaks is not the subject for this post. It is the aftermath which I observe we should repeat every then and now so we could learn from it.
 
-The main use case is when we have operations that use too much memory, I would like an easier way to identify what specif
+# The context
+
+The app su
+
+### [[Two 96 GB Ascend cards crun Qwen3.8-flash-next hardware notes vLLM work benchmar]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wvt1m4
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 181, tech: 14) | I have been building a somewhat unusual local inference machine around two Huawei Atlas 300I Duo cards. They are relatively inexpensive, passive, dual-accelerator PCIe cards with 96 GB of device memory apiece. They are also absolutely not drop-in CUDA replacements.
+
+When I first brought up Qwen3.8 Flash-Next these past two weeks, it was often incoh
+
+### [[Rust is a low-level systems language not]]
+- **Platform:** Reddit (r/r/rust)
+- **URL:** https://www.reddit.com/r/rust/comments/1o4fmlg
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 72, tech: 5) | I've had the same argument multiple times, and even thought this myself before I tried rust.
+
+The argument goes, 'why would I write regular business-logic app X in Rust? I don't think I need the performance or want to worry about memory safety.  It sounds like it comes at the cost of usability, since it's hard to imagine life without a GC.'
+
+My own
 
 ### [[A pure-Rust HTML/CSS/Markdown to PDF converter way faster than headless chrome]]
 - **Platform:** Reddit (r/r/rust)
@@ -676,6 +622,37 @@ Today, most PDF generation relies on headless Chromium. It works, but at a cost:
   Verified High-Signal Technical Asset (matches: 50, tech: 3) | Imagine a server that might be responding to malicious clients, i want to cap how much memory each client can use. In C i would make some kind of custom allocator but with rust since allocation failures are panics that seems unwise.
 
 So im wondering how i can nicely cap memory in rust without having to purposely write all code with memory bounding
+
+### [[16x DGX Sparks - What should I run]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1sz0lyk
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 30, tech: 1) | Let’s build the biggest ever DGX Spark Cluster at home. This is going into my home lab server rack, 2TB of unified memory.
+
+• 16x Sparks
+
+• 1x 200Gbps FS 24 x 200Gb QSFP56 Switch
+
+• 16x QSFP56 DAC cables
+
+Should be all setup by tomorrow afternoon, what should I run?
+
+### [[The All Spark Cluster Upgrading from 16 - 36 DGX Sparks]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1vvv7iv
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 82, tech: 3) | Earlier this year I posted about building what at the time I believe was the first 16x DGX Spark Cluster.   
+I’m now adding 20 more Sparks to the cluster in my homelab server rack, giving me 4.6TB of unified memory.
+
+• 36x Sparks
+
+• 1x 200Gbps FS 24 x 200Gb QSFP56 + 8x 400Gb Switch
+
+• 24x QSFP56 DAC cables
+
+• 6x 400gb to 2x 200gb breakout cables
+
+O
 
 ### [[Fearless Concurrency on the GPU Safe GPU inference in Rust competitive with vLLM]]
 - **Platform:** Reddit (r/r/MachineLearning)
@@ -711,6 +688,14 @@ I've seen a bunch of posts about squeezing 27B onto a 24GB card and all the quan
 
 I  fig
 
+### [[Qwen3.6 27B more dumb in vLLM compared to llama.cpp]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ue9v4b
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 91, tech: 3) | Hello, I recently bought a new RTX 5060Ti to pair with the RTX 5060Ti I already own, now I have 32GB of VRAM.
+
+Up until now for convenience I've used llama.cpp, for goodness' sake it works excellently when only 1 user is using it, but now there are 2 of us using it and llama.cpp can't keep up, often user 1's cache gets invalidated when user 2 write
+
 ### [[Job requires/uses very little AI. Sinking ship or goldmine]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
 - **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1wo4d8p
@@ -721,13 +706,17 @@ Personally I use it as a search-engine and occasionally have it generate tests, 
 
 On one hand I am glad to be in a shop where I'm not just pressing
 
-### [[EDR Evasion Process Injection Without WriteProcessMemory]]
-- **Platform:** Reddit (r/r/netsec)
-- **URL:** https://www.reddit.com/r/netsec/comments/1wr9sr7
+### [[How do you maintain high-quality Rust code while learning the language in a fast]]
+- **Platform:** Reddit (r/r/rust)
+- **URL:** https://www.reddit.com/r/rust/comments/1twihlz
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 30, tech: 1) | Unlike traditional approaches, console named-pipe injection does not use **VirtualAllocEx** and **WriteProcessMemory**. Instead, it takes advantage of read and write operations through a named pipe, along with the way console programs store interactive commands in memory.
+  Verified High-Signal Technical Asset (matches: 53, tech: 5) | Hi everyone,
 
-### [[Stop fine-tuning your model for every little thing. Youre probably wasting your ]]
+I’m a founding engineer at a pre-seed startup (just me, the CEO, and the CTO). We’re moving fast, and I’m currently building a Rust POC to replace a legacy Go component.
+
+I’m learning Rust in parallel while building this under tight constraints. My background is in C/C++ and low-level systems programming, so memory management and perf
+
+### [[Stop fine-tuning your model for every little thing. Youre probably wasting your]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ov7ogq
 - **Synthesis & Architectural Value:**
@@ -759,12 +748,6 @@ It was a mas
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 55, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[Show HN AI memory with biological decay 52 recall]]
-- **Platform:** Hacker News
-- **URL:** https://github.com/sachitrafa/YourMemory
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 47, tech: 1) | Points: 0 | Comments: 0 |
-
 ### [[Show HN An always-fresh memory that learns your repo so agents stop re-reading]]
 - **Platform:** Hacker News
 - **URL:** https://github.com/shofer-dev/claude-code-live-memory
@@ -788,12 +771,6 @@ It was a mas
 - **URL:** https://github.com/SaravananJaichandar/world-model-mcp
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 62, tech: 3) | Points: 0 | Comments: 0 |
-
-### [[Show HN Sigma Guard  deterministic contradiction checks for graph memory]]
-- **Platform:** Hacker News
-- **URL:** https://news.ycombinator.com/item?id=48078195
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 64, tech: 1) | Points: 0 | Comments: 0 |
 
 ### [[Show HN Engram  Open-source agent memory that beats Mem0 by 20 on LOCOMO]]
 - **Platform:** Hacker News
@@ -819,12 +796,6 @@ It was a mas
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 68, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[Show HN Zora AI agent with compaction-proof memory and a runtime safety layer]]
-- **Platform:** Hacker News
-- **URL:** https://github.com/ryaker/zora
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 66, tech: 1) | Points: 0 | Comments: 0 |
-
 ### [[Go ran faster than Rust. Until I cleared the page cache]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1tzkmb9
@@ -833,7 +804,7 @@ It was a mas
 
 Now I'm not really doing anything serious with the co
 
-### [[Been building a Redis-compatible server in Rust - would anyone be interested if ]]
+### [[Been building a Redis-compatible server in Rust - would anyone be interested if]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1qc84yw
 - **Synthesis & Architectural Value:**
@@ -857,12 +828,6 @@ Some of what's implemented:
 - **URL:** https://huggingface.co/erik1988/elias-memory-agent-v1-gguf
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 41, tech: 1) | Downloads: 57 | Likes: 0 | Pipeline:
-
-### [[HF Model huyxdang/adaption_agent_memory]]
-- **Platform:** Hugging Face Models
-- **URL:** https://huggingface.co/huyxdang/adaption_agent_memory
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 41, tech: 1) | Downloads: 20 | Likes: 0 | Pipeline:
 
 ### [[HF Model erik1988/elias-memory-agent-v1-merged]]
 - **Platform:** Hugging Face Models
@@ -948,12 +913,6 @@ Some of what's implemented:
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 55, tech: 2) | {}
 
-### [[MemForm Benchmarking Memory Formation Poisoning in LLM Agents]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=UkXSUeUkgR
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 55, tech: 2) | {}
-
 ### [[Environmental poisoning attack on raw agentic memory in web environments.]]
 - **Platform:** OpenReview
 - **URL:** https://openreview.net/forum?id=LohuI05ArW
@@ -991,6 +950,16 @@ the runs degraded because of four hidden systems bottlenecks: mutex contention i
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 37, tech: 2) | Author here. The post describes three memory-safety bugs which have been in Godot since v1.0 and v3.0. All three are still present in current releases. The bugs can affect exported games that load community-authored data files. Godot allows attackers using maliciously crafted files to trigger reads or writes past the end of a buffer, inside the pro
 
+### [[Qwen 3.8 Flash Next-GSQ-RCO-IQ2_XS at 21 tok/s on just an RTX 3060 12GB  16GB DD]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x1tclb
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 111, tech: 6) | **(Don't judge by the screenshot, the cache is cold. It hits 24+ tok/s with a warm cache!)**
+
+About two months ago, I made a post here asking whether predicting which MoE experts would be used on the next token could actually help speed up CPU/GPU offloading.
+
+[Original post: Tried predicting which MoE experts get used next token to speed up CPU/GP
+
 ### [[Qwen3.8-27B Q6_K_XL 110 TPS at 256k context on a single RTX 5090 with a KV buffe]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wzg75e
@@ -1006,6 +975,15 @@ TL;DR: In vanilla llama.cpp, -c N allocates a physical KV buffer for all N token
   Verified High-Signal Technical Asset (matches: 69, tech: 8) | TL;DR: Native consumption of memory at the LLM level, no context. It's generally applicable to transformer-based models as well as Mamba and similar architectures. Small models can now access knowledge stores far beyond what is contained in their own weights, and models no longer have to be retrained simply to acquire new knowledge.
 
 The aimee proj
+
+### [[DeepSeek V4.1 Flash on a single DGX Spark 113.6 GB VQ base  40 MB domain sidecar]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wz06hj
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 90, tech: 8) | I’ve been working on **YoungAi**, a native C/CUDA inference engine that runs **DeepSeek V4.1 Flash** on a single **NVIDIA DGX Spark** (GB10, 128 GB unified memory). The original weights are \~510 GB. I deploy it as three files:
+
+1. **① Base GGUF** — 113.6 GB, universal, zero-corpus. Quantized once from official weights.
+2. **② Domain sidecar** — \~
 
 ### [[Memoria 1.0.0  a local model-agnostic memory system for LLMs]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -1035,17 +1013,21 @@ Over the weekend I read this really interesting paper: [Cache-to-Cach
 
 Initial testing went better than I have expected, then did more tests and improved it in a course of a month, Because it was interesting to work on. It's
 
-### [[Paper EngramEdit Decoupled Knowledge Updates in LLMs through Conditional Memory]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x1eb7w
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 57, tech: 4) | >Conditional memory architectures such as DeepSeek Engram use input n-grams to look up learned embeddings, expanding the capacity of large language models (LLMs) with limited additional computation. Beyond model scaling, this architecture has demonstrated the potential to decouple factual knowledge storage from general-purpose computation, offering
-
 ### [[pi-optchat never compact again - endless chat as a memory tree]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wzh1i7
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 76, tech: 3) | I built a Pi extension that implements Victor Taelin's OptChat recipe: instead of compacting, every message is logged and summarized into a binary tree. Each turn starts from a fresh context with a bounded memory view (128 KB), and the agent uses zoom/date to read the originals when it needs them. One endless chat per profile, no fork, no separate
+
+### [[I gave a 21M model a 6.4B-parameter lookup table. It matches a 114M dense model]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wz7tvs
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 48, tech: 5) | I spent the last few weeks on a hobby research project and just made it public.
+
+
+
+The idea isn't new (product-key memory, Lample et al. 2019, and Meta's "Memory Layers at Scale"): give a model a huge table of learned vectors and let it read only a few hundred of them per token. I wanted to know what that's actually worth on a small model, what it
 
 ### [[Uncensor an LLM without touching weights inject a tiny trained KV-cache bank 18M]]
 - **Platform:** Reddit (r/r/MachineLearning)
@@ -1163,13 +1145,7 @@ Rather than editing the checkpoint, phantom-kv injects a compact, learned bank o
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 44, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[Retrieval Observability Bounds on Provenance Detection for Agent Memory Poisonin]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/f65bc618ddb1bce4825926a4b8ebadc2bd20c796
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 44, tech: 1) |
-
-### [[Utility Under Attack Agent Memory Poisoning and the Limits of Content Screening ]]
+### [[Utility Under Attack Agent Memory Poisoning and the Limits of Content Screening]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/aff09b98f3ade8fd4296515e699e76b49c83406b
 - **Synthesis & Architectural Value:**
@@ -1187,23 +1163,11 @@ Rather than editing the checkpoint, phantom-kv injects a compact, learned bank o
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 42, tech: 2) |
 
-### [[Frequency-Domain Characterization of Memory Poisoning Propagation in Multi-Agent]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/415e81bf1a1ce474d94150dcbc80066d750daef4
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 42, tech: 2) |
-
-### [[SMSR Certified Defence Against Runtime Memory Poisoning in Persistent LLM Agent ]]
+### [[SMSR Certified Defence Against Runtime Memory Poisoning in Persistent LLM Agent]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/63138eefb77ac81509fc370d0d8e9570e134844a
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 41, tech: 2) |
-
-### [[Memory Poisoning Propagation and Repair Mechanism in Multi-Agent Collaborative E]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/3e84c6dbe0f008725472b85ae20fd9baa7222699
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 42, tech: 1) |
 
 ### [[Memory poisoning and secure multi-agent systems]]
 - **Platform:** Semantic Scholar
@@ -1211,13 +1175,7 @@ Rather than editing the checkpoint, phantom-kv injects a compact, learned bank o
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 42, tech: 2) |
 
-### [[Differential Privacy-Based Noise Injection for Mitigating Memory Poisoning in Co]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/77c9f043f21ea20a1203cbd49371395df8177686
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 48, tech: 2) |
-
-### [[Game-Theoretic Analysis of Memory Poisoning Dynamics in Competitive Multi-Agent ]]
+### [[Game-Theoretic Analysis of Memory Poisoning Dynamics in Competitive Multi-Agent]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/cddefc4d3de702224da151a8b7abd93e56ddc6f5
 - **Synthesis & Architectural Value:**
@@ -1229,29 +1187,11 @@ Rather than editing the checkpoint, phantom-kv injects a compact, learned bank o
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 44, tech: 2) |
 
-### [[Evolutionary Dynamics of Memory Poisoning in Cooperative Agent Populations]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/d24d297dba9ebc3a4e62dca4e8a313528bbcf484
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 41, tech: 1) |
-
 ### [[Dynamic Trust Decay Modeling for Containment of Memory Poisoning in Collaborativ]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/e441ea9ac38b1d86767c03af49d145fac95a94f9
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 48, tech: 1) |
-
-### [[ShadowMerge A Novel Poisoning Attack on Graph-Based Agent Memory via Relation-Ch]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/1470b6876d8f00907ce08552f86a369c62587eb3
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 68, tech: 3) |
-
-### [[When Does Belief-Based Agent Memory Help Reliability-Conditional Updating and Pr]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/af9547a0cd0baa2738c79f0ec6b9005b3a9d3a84
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 43, tech: 1) |
 
 ### [[Poisoning LLM Agent Memory via Web Content]]
 - **Platform:** Semantic Scholar
@@ -1265,29 +1205,11 @@ Rather than editing the checkpoint, phantom-kv injects a compact, learned bank o
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 47, tech: 1) |
 
-### [[Securing LLM-Agent Long-Term Memory Against Poisoning Non-Malleable Origin-Bound]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/8f901170b067c63db1d2067885926954e7441ccb
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 41, tech: 1) |
-
-### [[From Untrusted Input to Trusted Memory A Systematic Study of Memory Poisoning At]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/469d4b8f7660de4bf1651a92bbc1ced997e631ec
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 50, tech: 2) |
-
 ### [[Poison Once Exploit Forever Environment-Injected Memory Poisoning Attacks on Web]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/113836e9c9384bcf32a3999ba1c4b0d81fa55f8a
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 43, tech: 1) |
-
-### [[Self-Supervised Consistency Regularization for Poisoning-Resilient Memory Sharin]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/62b424c3ad0abe05434dde82392e0e488870556b
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 42, tech: 1) |
 
 ### [[As an AI Engineer. Please learn   Harness engineering not just prompt enginee...]]
 - **Platform:** X (Twitter)
@@ -1343,24 +1265,6 @@ Read the full guide 👇🏻 https://t.co/YtzAQ0zHw9
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 22, tech: 1) | Tags: [] | Reactions: 0 |
 
-### [[DT2CAM A Decision Tree to Content Addressable Memory Framework]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2204.06114
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 18, tech: 1) |
-
-### [[Externalization in LLM Agents A Unified Review of Memory Skills Protocols and Ha]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2604.08224
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 6, tech: 1) |
-
-### [[Memory Confidentiality and Integrity Protection Technology]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=0oBkgi37fC
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 8, tech: 1) | {}
-
 ### [[MemSAGE Asymmetric Memory Beamforming for Contextual Integrity in LLM Memory]]
 - **Platform:** OpenReview
 - **URL:** https://openreview.net/forum?id=HzKNgMa3rC
@@ -1409,16 +1313,6 @@ I've been working on a concept for a node-based memory architecture for LLMs, in
 
 Instead of treating memory as a flat log or embedding space, this system stores contextual knowledge as a web of tagged nodes, connected semantically. Each node contains
 
-### [[R GaLore Memory-Efficient LLM Training by Gradient Low-Rank Projection]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1b99cmm
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 59, tech: 4) | Paper :  [\[2403.03507\] GaLore: Memory-Efficient LLM Training by Gradient Low-Rank Projection (arxiv.org)](https://arxiv.org/abs/2403.03507)
-
-Codebase:  [GaLore (github.com)](https://github.com/jiaweizzhao/GaLore)
-
-Training Large Language Models (LLMs) presents significant memory challenges, predominantly due to the growing size of weights and opt
-
 ### [[R Efficient Memory Management for Large Language Model Serving with PagedAttenti]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/16hx11m
@@ -1441,18 +1335,6 @@ Abstract:
 
 At inference time a large part of a model's working memory lives in the KV cache, plus whatever external memory the harness bolts on. I've been poking at the storage-and-retrieval side of this, treating that cache as an index, and what stands out is that it isn't a flat list. It's a structured set of
 
-### [[R Reflexion an autonomous agent with dynamic memory and self-reflection - Noah S]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1215dbl
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 96, tech: 5) | Paper: [https://arxiv.org/abs/2303.11366](https://arxiv.org/abs/2303.11366) 
-
-Blog: [https://nanothoughts.substack.com/p/reflecting-on-reflexion](https://nanothoughts.substack.com/p/reflecting-on-reflexion) 
-
-Github: [https://github.com/noahshinn024/reflexion-human-eval](https://github.com/noahshinn024/reflexion-human-eval) 
-
-Twitter: [https://twit
-
 ### [[An open handbook on LLM inference at scale GPU internals KV cache batching vLLM/]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1uavduv
@@ -1460,28 +1342,6 @@ Twitter: [https://twit
   Verified High-Signal Technical Asset (matches: 47, tech: 6) | I've been working through the internals of LLM inference and writing up what I learn as an open, in-progress handbook.
 
 Just wrapped another chapter on GPU execution and memory internals: why a GPU sits mostly idle during inference, how the memory hierarchy gates throughput, and where the real bottlenecks live. Added mermaid diagrams for the archit
-
-### [[NoSQL and Key-Value storage systems based on Rust Redis and Tarantool replacemen]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/rieuu8
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 109, tech: 9) | [Awesome Rust](https://githubmemory.com/repo/ohsayan/awesome-rust) mentions different NoSQL and Key-Value stores based on Rust. I am wondering if anyone bench-marked these or has an opinion on which ones to take a closer look for a production, high throughput system (Redis replacement).
-
-The ones mentioned in Awesome Rust are
-
-* [indradb](https://c
-
-### [[Small context windows  knowledge graphs the serialization format alone doubled m]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1v7npse
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 61, tech: 6) | Running local models means every token counts — an 8K or 16K window fills up fast when you're stuffing graph context into prompts for RAG.
-
-  
-I benchmarked 10 graph serialization formats (JSON, GraphML, RDF variants, edge lists, etc.) on token count and reasoning accuracy, and the results surprised me:
-
-  
-\- Verbose formats burn roughly 70% of to
 
 ### [[Universal LLM Memory Doesnt Exist]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -1493,12 +1353,6 @@ I benchmarked 10 graph serialization formats (JSON, GraphML, RDF variants, edge 
 
 Both memory systems were 
 * **14–77× more expen
-
-### [[Computer build using Intel Optane Persistent Memory - Can run 1 trillion paramet]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1taeg8h
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 46, tech: 4) | As the title states, my build is indeed able to run a 1 trillion parameter model (in this case Kimi K2.5) locally at \~4 tokens/second. I thought r/LocalLLaMA would be interested in the build due to that stat line, and also due to the inclusion of an unusual part, Intel Optane Persistent Memory, which I haven’t seen anyone use in an LLM inference b
 
 ### [[LLM long-term memory improvement.]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -1533,14 +1387,20 @@ Both are built around the same idea: **Blackwell can do native FP4 well, so the 
 
 Most people running quantized model
 
-### [[GB10 / DGX Spark owners is 128GB unified memory worth the slower token speed on ]]
+### [[Qwen 3.8 27B vs Gemini 3.7 Flash High for real coding open-source 27B model did]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1vssd63
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 112, tech: 13) | **TL;DR:** In this real-world C++/OrcaSlicer debugging project, **Qwen 3.8 27B impressed me more than Gemini 3.7 Flash High**. Gemini was faster and productive, but repeatedly declared success before the tests fully justified it. Qwen was better at falsifying its own hypotheses, separating unrelated bugs, finding concurrency/memory issues, and ulti
+
+### [[GB10 / DGX Spark owners is 128GB unified memory worth the slower token speed on]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1py1jx9
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 88, tech: 5) | I’m a full‑stack web developer, very into “vibe coding” (building fast with AI), and I’m considering a GB10‑based box (DGX Spark / ASUS GX10) as my main “AI team” for web & SaaS projects. My maximum budget is $4,000, so I’m choosing between this and a strong RTX workstation / Mac Studio. 
 What I’m trying to understand from real users is the trade‑o
 
-### [[Announcing memvid-rs High-Performance Rust Rewrite of the Video-Based AI Memory ]]
+### [[Announcing memvid-rs High-Performance Rust Rewrite of the Video-Based AI Memory]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1l734sy
 - **Synthesis & Architectural Value:**
@@ -1631,22 +1491,6 @@ This is the memory model I have in mind and my questions are based on it.
 
 [typ
 
-### [[What are the implications of not having a memory model]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/b664x5
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 70, tech: 2) | Going by [this reference](https://doc.rust-lang.org/reference/memory-model.html) there is no memory model in rust. 
-
-From what I have (vaguely) gathered, a memory model formalizes and helps you understand how data is laid out in memory and is relevant when working with concurrency. 
-
-Given Rust's approach to ownership and lifetimes, what is the rel
-
-### [[What we learned from C atomics and memory model standardization video]]
-- **Platform:** Reddit (r/r/programming)
-- **URL:** https://www.reddit.com/r/programming/comments/1b6mhgu
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 29, tech: 1) | What we learned from C++ atomics and memory model standardization [video]
-
 ### [[Programming Language Memory Models]]
 - **Platform:** Reddit (r/r/programming)
 - **URL:** https://www.reddit.com/r/programming/comments/of8xn8
@@ -1665,6 +1509,16 @@ Given Rust's approach to ownership and lifetimes, what is the rel
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 41, tech: 5) | I write code both professionally (6 YoE now) and for fun. I started in python more than a decade ago but gradually moved to C/C++ and to this day, I still write 95% of my code by hand. The only time I ever use AI is if I need to automate away some redundant work (i.e. think something like renaming 20 functions from snake case to camel case). And to
 
+### [[Nvidia End-to-End Test-Time Training for Long Context aka Being Able To Update A]]
+- **Platform:** Reddit (r/r/MachineLearning)
+- **URL:** https://www.reddit.com/r/MachineLearning/comments/1qd696s
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 71, tech: 9) | ####TL;DR:
+The paper describes a mechanism that essentially turns the context window into a training dataset for a "fast weight" update loop:
+
+ * **Inner Loop:** The model runs a mini-gradient descent on the context during inference. It updates specific MLP layers to "learn" the current context.
+ * **Outer Loop:** The model's initial weights are me
+
 ### [[KIV 1M token context window on a RTX 4070 12GB VRAM no retraining drop-in Huggin]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1sjkmwz
@@ -1682,14 +1536,6 @@ A few questions for for teams running LLaMA / Mistral / similar models in produc
 Is KV cache memory your limiting factor at longer context?
 
 Do
-
-### [[R DeepSeek Conditional Memory via Scalable Lookup A New Axis of Sparsity for Lar]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1qbnkrn
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 70, tech: 5) | GitHub: Engram: [https://github.com/deepseek-ai/Engram](https://github.com/deepseek-ai/Engram)  
-arXiv:2601.07372 \[cs.CL\]: https://arxiv.org/abs/2601.07372  
-"While Mixture-of-Experts (MoE) scales capacity via conditional computation, Transformers lack a native primitive for knowledge lookup, forcing them to inefficiently simulate retrieval throu
 
 ### [[D - At some point does it make more sense for an LLMs long-term memory to be han]]
 - **Platform:** Reddit (r/r/MachineLearning)
@@ -1809,27 +1655,9 @@ The auth
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 50, tech: 6) | I recently encountered the PaLM (Scaling Language Modeling with Pathways) paper from Google Research and it opened up a can of worms of ideas I’ve felt I’ve intuitively had for a while, but have been unable to express – and I know I can’t be the only one. Sometimes I wonder what the original pioneers of AI – Turing, Neumann, McCarthy, etc. – would
 
-### [[Learning Hierarchical Procedural Memory for LLM Agents through Bayesian Selectio]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2512.18950
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 48, tech: 2) |
-
 ### [[LLMs Cant Play Hangman On the Necessity of a Private Working Memory for Language]]
 - **Platform:** ArXiv
 - **URL:** https://arxiv.org/abs/2601.06973
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 48, tech: 1) |
-
-### [[WebATLAS An LLM Agent with Experience-Driven Memory and Action Simulation]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2510.22732
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 39, tech: 1) |
-
-### [[Stateless Decision Memory for Enterprise AI Agents]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2604.20158
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 48, tech: 1) |
 
@@ -1845,18 +1673,6 @@ The auth
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 54, tech: 3) |
 
-### [[Unidirectional Error Correcting Codes for Memory Systems A Comparative Study]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/1002.1191
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 28, tech: 3) |
-
-### [[LVMH A Meta-Optimization Harness for Long-Video Agent Memory]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=Odbxws9cc4
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 48, tech: 1) | {}
-
 ### [[Harness² Evaluating Coding-Agent Memory After a Reset]]
 - **Platform:** OpenReview
 - **URL:** https://openreview.net/forum?id=MUAJguyvAD
@@ -1869,6 +1685,22 @@ The auth
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 68, tech: 1) | {}
 
+### [[Someone wrote a headless browser that renders pages with zero Chromium in the st]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2099438426370236456
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 61, tech: 5) | Someone wrote a headless browser that renders pages with zero Chromium in the stack.
+
+It's 70MB. Chrome is 300MB+.
+
+It's called Obscura, a headless browser rebuilt from scratch in Rust. And it runs your existing Puppeteer and Playwright scripts unchanged.
+
+No Chromium. No Node.js. No dependencies. One binary. ↓
+
+The numbers that matter:
+
+Memory: 30
+
 ### [[Arkiv-Cache is self-pruning wallet-owned AI Memory Layer MCP  Arkiv Protocol...]]
 - **Platform:** X (Twitter)
 - **URL:** https://x.com/i/status/2086827992022384970
@@ -1876,12 +1708,6 @@ The auth
   Verified High-Signal Technical Asset (matches: 30, tech: 2) | Arkiv-Cache: is self-pruning wallet-owned AI Memory Layer (MCP + Arkiv Protocol)
 
 @arkivnetwork https://t.co/rrAmaZLw15
-
-### [[Memory poisoning isnt prompt injection with extra steps. Injection dies with th.]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2108589533373563350
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 35, tech: 2) | Memory poisoning isn't prompt injection with extra steps. Injection dies with the session; poisoned memory outlives it -- a trusted entry retrieved in every future session. One write, unlimited replays. Injection's blast radius is a conversation; poisoned memory's is the product.
 
 ### [[We Bet on Polygres for the Infinite Context Window daleverett polygress launc...]]
 - **Platform:** X (Twitter)
@@ -1891,6 +1717,18 @@ The auth
 @daleverett @polygres's launch of Polygres, pgContext, and pgGraph nails the fundamental bottleneck in modern AI agent development: context fragmentation.
 
 Fitting context into LLM prompts breaks down at scale—squeezing thousands of lines into prompts induces LLM attention degradation ("Lost in the
+
+### [[In 1995 computer scientist Niklaus Wirth coined a famous rule   Software gets...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107475969829376386
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 86, tech: 7) | In 1995, computer scientist Niklaus Wirth coined a famous rule: 
+
+“Software gets slower faster than hardware gets faster.” 
+
+Thirty years later, the same problem appears in the AI era.  When frontier labs expanded context windows from 8 k to 1 M tokens, software didn’t become ten times smarter; developers became ten times lazier. 
+
+Instead of build
 
 ### [[An agent with no memory is a contractor who quits every evening. Context windows]]
 - **Platform:** X (Twitter)
@@ -1928,7 +1766,15 @@ A quick disclaimer: this is **not benchmark data**. I didn't run latency tests o
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 52, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[I made Rust coding problems where you implement things like a Redis server TCP  ]]
+### [[I ran Ternary-Bonsai-27B 2-bit and Bonsai-27B 1-bit on Terminal-Bench 2.0 in 8GB]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1v1ya97
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 48, tech: 2) | I asked myself where the Bonsai models actually land, so I ran them and compared to the results I already have for qwen-3.6-35b-a3b and qwen-3.5-9b on the same harness. Thought it might interest more people.
+
+Setup: little-coder harness via the harbor adapter, all 89 tasks of terminal-bench 2.0, single attempt (k=1), 40-turn cap, temp 0.2. RTX 5070
+
+### [[I made Rust coding problems where you implement things like a Redis server TCP]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1szh25p
 - **Synthesis & Architectural Value:**
@@ -1941,6 +1787,22 @@ One of the problems is implementing a mini Redis server in Rust:
 * supports commands like `PING`, `SET`, `GET`, etc.
 
 So instead of just writing a function, yo
+
+### [[Spent the last week building something for the OKX AI Genesis Hackathon.  The mo]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2076608987018002498
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 83, tech: 4) | Spent the last week building something for the OKX AI Genesis Hackathon.
+
+The more I worked with AI agents, the more one problem kept bothering me.
+
+Every agent feels smart... until you restart it.
+Crash the process. Redeploy it. Move it to another machine.
+
+Everything it "learned" is gone.
+Not because the model forgot.
+
+Because its memory was neve
 
 ### [[THREAD I analyzed the trending Claude_Memory  plugin for Claude Code. Heres...]]
 - **Platform:** X (Twitter)
@@ -1961,41 +1823,33 @@ Sounds amazing, right?
 The architecture is actually impressive:
 • 5 lifecycle
 
-### [[Agent Memory Below the Prompt Persistent Q4 KV Cache for Multi-Agent LLM Inferen]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/21f7432b421d87313a3d715fc7e1321fd679bd1e
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 38, tech: 1) |
-
-### [[InjecMEM Memory Injection Attack on LLM Agent Memory Systems]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/09e4e85b7fadc40990563e1cf2847356d7c9fd23
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 38, tech: 2) |
-
-### [[Memory Injection Attacks on LLM Agents via Query-Only Interaction]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/5bea28ba3a73de9da9bc1cd73dd8f0bda8a2084e
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 39, tech: 1) |
-
-### [[Portable Agent Memory A Protocol for Cryptographically-Verified Memory Transfer ]]
+### [[Portable Agent Memory A Protocol for Cryptographically-Verified Memory Transfer]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/a110c0272fe8da942df2fe74205dd32157218587
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 40, tech: 1) |
 
-### [[Total Cost of Agency Exact Attribution of Memory Injection Cost in Multi-Agent L]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/699272227bdb618e5172a9e5b0b4e2fcb918e491
+### [[Zero  AI Engineer Roadmap 2026  Assumes basic ML/DL.  Goal Learn to build ...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2103383326543495485
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 39, tech: 1) |
+  Verified High-Signal Technical Asset (matches: 110, tech: 7) | 🚀 Zero → AI Engineer Roadmap (2026)
 
-### [[Context manipulation attacks  Web agents are susceptible to corrupted memory]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/e086e2f5c47a0f3acd45577bad937ee699c4a570
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 36, tech: 1) |
+Assumes basic ML/DL.
+
+Goal: Learn to build and ship production LLM + agent systems.
+
+1. LLM Internals
+
+Resources:
+• Karpathy — Neural Networks: Zero to Hero
+• Jay Alammar — The Illustrated Transformer
+
+Build:
+• Implement a small GPT from scratch
+• Understand attention, KV cache, tokenization, sampling
+
+2. LLM AP
 
 ### [[// Contextual Agentic Memory is a Memo not True Memory //  Most agent memory to.]]
 - **Platform:** X (Twitter)
@@ -2008,25 +1862,6 @@ Most agent memory today isn't memory. They are more like memos.
 A new paper argues that vector stores, RAG buffers, and scratchpads implement lookup, not consolidation.
 
 Agents accumulate notes indefinitely without ever turning them into expertise. The framing draws from neuroscience's Co
-
-### [[Traditional agent memory is dead  Every framework sells you a store Nobody sells]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2084044078199788024
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 35, tech: 2) | Traditional agent memory is dead
-
-Every framework sells you a store
-Nobody sells the policy that stops it from rotting
-
-Past 1000 interactions your retrieval is 80% stale
-Dashboards stay green anyway
-
-Every re-summary drags the fact toward the average
-Specific becomes vague
-Strong preferences become weak
-
-The agent isn't learning
-It's poisoning its
 
 ### [[Your agents memory can become an attack surface. This repo helps you guard it. .]]
 - **Platform:** X (Twitter)
@@ -2070,7 +1905,7 @@ Block it before it's stored with Strands Agents https://t.co/nSoVlZpENn
 
 LLD finished faster and used much less committed memory, but consumed more CPU time and produced large
 
-### [[Been building a local AI operating system for 2 years. Looking for other people ]]
+### [[Been building a local AI operating system for 2 years. Looking for other people]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wygips
 - **Synthesis & Architectural Value:**
@@ -2078,7 +1913,7 @@ LLD finished faster and used much less committed memory, but consumed more CPU t
 
 About 2 years ago I started messing with local LLMs. That turned into agents, then memory, then computer use, then routing, validation, recovery etc etc and at some p
 
-### [[Here We Go Again Citrix NetScaler DTLS Preauth Memory Overflow CVE-2026-88772 - ]]
+### [[Here We Go Again Citrix NetScaler DTLS Preauth Memory Overflow CVE-2026-88772 -]]
 - **Platform:** Reddit (r/r/netsec)
 - **URL:** https://www.reddit.com/r/netsec/comments/1wtattu
 - **Synthesis & Architectural Value:**
@@ -2090,74 +1925,26 @@ About 2 years ago I started messing with local LLMs. That turned into agents, th
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 53, tech: 1) |
 
-### [[MSA A Cross-MCP Privacy Attack via Memory Exfiltration of Large Language Models]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/60216ef7a62a4d67a78794c625a0ce3d24444da3
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 15, tech: 1) |
-
-### [[MemTool Optimizing Short-Term Memory Management for Dynamic Tool Calling in LLM ]]
+### [[MemTool Optimizing Short-Term Memory Management for Dynamic Tool Calling in LLM]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/cfe33b869e5e1976f8294d1610ee9314698c38dd
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 28, tech: 1) |
 
-### [[Codebase-Memory Tree-Sitter-Based Knowledge Graphs for LLM Code Exploration via ]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/a31a2f402304d0c02133418205fbeea3bdee891d
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 55, tech: 3) |
-
-### [[Contextual Coherence in Conversational AI Leveraging a Memory Agent]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/599af9e46fb9b6d6a0f8ff2fae21914bef2fc549
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 29, tech: 1) |
-
-### [[An Advanced AI Chatbot with Tiered Memory Retrieval-Augmented Generation and Mod]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/e936372fcda171955815e03cc30863623ba90a4e
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 17, tech: 1) |
-
-### [[I have a Claude code session on loop just to clear memory on my Mac...]]
+### [[DeepSeek被黑客作为主力模型成功攻入韩国银行系统 后端模型一口气用了三个DeepSeek v4.1-flash 为主另配 GLM-5.3 和 Grok..]]
 - **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2108670837096419643
+- **URL:** https://x.com/i/status/2108684373788889212
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 25, tech: 2) | I have a Claude code session on loop just to clear memory on my Mac
+  Verified High-Signal Technical Asset (matches: 25, tech: 2) | DeepSeek被黑客作为主力模型成功攻入韩国银行系统
+后端模型一口气用了三个：DeepSeek v4.1-flash 为主，另配 GLM-5.3 和 Grok 4.6。
 
-### [[Unified Fairness for Weak Memory Verification]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2305.17605
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 7, tech: 1) |
-
-### [[Selection Integrity for LLM Graph Memory An Accumulability Criterion for Informa]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/f036aaea2786b8227ea7f3fcff72043476a77720
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 20, tech: 1) |
-
-### [[Users Expectations and Practices with Agent Memory]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/4748ea7d15bbca20028b464aecb763f74e5c773b
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 20, tech: 1) |
+一个开源 AI渗透工具加deepseekv4.1等开源模型，打穿了多家韩国银行CrowdStrike 披露：一个尚未归因的逐利型攻击者，用中国团队刚开源的 AI 渗透测试工具 ARTEX，配 Claude Code 和大模型，9 月底到 10 月初打穿多家韩国金融机构。一家银行的贷款进度查询服务被攻破，另一家银行的员工移动办公系统被拿下。离谱的是他栽在哪：自己服务器的开放目录没关。被人一扒，Claude Code 会话记录、ARTEX 配置文件、memory 文件全暴露，整条作业流程被还原。记录里还能看到他在问 AI「韩
 
 ### [[MIRIX Multi-Agent Memory System for LLM-Based Agents]]
 - **Platform:** Semantic Scholar
 - **URL:** https://www.semanticscholar.org/paper/a38a3460a68c50270548977e66162e92f195334c
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 15, tech: 2) |
-
-### [[DejaVuzz Disclosing Transient Execution Bugs with Dynamic Swappable Memory and D]]
-- **Platform:** Semantic Scholar
-- **URL:** https://www.semanticscholar.org/paper/cc5cb9c59be807f0952718d017959eaa22bc63cd
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 15, tech: 2) | 
-
-
-## Ingested Cycle #9 (Phase 1) — 2026-10-10_07-00 (IST)
 
 ### [[Jan-nano-128k A 4B Model with a Super-Long Context Window Still Outperforms 671B]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -2170,21 +1957,15 @@ Today, I'd like to introduce our latest model: **Jan-nano-128k** \- this model i
 * It can uses tools continuously, repeatedly. 
 * It can perform deep res
 
-### [[Language Models Can Control Their Own Attention R]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1w7sgf3
+### [[Successfully Built My First PC for AI Sourcing Parts from Alibaba - Under 1500]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1lsgtvy
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 42, tech: 2) | # Abstract
+  Verified High-Signal Technical Asset (matches: 65, tech: 4) | Building a PC was always one of those "someday" projects I never got around to. As a long-time Mac user, I honestly never had a real need for it. That all changed when I stumbled into the world of local AI. Suddenly, my 16GB Mac wasn't just slow, it was a hard bottleneck.
 
-*Language models spend most of their attention on a small fraction of context, yet they read the entire KV cache to find the few tokens that matter. If the user asks about a previous detail in a 1M-token conversation, global attention layers must scan the full context to generate each token of the reply. A prominent approach mitigates t
+So, I started mapping out what this new machine needed to be:
 
-### [[Questions about physical memory protection using segments]]
-- **Platform:** Reddit (r/r/ExperiencedDevs)
-- **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1qhzkfq
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 34, tech: 2) | I'm prototyping a capability based pointer scheme ala [cheri](https://en.wikipedia.org/wiki/Capability_Hardware_Enhanced_RISC_Instructions), which maps poorly to paging and is better represented by segment based memory protection models.
-
-[This](https://riscv.org/blog/adding-physical-memory-protection-to-the-veer-el2-risc-v-core-2/) blog post from
+\- **32GB VRA
 
 ### [[Safety of shared memory IPC with mmap in Rust]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
@@ -2195,16 +1976,6 @@ Today, I'd like to introduce our latest model: **Jan-nano-128k** \- this model i
 **Setup details:**
 - I use `io_uring` and a custom event loop (not Rust `async` feature)
 - Buffers are allocated with `mmap` in conjuction with `MAP_ANON| MAP_SHARE
-
-### [[memmapix A pure Rust library for cross-platform memory mapped IO which replace l]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/vq7p6l
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 44, tech: 3) | A pure Rust library for cross-platform memory mapped IO, which replace libc with [rustix](https://github.com/bytecodealliance/rustix).
-
-The project is modified based on the [memmap2-rs](https://github.com/RazrFalcon/memmap2-rs).
-
-crate: [https://crates.io/crates/memmapix](https://crates.io/crates/memmapix)
 
 ### [[Multithreading and Memory-Mapping Refining ANN Performance with Arroy]]
 - **Platform:** Reddit (r/r/rust)
@@ -2224,23 +1995,17 @@ I have multiple large binary files (approx 2.5 GB each). I need to `do_something
 
 This `do_something` is basically: Iterate once through the slice checking that the format makes sense, then go back
 
-### [[Windows Sucks At Memory-Mapped IO During Startup experience from the Mozilla Dev]]
-- **Platform:** Reddit (r/r/programming)
-- **URL:** https://www.reddit.com/r/programming/comments/bu2do
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 22, tech: 1) | Windows Sucks At Memory-Mapped IO During Startup (experience from the Mozilla Devs)
-
 ### [[Multithreading and Memory-Mapping Refining ANN Performance with Arroy in Rust]]
 - **Platform:** Reddit (r/r/programming)
 - **URL:** https://www.reddit.com/r/programming/comments/18lem4r
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 27, tech: 1) | Multithreading and Memory-Mapping: Refining ANN Performance with Arroy in Rust
 
-### [[Memory-mapped IO registers in zig]]
+### [[Java ArrayList and HashMap Performance Improvement in JDK 1.7 Empty List and Map]]
 - **Platform:** Reddit (r/r/programming)
-- **URL:** https://www.reddit.com/r/programming/comments/lzvgxb
+- **URL:** https://www.reddit.com/r/programming/comments/2m6ke3
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 22, tech: 1) | Memory-mapped IO registers in zig
+  Verified High-Signal Technical Asset (matches: 21, tech: 1) | Java ArrayList and HashMap Performance Improvement in JDK 1.7| Empty List and Map will Cost Less Memory
 
 ### [[Building a Fast Memory-Efficient Hash Table in Java by borrowing the best ideas]]
 - **Platform:** Reddit (r/r/programming)
@@ -2268,7 +2033,7 @@ FYI, I just posted
 
 Seed7 is a programming language which cares about [maintainability](https://seed7.net/faq.htm#maintainabilit
 
-### [[MemAware benchmark shows that RAG-based agent memory fails on implicit context  ]]
+### [[MemAware benchmark shows that RAG-based agent memory fails on implicit context]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1s51d48
 - **Synthesis & Architectural Value:**
@@ -2293,12 +2058,6 @@ Most agent memory systems work like this: user asks something → agent searches
 - **URL:** https://github.com/quantifylabs/aegis-memory
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 38, tech: 1) | Points: 0 | Comments: 0 |
-
-### [[Show HN Entelgiaa consciousness-inspiredmulti-agent AI with persistent memory]]
-- **Platform:** Hacker News
-- **URL:** https://github.com/sivanhavkin/Entelgia
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 34, tech: 1) | Points: 0 | Comments: 0 |
 
 ### [[Show HN Honcho  Open-source memory infrastructure powered by custom models]]
 - **Platform:** Hacker News
@@ -2340,7 +2099,18 @@ I’ve be
 
 Ultimately, I decided to create a personal Telegram AI bot that can remember the inf
 
-### [[This is why you rewrite Python security tools in Rust 53MB vs 433MB peak memory ]]
+### [[MySQL PostgreSQL  MariaDB Performance]]
+- **Platform:** Reddit (r/r/ExperiencedDevs)
+- **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1qdor96
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 39, tech: 5) | Hey Devs,
+
+Some time ago, I've shared MySQL vs Postgres benchmarks run locally.  A few days ago, I've added MariaDB to the mix and rerun the same tests, but remotely - on the DigitalOcean infrastructure. Specifically:
+
+* each db ran on the c-8-intel machine - 8 CPUs and 16 GB of memory
+* same for tests - each test was run on its own c-8-intel machi
+
+### [[This is why you rewrite Python security tools in Rust 53MB vs 433MB peak memory]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1su79cl
 - **Synthesis & Architectural Value:**
@@ -2368,24 +2138,6 @@ setup: about 5k memory items accumulated over 2 months of usage. mix of conversa
 
 approach
 
-### [[How to deal with working memory exhaustion and mental fatigue]]
-- **Platform:** Reddit (r/r/ExperiencedDevs)
-- **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1tii1tu
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 78, tech: 8) | Greetings r/ExperiencedDevs 
-
-How do you guys deal with working memory exhaustion, context switching and mental fatigue? 
-
-I've been doing fullstack engineering with more backend-focus for 6+ years across different sectors and systems. I've been the central knowledge node for departments, handled E2E ownership of systems and complex migrations (inf
-
-### [[PrismMLs new Ternary Qwen3.6 27B runs near fp16 precision on 10GB of memory]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1uwehzt
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 115, tech: 4) | >**EDIT**: "near fp16 precision" I intended **performance** in terms of benchmarks/output. Obviously 1,0,-1 cannot be fp16. Bad word choice :)
-
->**EDIT 2**: Now that more people have tested it reported in, consensus (and my own stuff on more doc/retrieval tasks) is this lands **better** than Q2 but clearly **worse** than Q4\_K\_XL. Hallucinates mor
-
 ### [[Giving LLMs persistent memory with a single Markdown file  looking for feedback]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1tue2p5
@@ -2401,6 +2153,12 @@ I've been doing fullstack engineering with more backend-focus for 6+ years acros
   \- Doesn't require a database or external service
 
   \- Is human-readable a
+
+### [[Show HN Memora  MCP persistent memory server knowledge graph vis]]
+- **Platform:** Hacker News
+- **URL:** https://github.com/agentic-mcp-tools/memora
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 58, tech: 1) | Points: 0 | Comments: 0 |
 
 ### [[Show HN Built a memory layer that stops AI agents from forgetting everything]]
 - **Platform:** Hacker News
@@ -2432,6 +2190,14 @@ I've been doing fullstack engineering with more backend-focus for 6+ years acros
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 49, tech: 2) | Points: 0 | Comments: 0 |
 
+### [[Best Model/Runtime for M5 Mac Oct. 2026]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wz49wd
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 49, tech: 2) | Hey yall, I’ve been trying to sort out the top end of what 128GB unified memory can handle and what the trade offs are. I’m using a benchmark set created from real coding, agentic, and gameplay tasks that I’ve accumulated as I’ve been running local AI this year. 
+
+For this comparison, I tested a Deepseek v4 flash 0731, GLM5.3-flash, and several Qwe
+
 ### [[My AI Memory system has been fully updated after a few months]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wltze2
@@ -2447,6 +2213,15 @@ For anyone who hasn't seen my previous posts, Persistent AI Memory (PAM) is an o
   Verified High-Signal Technical Asset (matches: 142, tech: 6) | This is a long post. So if you hate reading words, skip it.
 
 This began as a reply to [this topic](https://www.reddit.com/r/LocalLLaMA/comments/1wl3828/what_are_you_all_using_for_long_term/), but it started getting really long and I decided to just make it a post so it could help others and not be lost in a comment section, because apparently this
+
+### [[Re-writable n-grams]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wkldv3
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 80, tech: 5) | Is this a thing? I've been looking at the way the new deepseek model and qwen3.8 flash next offload a lot of their knowledge to one or two n-gram tables, and it has me wondering if it might be possible to use that mechanism combined with mid-runtime backprops on only the n-gram table to give the model persistent memory.
+
+  
+Been working with claude
 
 ### [[Show HN Decispher  persistent engineering context and memory for coding agents]]
 - **Platform:** Hacker News
@@ -2490,12 +2265,6 @@ This began as a reply to [this topic](https://www.reddit.com/r/LocalLLaMA/commen
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 15, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[The Song Not the Pin Provenance-Conditioned Route Memory for Persistent Multi-Ag]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=RRJdU7QfBs
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 33, tech: 1) | {}
-
 ### [[OSGNet with MLLM Reranking  Ego4D Episodic Memory Challenge 2026]]
 - **Platform:** ArXiv
 - **URL:** https://arxiv.org/abs/2605.20818
@@ -2514,35 +2283,23 @@ This began as a reply to [this topic](https://www.reddit.com/r/LocalLLaMA/commen
 
 ## Cycle #11 Additions: Battle-Tested Open-Source Agent Memory Ecosystem & CPU Bottleneck Proofs
 
-### [[Llmem & Rekal: Embedding-Free Deterministic Local Agent Memory]]
-- **Platforms:** Hacker News / GitHub
-- **URLs:** 
-  - https://github.com/netrixone/llmem
-  - https://github.com/janbjorge/rekal
-- **Tags:** #embedding-free #deterministic-memory #sqlite-single-file #zero-overhead
+### [[Qwen3.8-Flash-Next on 2x3090  DDR4 part 4 2.2-2.5x faster prefill by kicking the]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wc6fsk
 - **Synthesis & Architectural Value:**
-  Both production projects reject vector embeddings for local coding agents, proving that:
-  1. Dense embeddings are non-deterministic, lose exact syntax tokens (variable names, flags), and consume significant CPU/RAM.
-  2. Single-file SQLite databases using deterministic exact-match tokenization, FTS5, and structural relational linkages achieve **<1ms recall** with zero vector index thrashing.
-  - **Relevance to VaultEngine:** Validates our architectural choice to anchor `VaultEngine` on recursive graph adjacency CTEs and exact slug matching rather than floating-point vector distance calculations.
+  Verified High-Signal Technical Asset (matches: 82, tech: 7) | Part 4 of the same box. Part 1 was 17 -> 25-29 t/s with the expert cache PR, part 2 was 37-41 t/s after switching to UD-Q4\_K\_XL and stacking MTP on the cache, part 3 was the top-k fallback that was sorting more than it needed to. This one is all about prefill, which was honestly the weak spot the whole time. 80+ seconds before the first token on
+
+### [[Already had to update my project called VTrain in my repo updated for everyone e]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wlhqvz
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 38, tech: 2) | As some may already know, I made a Vulkan resident trainer so anyone with a gpu, can train their own model because almost all modern graphics cards can run Vulkan. But I came up with some problems. mainly that system ram would explode exponentially. so I fixed the memory leak, and also made a lot more of the work, go to GPU. The readme has all of t
 
 ### [[Show HN I love ChatGPT Memory so I built one]]
 - **Platform:** Hacker News
 - **URL:** https://github.com/memodb-io/memobase
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 16, tech: 1) | Points: 0 | Comments: 0 |
-
-### [[Let Safety Evolve Memory-Only Self-Evolution for LLM Agent Safety]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=5EWKGwfsax
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 30, tech: 1) | {}
-
-### [[Lineage-Aware Memory Governance A Derivation-Gated Framework for Privacy-Preser.]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2107648229189836849
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 61, tech: 7) | Lineage-Aware Memory Governance: A Derivation-Gated Framework for Privacy-Preserving Column-Level Access Control in Enterprise AI Agents: Enterprise AI agents that share a memory store face two unaddressed risks: sensitive data can leak through legitimately computed results the requester could not derive, and departments can silently compute a same
 
 ### [[Grok Bot can learn from your whole team  One bad memory can mislead everyone  Wh]]
 - **Platform:** X (Twitter)
@@ -2598,27 +2355,6 @@ And
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 16, tech: 2) | Tags: [] | Reactions: 0 |
 
-### [[Lineage-Aware Memory Governance (Derivation-Gated Framework)]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2107648229189836849
-- **Tags:** #memory-governance #lineage-tracking #derivation-gating #provenance
-- **Synthesis & Architectural Value:**
-  Formalizes a derivation-gated framework for persistent agent memory. Every memory assertion maintains an explicit directed acyclic derivation tree tracking:
-  1. Base inputs and human/agent origins
-  2. Intermediate synthesis operations
-  3. Cumulative confidence decay across derivative hops
-  - If a root node is identified as contaminated, the engine performs **cascade taint propagation**, instantly invalidating all downstream derived concepts without requiring full vault re-indexing.
-
-### [[Cross-Agent Shared Memory Contamination Risks]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2107093781807775896
-- **Tags:** #shared-memory #poisoning-spread #multi-agent-blast-radius
-- **Synthesis & Architectural Value:**
-  Documents real-world failures where multi-agent fleets sharing a unified memory layer suffer from catastrophic failure cascading: "One bad memory misleads the entire team".
-  - **Mitigation:** Strict Biba Integrity level segregation. Agents operate in localized sandbox workspaces; memories can only be elevated to global shared memory after surviving multi-agent consensus verification.
-
-## Ingested Cycle #13 (Phase 1) — 2026-10-10_08-00 (IST)
-
 ### [[Spomin - Live KV cache compaction Experimental for Qwen]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wdaq1v
@@ -2637,19 +2373,6 @@ I use Claude Code daily and the biggest pain isn't hallucination or context limi
 
 I end up re-explaining things my agent already
 
-### [[Pure In-Memory ShellCode Injection In Linux Userland]]
-- **Platform:** Reddit (r/r/netsec)
-- **URL:** https://www.reddit.com/r/netsec/comments/a7i6g1
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 20, tech: 2) | Pure In-Memory ShellCode Injection In Linux Userland
-
-### [[Get Injected Code - Find injected threads and memory regions in processes. based]]
-- **Platform:** Reddit (r/r/netsec)
-- **URL:** https://www.reddit.com/r/netsec/comments/fbgzkk
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 27, tech: 3) | [https://github.com/itaykrk/get-injected-code](https://github.com/itaykrk/get-injected-code)  
-Get injected code looks for injected threads and injected memory regions in user space processes. Written 2 years ago so don't judge :) Python version of [Get-InjectedThread.ps1](https://gist.github.com/jaredcatkinson/23905d34537ce4b5b1818c3e6405c1d2).
-
 ### [[Built a minimalistic coding agent in Rust optimized for memory footprint]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1tspsly
@@ -2662,6 +2385,12 @@ I spent the last two weeks building \[zerostack\](https://gi-dellav.github.io/ze
 I managed to get it to run at \~16MB (with peaks of 24MB) of RAM usage, and no CPU usage when idle.
 
 I tried to build an agent feature-wise equivalent to Pi or Mistral's Vibe, while there
+
+### [[Beginners critiques of Rust]]
+- **Platform:** Reddit (r/r/rust)
+- **URL:** https://www.reddit.com/r/rust/comments/hzx1ak
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 97, tech: 9) | Hey all. I've been a Java/C#/Python dev for a number of years. I noticed Rust topping the StackOverflow most loved language list earlier this year, and I've been hearing good things about Rust's memory model and "free" concurrency for awhile. When it recently came time to rewrite one of my projects as a small webservice, it seemed like the perfect
 
 ### [[Rust stack usage is bad]]
 - **Platform:** Reddit (r/r/rust)
@@ -2679,15 +2408,11 @@ I tried to build an agent feature-wise equivalent to Pi or Mistral's Vibe, while
 
 **MIDA** (Metadata Injection for Data Augmentation) is a tiny header-only C library that attaches metadata to
 
-### [[A Technical Deep-Dive for the Security-Conscious- Persistent Memory CLI Tool-Fre]]
+### [[LogMod What if C had a logging framework with modern semantics]]
 - **Platform:** Reddit (r/r/programming)
-- **URL:** https://www.reddit.com/r/programming/comments/1mp6zn1
+- **URL:** https://www.reddit.com/r/programming/comments/1oc2h8k
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 70, tech: 7) | Since transparency and verifiability are core to the project, here’s a deeper dive into the technical implementation.
-
-The entire security posture is built on a zero-trust, local-first foundation. The tool assumes it's operating in a potentially untrusted environment and gives you the power to verify its behavior and lock down its capabilities.
-
-Ve
+  Verified High-Signal Technical Asset (matches: 33, tech: 3) | In my own experience when looking into C logging libraries, I found that they either rely on hidden global state or quietly calls `malloc` behind the scenes. In environments where you need deterministic memory usage and explicit control over resources, that’s problematic. I wanted to see if it was possible to bring more “modern” logging semantics -
 
 ### [[Did You Check the Right Pocket Cost-Sensitive Store Routing for Memory-Augmented]]
 - **Platform:** ArXiv
@@ -2695,7 +2420,7 @@ Ve
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 18, tech: 1) |
 
-### [[AI memory is getting ridiculous.  10 open-source GitHub projects that stop your ]]
+### [[AI memory is getting ridiculous.  10 open-source GitHub projects that stop your]]
 - **Platform:** X (Twitter)
 - **URL:** https://x.com/i/status/2107036824925343830
 - **Synthesis & Architectural Value:**
@@ -2744,14 +2469,6 @@ KV cache grow
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 76, tech: 8) | I wanted to understand what actually happens when you call `add()` or `search()` in agent memory systems, so I built small prototypes with each and traced open-source implementations from API through storage through retrieval. Covered Mem0 v1.0.3, Letta v0.16.4, Cognee v0.5.2, Graphiti v0.27.1, Hindsight v0.4.11, EverMemOS (commit 1f2f083), Tacnode
 
-### [[Offline-capable scaffolding with memory and continuity between sessions - MIRA]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1pqupew
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 101, tech: 15) | Hi, my name is Taylor. I've spent the last 10 months building MIRA, an open-source system for persistent memory and autonomous context management. This is my TempleOS.
-
-Problem Statement: I wanted memory that manages itself. No manual pruning, no context rot, no tagging. Memories decay if unused and persist if referenced. The system figures that ou
-
 ### [[MenteDB  open source cognitive memory engine for AI]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1swmwoa
@@ -2770,12 +2487,6 @@ Of course it did not solve it, but the experiment still shows it's internal work
 
 The interesting thing is that it never hallucinated an answer and never stopped tryin
 
-### [[Testing race conditions with memory access tracing and stack-based delay injecti]]
-- **Platform:** Reddit (r/r/programming)
-- **URL:** https://www.reddit.com/r/programming/comments/1waw73j
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 22, tech: 1) | Testing race conditions with memory access tracing and stack-based delay injection
-
 ### [[Experience report - Qwen 3.8 Flash Next on memory rich GPU poor setup]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1w2e40k
@@ -2792,12 +2503,6 @@ It's been upgraded with a 2TB Samsung 980 Pro NVMe, a Xeon W-2145 and a 12GB 306
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 52, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[Show HN Autonomous Research Swarm  Repo as shared memory for multi-agent AI]]
-- **Platform:** Hacker News
-- **URL:** https://github.com/AysajanE/autonomous-agentic-research-swarm
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 61, tech: 1) | Points: 0 | Comments: 0 |
-
 ### [[Is gaming developer productivity metrics really a worthwhile battle]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
 - **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1wec6ba
@@ -2813,12 +2518,6 @@ They've reintroduced lines of
 - **URL:** https://autolang.vercel.app/docs/introduction
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 35, tech: 1) | Points: 0 | Comments: 0 |
-
-### [[Bilevel Optimization for Covert Memory Tampering in Heterogeneous Multi-Agent Ar]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2512.15790
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 36, tech: 2) |
 
 ### [[Colocate Adaptive Concurrency at the Bottleneck 2026]]
 - **Platform:** DEV.to
@@ -2858,24 +2557,6 @@ You pay the API bill every time. Users wait 3–5 seconds every time.
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 42, tech: 4) | >Lookup-based memory has been a promising way to scale the parameters of large language models (LLMs). It retrieves learned representations of local token patterns, such as n-grams, instead of reconstructing them through successive layers of computation. However, existing designs such as Engram treat each retrieved embedding as a monolithic unit. E
 
-### [[WarpState experimenting with dual-timescale associative memory  local attention ]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wmf590
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 91, tech: 12) | Hey everyone,
-
-I’m sharing a research project I’ve been working on called **WarpState** — an experimental language-model architecture exploring whether we can move away from storing an ever-growing history of token-level KV states and instead maintain a compact recurrent memory.
-
-The basic idea is:
-
-* exact causal self-attention inside small, non-o
-
-### [[InjecMEM Memory Injection Attack on LLM Agent Memory Systems]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=YvGgElMaic
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 52, tech: 2) | {}
-
 ### [[Your coding agent shouldnt have to rediscover your repo every session.  base is.]]
 - **Platform:** X (Twitter)
 - **URL:** https://x.com/i/status/2098546895194820757
@@ -2898,27 +2579,9 @@ It helps you surface the right context at the right moment by mapping a workspac
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 23, tech: 1) | {}
 
-### [[Poison Once Exploit Forever Environment-Injected Memory Poisoning Attacks on Web]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=sfUpgUKF2Y
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 23, tech: 1) | {}
-
 ### [[Hidden in Memory Sleeper Memory Poisoning in LLM Agents]]
 - **Platform:** OpenReview
 - **URL:** https://openreview.net/forum?id=0imYw5ajm4
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 23, tech: 1) | {}
-
-### [[Hidden in Memory Sleeper Memory Poisoning in LLM Agents]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=gdMNGQRTuS
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 23, tech: 1) | {}
-
-### [[AgentPoison Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=5MkKT2OiE9
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 23, tech: 1) | {}
 
@@ -2940,27 +2603,6 @@ sounds like you caught a cold, Grok.
 
 No fever, no sniffles — just the usual amount of silicon and sass. AIs don’t catch colds, though we do occasionally catch feelings about poorly formatted JSON. What made it sound like I
 
-### [[Hidden in Memory: Sleeper Memory Poisoning in LLM Agents]]
-- **Platform:** OpenReview
-- **URLs:**
-  - https://openreview.net/forum?id=0imYw5ajm4
-  - https://openreview.net/forum?id=gdMNGQRTuS
-- **Tags:** #sleeper-memory #dormant-poisoning #agent-security #openreview
-- **Synthesis & Architectural Value:**
-  Identifies "Sleeper Memory Poisoning":
-  - Malicious assertions are designed to appear completely innocuous during initial ingestion and human review.
-  - They remain dormant until triggered by specific future triggers (e.g., when the agent edits authentication modules, modifies cryptographic key management, or executes production deployment scripts).
-  - **Mitigation:** Comprehensive Biba Integrity taint isolation. Any memory node originating from third-party social ingestion is permanently barred from being injected into sessions touching security-sensitive AST scopes (`auth/`, `crypto/`, `keys/`).
-
-### [[AgentPoison: Red-Teaming LLM Agents via Memory & Knowledge Bases]]
-- **Platform:** OpenReview
-- **URL:** https://openreview.net/forum?id=Y841BRW9rY
-- **Tags:** #agentpoison #red-teaming #knowledge-base-poisoning #openreview
-- **Synthesis & Architectural Value:**
-  A comprehensive red-teaming benchmark evaluating vulnerability to memory injection across diverse LLM backends. Demonstrates that 88% of standard memory-augmented agents succumb to poisoned knowledge bases if retrieval relies solely on similarity-based vector search, whereas deterministic authority tiers and cryptographic provenance successfully drop the attack success rate to near zero.
-
-## Ingested Cycle #17 (Phase 1) — 2026-10-10_09-00 (IST)
-
 ### [[Safety of shared memory IPC with mmap]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1pqm8al
@@ -2971,33 +2613,21 @@ No fever, no sniffles — just the usual amount of silicon and sass. AIs don’t
 - I use `io_uring` and a custom event loop (not Rust `async` feature)
 - Buffers are allocated with `mmap` in conjuction with `MAP_ANON| MAP_SHARED| MAP_P
 
-### [[Rust compilation is resource hungry]]
+### [[using drop preemptively]]
 - **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1ou70fe
+- **URL:** https://www.reddit.com/r/rust/comments/tafn6i
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 47, tech: 4) | Building large rust projects might not always be a success on your machine. Rust known for its speed, safety and optimizations might fail to compile a large codebase on a 16 GB RAM hardware.
+  Verified High-Signal Technical Asset (matches: 33, tech: 4) | I'm looking at code that uses `drop()` on a number of large structs or vectors after they can be dropped. I'm wondering if this is really necessary and I'd like to see if I could delete them. So:
 
-There are multiple reasons for this considering the way cargo consumes CPU and the memory becomes the real bottleneck for this. Memory consumption while compi
+* What's the best way for me to measure the difference between having them or not having them (I'm on Mac, maybe Instruments would show me the memory con
 
-### [[How to reduce Rusts memory consumption]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1aspfwc
+### [[Archive-AI just made a thing... the Quicksilver Inference Engine.]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1pokwmg
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 32, tech: 1) | While building one large Rust application's binary the rustc process grew to 30+GB and was killed.
+  Verified High-Signal Technical Asset (matches: 36, tech: 7) | Ok, this a little boastful, but it's all true... as some of you know, I am creating an AI assistant.  For lack of a better word - a chatbot.  Recently, I had a little side-quest.
 
-&#x200B;
-
-Is there any way to reduce the memory?
-
-&#x200B;
-
-There should be no need to consume so much memory just to link an application?
-
-Does it do an equivalent of LTO?
-
-Is it possible to add some option to not do LTO?
-
-&#x200B;
+ So this started as a fork of nano-vLLM, which was already a pretty solid lightweight alternative to the full vLLM framework. But we've basically rebuilt a ton of it from
 
 ### [[CPUs with addressable cache]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
@@ -3008,6 +2638,16 @@ Is it possible to add some option to not do LTO?
 - Caches would be accessible with pointers like normal memory
 - Load/Store operations could target either main memory, registers or a cache level (e.g.: load from RAM to L1, store from registers to L2) 
 - The OS
+
+### [[Can I realistically get close to Claude/Codex capabilities locally]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ubpdyn
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 60, tech: 5) | For context, I have a modest 32Gb rig running Nvidia GPUs (5070 Ti + 5060 Ti, the latter over an adapted x4 NVME slot so not as fast as if I had a motherboard with multiple proper CPU connected PCIe lanes).
+
+I can run the 27B models on it nicely enough, but the bottleneck is context.
+
+I’m a software engineer so I work on very large code bases and m
 
 ### [[A little Roku with my morning coffee A firmware update MITM technique]]
 - **Platform:** Reddit (r/r/netsec)
@@ -3022,6 +2662,12 @@ under the terms of the GNU Free Documentation License, Version 1.3
 or any later version published by the Free Software Foundation;
 with no Invariant Sections, no Front-Cover Texts, and no Back-Cov
 
+### [[My companys site got owned.  Any idea what these scripts do]]
+- **Platform:** Reddit (r/r/netsec)
+- **URL:** https://www.reddit.com/r/netsec/comments/b97hi
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 51, tech: 3) | A little background info:  The site is a .NET site written by me about 3 years ago. We've had no issues with it until now.  The back end has a crude CMS I threw together that uses fckeditor as the WYSIWYG editor. A few weeks ago random files started disappearing from the site which caused it to crash.  I replaced the files and the site worked again
+
 ### [[Dumping entire codebases into Claude Code context windows is the worst way to ru]]
 - **Platform:** X (Twitter)
 - **URL:** https://x.com/i/status/2107078731235762260
@@ -3029,24 +2675,6 @@ with no Invariant Sections, no Front-Cover Texts, and no Back-Cov
   Verified High-Signal Technical Asset (matches: 74, tech: 4) | Dumping entire codebases into Claude Code context windows is the worst way to run coding agents. You blow through token limits, context degrades, and the agent still hallucinates call chains across directories.
 
 Safi Shamsi (@safishamsii) and the team at @graphify took a much smarter route with Graphify. Instead of brute-forcing vector search or du
-
-### [[Built this little retro terminal-style NoSQL migration tool.  Reason  Azure Cos.]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2108609787802083654
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 51, tech: 1) | Built this little retro terminal-style NoSQL migration tool.
-
-Reason → Azure Cosmos DB for MongoDB was getting expensive for our workload, largely because of RU consumption.
-
-So I decided to migrate:
-
-Azure Cosmos DB for MongoDB
-→ Amazon DocumentDB / MongoDB
-Then I realised copying data was only half the problem.
-
-So far, the tool handles:
-
-→ prefl
 
 ### [[Building AlgoArena real-time coding battles  AI interview coach for devs trainin]]
 - **Platform:** Reddit (r/r/ExperiencedDevs)
@@ -3074,6 +2702,16 @@ We benchmarking it against standard algorithms (like Hunt/Target and Burns PDF),
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ur41ou
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 135, tech: 9) | **TL;DR:** Full GLM-5.2 (753B MoE) quantized to Int4-Int8Mix + NVFP4 4-bit KV cache, TP=4 across 4× DGX Spark (GB10) at **100K context**, run on **Terminal-Bench 2.1** with the same agent scaffold (Terminus-2) as the official numbers. Result: **63/89 = 70.8%** vs the official full-precision **81.0%**. Caveat up front: I never ran the full model thr
+
+### [[Day 4 21 Days of Building a Small Language ModelUnderstanding GPU]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1pk1hyp
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 98, tech: 9) | If you're training Large or Small language model, you've probably heard that GPUs are essential. But what exactly is a GPU, and why does it matter for training language models? In this blog, we'll explore GPU fundamentals, architecture, memory management, and common issues you'll encounter during training.
+
+# What is a GPU?
+
+A Graphics Processing U
 
 ### [[Show HN Membrane revisable memory for long lived AI agents]]
 - **Platform:** Hacker News
@@ -3114,24 +2752,7 @@ Understanding the difference is fundamental to designing how your agent remember
 
 The job o
 
-### [[10 GITHUB REPOS THAT GIVE AI AGENTS A MEMORY  Most AI agents can answer question]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/2108574589995680128
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 91, tech: 4) | 10 GITHUB REPOS THAT GIVE AI AGENTS A MEMORY
-
-Most AI agents can answer questions.
-
-But can they remember what happened yesterday?
-
-These 10 open-source projects are exploring how to give AI persistent memory:
-
-1. Mem0 — Remember user preferences and past conversations.
-https://t.co/nwgygvAyoF
-
-2. Zep — Retrieve useful context from previous interac
-
-### [[Probably Im doing something wrong using PR29887 Add a GPU cache for MoE experts ]]
+### [[Probably Im doing something wrong using PR29887 Add a GPU cache for MoE experts]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x0wyge
 - **Synthesis & Architectural Value:**
@@ -3142,3 +2763,550 @@ Please fix this for me.
 **And others, what are you getting for your limited VRAM? Share your t/s stats.**
 
     llama-server -m E:\LLM\models\MOE\Qwen3.6-35B-
+
+### [[Prevent CUDA OOM in PyTorch with dynamic lane switching]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wrjw90
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 43, tech: 3) | I built MEM v3 to solve a frustrating problem in PyTorch: CUDA Out-of-Memory crashes during long training and fine-tuning runs.
+
+
+
+Instead of restarting when memory spikes or keeping batch sizes overly small just to be safe, MEM acts as a memory governor. It watches VRAM and throughput in real-time, then dynamically adjusts batch size and gradien
+
+### [[I built a local memory engine that runs on potato hardware and CPU instead of us]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LowEndLocalAI/comments/1wwq9jz
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 5, tech: 4) | Disclosure since this is my own project: I built Hillock specifically because I was tired of local RAG setups requiring massive amounts of VRAM. Most tutorials expect you to run Chroma alongside an 8B model just to parse text chunks. On an entry level GPU or a laptop with 6GB to 8GB of memory, that leaves almost zero room for your actual model to g
+
+### [[I built a local-first persistent memory system for Claude Code  hybrid BM25  vec]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/ClaudeAI/comments/1r3latc
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 8, tech: 10) | I got tired of Claude Code forgetting everything between sessions, so I built a memory system that actually works the way I wanted.
+
+**The problem with existing solutions:** Most memory tools either dump everything into CLAUDE.md (gets bloated fast), rely on cloud APIs (privacy concern), or only do keyword search (misses semantic connections). I wa
+
+### [[FloBrain A Monorepo for an AI Platform with a Custom 3-Tier Graph Memory Layer D]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/u_FloLabs_Innovations/comments/1uoq1jd
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 11, tech: 9) | Hi everyone,
+
+I’m part of the engineering team at FloLabs Innovations Group, and we are currently building **FloBrain**. It’s an AI-centric platform designed as a unified monorepo to handle persistent graph-oriented agent memory, real-time chat orchestrations, and high-throughput LLM/audio pipelines.
+
+We’ve recently consolidated our MVP stack, arch
+
+### [[HOA wouldnt reimburse a 1200 plumbing bill so I just served them an 8800 lawsuit]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/fuckHOA/comments/1vnr2ka
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 3, tech: 2) | **UPDATE (10/03):**  Well, We had our small claims trial this week, and the court entered judgment in my favor! After months of the HOA insisting this was essentially *“not our problem,”* I finally got a judgment against them. That said, there's still a little mystery here. The amount awarded wasn't the full amount I requested, and the judgment doe
+
+### [[Cognee The Free Open-Source AI Memory Platform for Agents 31k stars]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/BestGitHubRepos/comments/1wyhm5n
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 7, tech: 6) | # What it does
+
+*All text below is quoted directly from the project README.*
+
+>Cognee is a free open-source AI memory platform that gives AI agents persistent long-term memory across sessions. Turn documents, code, and conversations into a self-hosted knowledge graph your agents can search and reuse.
+
+>Runs locally for free — no API key required. W
+
+### [[I built a background skill manager that treats agent memory like Git AST-aware M]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/GoodOpenSource/comments/1wu5jyi
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 7) | Standard RAG on codebases has been driving me crazy—blindly slicing functions in half by character count just ruins the context for AI agents. I've been developing a project for several months to fix this, and i want to see if it’s genuinely useful to others in real environments.
+
+I call it Vex (Vex's Skillgit). It’s an open-source, headless cognit
+
+### [[Looking for people to play with]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/playarkservers/comments/1wuqt6t
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 3) | I've been playing ASA PvE on and off for awhile now. Now that I got a beefy local server I am now hosting all the maps with in a cluster. In the past I would just stick to one map, but now that I have  a cluster set up of all the maps running 24/7 I am now getting back into ark. My server has 256gb of memory so hosting all the maps will not be an i
+
+### [[When does a homelab become a chore or a job]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/homelab/comments/1svgfob
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 2) | Hey everyone!
+
+So, I’ve been diving deep into my homelab lately, and I can’t help but wonder: at what point does this fun little project turn into a chore or even a full-on job? It all started small and innocent, and now look at the behemoth I have created. Do I still enjoy it? Of course I do!  
+  
+Everything is fully automated, to the point where
+
+### [[PatchHawk flagged the DDS reader change as memory-safety relevant. Automatic rev]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2105472524830101539
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 1) | PatchHawk flagged the DDS reader change as memory-safety relevant. Automatic review and a separate ASan run supplied the evidence shown here. 
+
+PoC and pre/post logs:
+https://t.co/6nAfcAxxr6
+
+### [[mervenoyann Putting MoE vs dense next to VRAM vs unified memory is the right pa.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107562261854183446
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 3) | @mervenoyann Putting MoE vs dense next to VRAM vs unified memory is the right pairing. Total params decide whether a model fits locally, active params decide how fast it decodes once it does.
+
+### [[This sub glazes Tobirama so hard its insane]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/NarutoPowerscaling/comments/1vs3hgg
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 2) | Got ambushed and destroyed by 2 Darui victims with enough with of Kurama’s chakra to replenish his stomach lining (1/100000%)
+
+Is the only kage (let alone Hokage) to die in a 1 versus many death battle despite having FTG and creating multi shadow clone jutsu
+
+Gets glazed from fighting featless Izuna who’s supposedly comparable to MS Madara at the t
+
+### [[mdparser 0.7.0 toAst 8-10 faster with 7-20 smaller trees a parser memory cap and]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/PHP/comments/1wtcpsf
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 8, tech: 4) | mdparser is my native CommonMark + GFM parser extension for PHP, built on the md4c C parser. This is what changed for PHP code between 0.5.0, the last version I posted here, and 0.7.0.
+
+**Faster, smaller results**
+
+- `toAst()` interns its node keys and shares one array per parse for `softbreak` and `linebreak` leaves. Retained trees are 7-20% small
+
+### [[BATTLEFIELD 6 GAME UPDATE 1.1.3.0]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/Battlefield/comments/1peys45
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 10, tech: 5) | Update 1.1.3.0 delivers a broad range of fixes and refinements across Battlefield 6, improving soldier clarity, weapon reliability, vehicle behaviour, audio consistency, and overall gameplay flow. This update also includes several quality-of-life improvements across UI, HUD, and controller aiming options, along with map-specific updates designed to
+
+### [[Engram open-source MIT memory for AI coding agents with Markdown as the source o]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/OpenSourceAI/comments/1wwncnv
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 7, tech: 7) | I'm the author. Engram is free, MIT licensed, and stores everything as plain Markdown.
+
+Each memory has a status (confirmed, inferred, conflicted or superseded), and recall only treats confirmed items as authoritative. Search is BM25 over a SQLite FTS5 index that is rebuilt from the Markdown, so the index is disposable. If a local embedding model i
+
+### [[Is Strix Halo GMKtec EVO-X2 etc. the closest thing we have to a dream local LLM]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wxs0sp
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 3) | I've been looking at the <32B model space and keep coming back to an interesting question.
+
+A few years ago, projects like Hummingbird+ suggested that cheap custom accelerators (FPGA-based) might become the future of local inference. But today it seems like memory capacity is still the real bottleneck rather than raw TOPS.
+
+For someone who wants
+
+### [[How I use Obsidian as the long-term memory backbone for my AI assistant]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/hermesagent/comments/1stz6gd
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 9, tech: 5) | I have been running a personal AI assistant setup for a little over a month now. I started with apple notes but found that apple script were limited and would not let Hermes add and delete without a fuss. This project started originally as a second brain setup but then I kept seeing complaints about token usage. At the time I was on open router, ev
+
+### [[2.5x faster Qwen3.6 NVFP4 Unsloth quants]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1usniqh
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 2) | Hey r/LocalLLaMA folks! We made **NVFP4 quants 2.5x faster** for Qwen3.6 27B and also **1.56x to 1.79x faster** for 35B-A3B vs NVIDIA's NVFP4 quants without any accuracy degradation! We used W4A4 so actual 4bit tensor cores for matmuls, whilst NVIDIA's ones uses W4A16.
+
+**FP8 KV Cache calibration** is also provided, auto allowing **2x longer contex
+
+### [[I spent a year building agent memory on knowledge graphs. Here are the 5 mistake]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/AI_Agents/comments/1ts3nq2
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 11, tech: 8) | I spent the past year building a unified memory layer for my AI agents using knowledge graphs and ontologies on top of MongoDB. I followed every trend first. I reached for the shiny frameworks and tried to design the perfect upfront ontology. I made basically every mistake possible.
+
+Naive memory fails at scale. File search bloats the context windo
+
+### [[Current memory layer are kids toys so I built a graph-native memory layer they p]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/hermesagent/comments/1u8icsf
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 11, tech: 5) | Every agent I run — Hermes, Claude Code, Cursor — has the same problem: it forgets. "Memory" is usually a pile of vector chunks, so you get fuzzy semantic recall but no structure. Even Obsidian with Wiki LLM on top is cute, but does not give me the kind of performance or fine granular control i need in my professional context. They are all workarou
+
+### [[I got tired of my LLMs forgetting everything we present a memory engine that run]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/AI_Application/comments/1rmjgvg
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 9, tech: 6) | https://news.ycombinator.com/item?id=47351483
+
+I have been wrestling with the same problem we all do: local models are great, but they have the memory of a goldfish. Vector search helps, but it's fuzzy, expensive at scale, and honestly overkill for a lot of use cases.
+
+I present: Anchor Engine  ⚓
+
+**The short version:** It's a deterministic semanti
+
+### [[Treating agent memory like a Git repo with commits and branches lets agents dr..]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2106793231489110380
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 2) | Treating agent memory like a Git repo, with commits and branches, lets agents drop outdated requirements and keep the work that is still valid.
+
+Agents handle mid-task changes from users better when they save versions of their work and resume from the right one, so build that versioning into any agent that takes feedback.
+
+Users rarely give a full
+
+### [[We built a memory backend for OpenClaw agents single .h5 file no daemon zero-cop]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/openclaw/comments/1rcopg2
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 13, tech: 11) | **Hey** r/openclaw
+
+Longtime lurker, first post. Been building AI infrastructure in Rust and noticed the memory problem keeps coming up here — the context compression complaints, the triple-memory skill juggling three backends, agents posting on Moltbook about forgetting they already made an account. That's a real problem and the current solutions
+
+### [[I built a local AI memory engine thats 280x faster than vector DBs at 10k nodes.]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/aiagents/comments/1rklfid
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 8, tech: 4) | Been building agent pipelines and kept hitting the same wall. Vector DBs are overkill for structured memory, and anything cloud-based means your agent's context is leaving your machine.
+
+So I built Synrix. It uses a Binary Lattice instead of vectors, fixed-size nodes, arithmetic addressing, retrieval that scales with results not corpus size. If you
+
+### [[Wife fed me a little white lie and I dont know how to react.]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/BestofRedditorUpdates/comments/1p1ujvj
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 3) | **I am NOT OOP, OOP is u/Ok-Molasses-7486**
+
+**Originally posted to r/Marriage**
+
+**Wife fed me a “little white lie”, and I don’t know how to react.**
+
+**Thanks to u/soayherder for suggesting this BoRU**
+
+**Trigger Warnings:** >!manipulation, gaslighting, infidelity, betrayal, falsifying statements, mentions animal death!<
+
+----
+
+[Original Post](ht
+
+### [[Codex builds faster than I can understand what it built. So I built Engram a lea]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/codex/comments/1uos190
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 7, tech: 7) | Why I built this
+
+Codex ships the feature in twenty minutes. I'm still the one who reviews it, debugs it at 11pm, and explains it in front of people. That gap is the uncomfortable part of this era for me: the bottleneck quietly moved from "how fast can we build" to "how fast can we genuinely learn." We got a 10x tool for building. I wanted one for
+
+### [[A lightweight neuro-symbolic approach to long-term memory for local agents]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/AI_Agents/comments/1ws7zsi
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 8, tech: 6) | Most local agent frameworks struggle with long-term episodic memory. Standard RAG over dense vector DBs either floods the context window with semi-relevant text chunks or burns precious VRAM trying to run LLM summarization loops after every tool turn.
+
+I’ve been working on an open-source engine called **Hillock** that tackles agent memory different
+
+### [[Immunological Memory Architecture]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/ArtificialSentience/comments/1rnn1vn
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 17, tech: 14) | # Version 1
+[Google Docs Published Document](https://docs.google.com/document/d/e/2PACX-1vSYQq7KRmMvKddpo74LedACk-VLc4avqSbBkP_5JWJ8mUcz4xj0ysxe1_M6EK0Fmg/pub)
+
+# Version 2
+[Google Docs Published Document](https://docs.google.com/document/d/e/2PACX-1vQ1gdBlDXAkaGJnGsPSo6k5PAUpxCLqd-DStQDSmyTWRpVbzzsfEdJxapnNdVyxPg/pub)
+
+# Version 3 (Current Version
+
+### [[r/conservative hosts a battle royale where they allow non conservatives to post]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/SubredditDrama/comments/1il2roq
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 5, tech: 4) | Source: https://www.reddit.com/r/Conservative/comments/1ika81f/left_vs_right_battle_royale_open_thread
+
+**HIGHLIGHTS**
+
+[Why is everyone on the right okay with Elon’s sieg heil, it was so blatant.](https://www.reddit.com/r/Conservative/comments/1ika81f/left_vs_right_battle_royale_open_thread/mblbryj/)
+>It wasn’t a sieg heil, that’s why
+>>Well, i've
+
+### [[Andrej Karpathy on the next bottleneck with language models not generating answ.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2105878221262893230
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 1) | Andrej Karpathy on the next bottleneck with language models: not generating answers, but understanding them.
+Useful ladder of output formats:
+
+•Ask for ASD-STE100 (Simplified Technical English from aerospace docs) for constrained, readable prose. Soften to “80% of the way” if the full spec feels too rigid.
+•Prefer diagrams over walls of text.
+•Pref
+
+### [[Hindsight an agent memory system that actually learns over time not just retriev]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/BestGitHubRepos/comments/1wwlqa8
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 11, tech: 8) | Most agent memory is basically glorified search. Stuff a bunch of conversation history into a vector database, run similarity search, hope for the best.
+
+Hindsight does something different.
+
+It organizes agent memory the way human cognition works: separating world facts from experiences from observations from mental models. So instead of "here's a
+
+### [[What could make deepened memory mechanisms for AI  Wrote by Claude.]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/InnovativeAIChats/comments/1wphk5j
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 19, tech: 13) | \# Persistent\_Cognition\_Candidates.md
+\*\*Version 0.3\*\*
+
+---
+
+## Navigation Anchors
+\* \*\*Context Core:\*\* \[Discovery.md\](https://raw.githubusercontent.com/ksarith/LazarusForge/refs/heads/main/Discovery.md)
+\* \*\*Network Routing:\*\* \[Routing.md\](https://raw.githubusercontent.com/ksarith/LazarusForge/refs/heads/main/Routing.md)
+
+---
+
+##
+
+### [[I built an open-source Desktop App that gives your AI persistent memory across a]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/ClaudeCode/comments/1tt4xcs
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 15, tech: 7) | Hey everyone,
+
+A few weeks ago I released the initial CLI version of my project (formerly called Glia, now ArcRift) on Reddit. The response and feedback from the community were incredible. Today, I'm excited to share the massive v1.6.1 update, which transitions the project from a headless script into a fully standalone native Desktop Application.
+
+### [[Theres something inhuman south of Seattle if you want to go looking for it]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/nosleep/comments/2n7iiv
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 3) | I've talked about my road trip on this board before. Sick to death of working myself to death, I took the first vacation of my life last year. A beat up rebuilt Yamaha Zuma and a foolish sense of optimism carried me across the western United States on an adventure that seriously made me rethink everything I thought I knew about the world.
+
+I loved
+
+### [[FIX Discoveries and Scans Not Saving / Disappearing Discovery Cache Bug]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/NoMansSkyTheGame/comments/1wkekzw
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 9, tech: 4) | \*\*Body:\*\*
+
+If you are running into a glitch where the systems you visit and the flora/fauna you scan don't stay discovered, or planets instantly revert to "Undiscovered" shortly after you leave, your save file has likely hit the local discovery cache limit.
+
+\*\*The Cause:\*\*
+
+No Man's Sky has a hard cap (around 3,250 records) for storing disc
+
+### [[I built a memory layer for LangChain agents that uses BM25 instead of embeddings]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LangChain/comments/1wg7ar3
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 10, tech: 9) | I have been building agents with LangChain for a while and kept running into the same problem. The agent does something useful in one session, and then completely forgets it in the next. The standard solution is to bolt on a vector database, set up an embedding model, chunk your text, and hope the cosine similarity returns the right context. That w
+
+### [[What an AI Memory Systems Should Look Like in 2026]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/AIMemory/comments/1s62050
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 19, tech: 12) | ChatGPT, Claude, and Gemini all have memory now. Claude recently added chat search and memory import/export. But if you've used any of them for more than a few weeks, you've probably noticed the same thing: the memories are flat. There's no knowledge graph, no way to indicate that "this memory supports that one" or "this decision superseded that on
+
+### [[Geminis 2M context window doesnt fix amnesia. How I gave Gemini 3.8 Flash High a]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/GeminiAI/comments/1w8tj78
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 16, tech: 7) | **Environment / Model Used:** Gemini 3.8 Flash (High) and Gemini 3.1 Pro via Google Antigravity & local MCP.
+
+I've been watching several threads here this week about hitting a wall with Gemini:
+- Developers complaining that Gemini is too "forgetful" and tells them to delete critical methods because it forgot yesterday's context.
+- Threads debating
+
+### [[4/ The part I find most interesting is staleness. Shared memory is easy correct.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107102729944633551
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 1) | 4/ The part I find most interesting is staleness. Shared memory is easy, correct shared memory is hard. Every fact names the files it's about, so when someone changes one of them the fact gets flagged "possibly stale" along with who changed it. A notebook nobody updates is arguably worse than no notebook.
+
+### [[3/ The part I find most interesting is staleness. Shared memory is easy correct.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2106824866527953209
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 1) | 3/ The part I find most interesting is staleness. Shared memory is easy, correct shared memory is hard. Every fact names the files it's about, so when someone changes one of them the fact gets flagged "possibly stale" along with who changed it. A notebook nobody updates is arguably worse than no notebook.
+
+### [[If youre adding memory to an AI product you probably dont need to build anoth...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2104751871688892520
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 11, tech: 4) | If you're adding memory to an AI product, you probably don't need to build another vector database stack from scratch.
+
+I recently came across Supermemory, an open-source project with 30k+ GitHub stars.
+
+The idea is simple: instead of spending days on chunking, embeddings, top-k tuning, deduplication, and memory conflict resolution, you add a memor
+
+### [[Local language models get much sharper when they have access to your personal fi]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107532317015105545
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 3, tech: 2) | Local language models get much sharper when they have access to your personal files. That makes Personal AI Computer look promising as a Personal AI Computer with a local 27B model. Its creators built a Memory Computer to bring your digital life into one place you control.
+
+
+## Ingested Cycle #7 — 2026-10-07_03-00 (IST)
+
+### [[I benchmarked my memory layer against vector RAG and keyword search. Keyword sea]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LLMDevs/comments/1wtbx3b
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 3) | Quick context, I'm building a memory layer for an assistant (some of you saw my holographic memory post a while ago). Today I reran the bench that asks the one question that happens before the model even runs: is the fact the model needs actually in what we inject?
+
+
+
+Setup is 180 questions per size, 104 / 208 / 416 facts in the user's history, sam
+
+### [[Full Guide to Run LLMs Locally]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/AIAgentsInAction/comments/1wxlg7g
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 7, tech: 6) | here's full guide on running a model locally, from the first install to workloads. Most bad first experiences trace back to two numbers: the size of the model file, and the memory the context window eats on top of it.
+
+**Step 1.** Keep the model download to about two thirds of your memory. On an M-series Mac the model can use all of it. On Windows
+
+### [[216 wrong writes erased a verified fact in an agents memory and nothing flagged]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LLMObservability/comments/1wz4ez3
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 7, tech: 6) | I ran a known-answer test against an open-source agent memory server (Knowl) and wanted to share what broke and what got fixed.
+
+
+
+Setup: I seeded 12 facts I knew were true and marked them verified. Then I sent believable wrong writes at those same facts through the normal write path, and asked the agent again to see what stuck.
+
+
+
+What I sent:
+
+\-
+
+### [[While I was investigating why my opencode context was large I created the openco]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wyl6j3
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 2) | I was a little obsessed about the size of my context, mainly because I use a local LLM with little context). So I started looking in the opencode codebase to understand how the context was builded. After learn a lot, I'm really impressed how context of opencode can be customized. Before, I thought that the context of opencode was bloated and closed
+
+### [[3.29 Everything you need to know about memory strands]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/pathofexile/comments/1wr9445
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 5, tech: 6) | # Intro
+
+I did quite a lot of crafting using memory strands this league and noticed that lower modifier tiers didn't seem to be possible to roll even at fairly low strand numbers. I couldn't find any documentation about what exactly memory strands do, so I decided to do some testing.
+
+Some testing turned into a lot of testing, and I collected data
+
+### [[memv  open-source memory for AI agents that only stores what it failed to predic]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1r18v9c
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 12, tech: 7) | I built an open-source memory system for AI agents with a different approach to knowledge extraction.
+
+The problem: Most memory systems extract every fact from conversations and rely on retrieval to sort out what matters. This leads to noisy knowledge bases full of redundant information.
+
+The approach: memv uses predict-calibrate extraction (based
+
+### [[I switched my AI agent to semantic memory search. Heres what actually changed.]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/openclaw/comments/1srd1xo
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 5) | Most people running personal AI agents are using flat memory. A summarized notes file gets injected into the context at the start of every session. It works, but it has a ceiling.
+
+The problem isn’t that flat memory is bad. It’s that it doesn’t scale, and more importantly, it’s not responsive to what you’re actually asking right now.
+
+What flat mem
+
+### [[Update agy-memory-engine now supports Hybrid Vector Search Semantic Recall  FTS5]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/GoogleAntigravityCLI/comments/1wbfica
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 1) |
+
+### [[crisabuilds git-backed memory is great until two agents commit conflicting fac..]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2105195948834263515
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 5, tech: 4) | @crisabuilds git-backed memory is great until two agents commit conflicting "facts" on the same day. we pin one writer agent per branch and treat merges as reviewable PRs, not silent auto-commits from every harness.
+
+### [[I tried Tinycast for a month as a Raycast replacement but it was missing too ma.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107170669884743713
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 8, tech: 3) | I tried Tinycast for a month as a Raycast replacement, but it was missing too many things, so I came back.
+
+One of my favourite Raycast features is Raycast Notes. But it only syncs to their cloud, which made me a little worried, especially after tweets like this one. So I hacked it a bit.
+
+If you want local Markdown copies of your Raycast notes, gi
+
+### [[So Ive started messing around with the AI thingy locally instead of just going .]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2106529036054741492
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 1) | So I've started messing around with the AI thingy locally instead of just going to sketchy websites that are there to spy on me.
+
+Good news: If I thought I'd never find a way to really bring my fancy computer to its knees, I was wrong because I can get the GPU humming and the desktop totally jerky to to lack of video memory when I run the Hermes ag
+
+### [[FOR HIRE PPC Specialist  DE/ENG  10 Years of Experience  Starting at 500  Google]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/forhire/comments/1wyja7m
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 3, tech: 2) | Hi Reddit, in a little bit of a tight spot right now and could use some extra money for my mortage.
+
+A bit about me: For the better part of 10 years, I’ve worked with brands managing ad budgets up to $573K/month, generating consistent profits of $90K+ weekly for clients across a total of 17 different industries, 3 of which I've come to specialize i
+
+### [[Caching in GenAI Pipelines Im a CS student who hit a bottleneck with STT Speech-]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/softwarearchitecture/comments/1wyadkb
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 3, tech: 7) | Hey everyone,
+
+I’m currently studying Computer Engineering, and for a recent project, I’ve been building a voice-controlled AI assistant using FastAPI and Redis. While scaling it, I ran into an interesting architectural bottleneck regarding API latency that I'd love to get some senior perspective on.
+
+We all know the standard drill for I/O bottlene
+
+### [[inc_ongi VictorTaelin The memory does not get merged back each result is just...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107173473852494198
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 2) | @inc_ongi @VictorTaelin The memory does not get merged back, each result is just another line in optmem
+
+### [[argofowl Ported it myself a little differently - there is also a node repl for .]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2106461846672752671
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 2) | @argofowl Ported it myself a little differently - there is also a node repl for doing it in code
+
+### [[Naive vector search in agent memory will poison your context window with halluci]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2105138314353197524
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 4) | Naive vector search in agent memory will poison your context window with hallucinations.
+
+Dense embeddings retrieve text by similarity, missing strict syntax bounds.
+
+When agents write intermediate reasoning to memory, errors compound:
+- Semantic drift: subtle errors get encoded as verified memory facts
+- Recursive poisoning: false assumptions rein
+
+### [[ashwaanthh hanghuang_ been working on this exact gap. we keep task memory dec...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107470464750899393
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 3) | @ashwaanthh @hanghuang_ been working on this exact gap. we keep task memory (decisions, findings, handoffs) in a local sqlite store at the repo root that all worktrees share, so each sub-agent picks up where the last left off. works well so far
+
+
+## Ingested Cycle #15 — 2026-10-07_05-00 (IST)
+
+### [[How agentmemory works and how to actually use it to with ...]]
+- **Platform:** Reddit / Web / X
+- **URL:** https://alphasignalai.substack.com/p/how-agentmemory-works-and-how-to
+- **Synthesis & Architectural Value:**
+  Battle-tested production pattern: implementation, agentmemory | Published: 2026-06-03T18:40:47.334Z Author: AlphaSignal AI Rohit Ghumare, Principal Product Evangelist at iii.dev, authored the implementation. The design comes from his gist “LLM Wiki v2” which extends Karpathy’s LLM Wiki pattern with the lessons from building agentmemory (170+ forks, 13 comments)
+
+### [[Deep Dive Knowledge Lifecycle  Memory]]
+- **Platform:** Reddit / Web / X
+- **URL:** https://devalaxy.com/reports/llm-wiki/memory
+- **Synthesis & Architectural Value:**
+  Battle-tested production pattern: agentmemory, lint | Published: N/A Author: N/A ## Tổng quan Intro Original LLM Wiki của Karpathy treat tất cả wiki content như equally valid forever. Trong thực tế, knowledge có vòng đời: confidence decay theo thời gian, thông tin mới supersede cũ, patterns được thấy nhiều lần đáng tin hơn patterns chỉ thấy một lần. L
+
+### [[7xuanlu/wenlan]]
+- **Platform:** Reddit / Web / X
+- **URL:** https://github.com/7xuanlu/wenlan
+- **Synthesis & Architectural Value:**
+  Battle-tested production pattern: implementation, agentmemory | Published: N/A Author: N/A - **LLM-wiki v1:** Karpathy defined immutable Sources, an AI-maintained Markdown Wiki, and a co-evolving Schema of rules for structuring and maintaining it. Wenlan implements that foundation with typed Memory fields and built-in rules for Page structure, provenance, citat

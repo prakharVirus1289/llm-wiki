@@ -4,7 +4,7 @@
 
 
 
-Total Empirical Assets: 127
+**Total Compiled Empirical Assets:** `144`
 
 
 
@@ -17,6 +17,12 @@ Total Empirical Assets: 127
 - **URL:** https://www.reddit.com/r/ExperiencedDevs/comments/1qjbipc
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 73, tech: 5) | Context: I (\~5yoe) have been working on a project, and a colleague is working on another project that is very similar (Python, ML, greenfield) at the same time. They are using AI a lot (90% AI generated probably) while I'm using it a lot less. I thought this could be an interesting opportunity to almost 1 to 1 compare and see where AI is still lac
+
+### [[cargo-crap Finding Untested Complexity in AI-Generated Rust Code]]
+- **Platform:** Reddit (r/r/rust)
+- **URL:** https://www.reddit.com/r/rust/comments/1tgsjy6
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 14, tech: 2) | Change Risk Anti-Patterns (CRAP) metric for Rust projects.
 
 ### [[An Open Benchmark for Testing RAG on Realistic Company-Internal Data]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -38,32 +44,6 @@ Most RAG benchmarks are built on public data: Wikipedia, web pages, papers, fo
 
 I’ve listed below some essential LLM metrics to know before you begin benchma
 
-### [[A bytecode expression engine implemented in Rust Pratt parsing zero-copy deseria]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1u97und
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 115, tech: 7) | Hi fellow developers,
-
-I recently open-sourced an expression evaluation engine written in Rust called **rspression**.
-
-* **GitHub Repository**: [simonwater/rspression](https://github.com/simonwater/rspression)
-
-# Why build this project?
-
-In scenarios that demand frequent evaluation of large volumes of expressions—such as high-concurrency risk-contr
-
-### [[Context pollution can survive source deletion a pilot benchmark for intervention]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1vrnt1n
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 103, tech: 8) | A common way to repair an LLM conversation is to edit or delete the message where an error first appeared.
-
-But what if later turns have already repeated that error, calculated from it, or summarized it as the current state?
-
-I have been exploring this as a context-engineering problem rather than a hidden-reasoning problem.
-
-# Operational definitio
-
 ### [[Benchmarking AI Agent Memory Providers for Long-Term Memory]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1kavtwr
@@ -84,29 +64,6 @@ To assess their performance, I used the LOCOMO benchmark, which includes tests f
 
 * **Paper:** [h
 
-### [[P An Enterprise-level Retrieval-Augmented Generation System full code open-sourc]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1kew2j5
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 81, tech: 6) | How can we search the wanted key information from **10,000+ pages of PDFs** within **2.5 hours**? For fact check, how do we implement it so that answers are backed by **page-level references**, minimizing hallucinations?
-
-[RAG-Challenge-2](https://github.com/IlyaRice/RAG-Challenge-2/tree/main) is a great open-source project by Ilya Rice that ranked
-
-### [[D How to evaluate RAG - both retrieval and generation when all I have is a set o]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1c7oa6k
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 49, tech: 2) | Say I have 1000 PDF docs that I use as input to a RAG Pipeline.
-
-I want to to evaluate different steps of the RAG pipeline so that I can measure:
-- Which embedding models work better for my data?
-- Which rerankers work and are they required?
-- Which LLMs give the most factual and coherent answers?
-
-How do I evaluate these steps of the pipeline?
-
-Ba
-
 ### [[Parax v0.5 Parametric Modeling in JAX P]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1t3jmdc
@@ -117,14 +74,6 @@ Just sharing an update on my project [Parax](https://github.com/gvcallen/parax),
 
 Previously, Parax was more focused on scientific applications, however I've since generalized it to be a tool useful for any type of JAX work. It now has a strong focus on a clean, extandable API, as well as
 
-### [[P Benchmarking 1 Million Files from ImageNet into DVC Git-LFS and Oxen.ai for Op]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1gj0si8
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 57, tech: 5) | Hey all!
-
-If you haven't seen the Oxen project yet, we have been building a fast [open source unstructured data version control tool](https://github.com/Oxen-AI/oxen-release) and platform to host the data ([https://oxen.ai](https://oxen.ai/)). It’s an alternative to dumping data on Hugging Face with git-lfs or their datasets library and goes togeth
-
 ### [[P TruLens-Eval is an open source project for eval  tracking LLM experiments.]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1542fbt
@@ -133,39 +82,11 @@ If you haven't seen the Oxen project yet, we have been building a fast [open so
 
 The team at TruEra recently released an open source project for evaluation & tracking of LLM applications called [TruLens-Eval](https://github.com/truera/trulens/tree/main/trulens_eval). We’ve specifically targeted retrieval-augmented QA as a core use case and so far we’ve seen it
 
-### [[wrkflw v0.8.0  run GitHub Actions locally now with a real  ...  evaluator]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1srynck
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 47, tech: 5) | Hello everyone,
-
-Today I'm releasing **v0.8.0** of wrkflw with a bunch of features I've been working on for a while.
-
-wrkflw is a CLI that validates and runs GitHub Actions workflows locally, so you can iterate on CI without pushing a dozen "fix ci" commits to see if something works. It runs jobs in Docker, Podman, or directly on your machine via r
-
 ### [[Benchmarking Wild vs Mold]]
 - **Platform:** Lobsters (compilers)
 - **URL:** https://lobste.rs/s/gjjizm/benchmarking_wild_vs_mold
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 1, tech: 1) | Tags: compilers, performance | Score: 57 | Comments: 0
-
-### [[EVOR Evolving Retrieval for Code Generation]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2402.12317
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 17, tech: 1) |
-
-### [[DeepCodeSeek Real-Time API Retrieval for Context-Aware Code Generation]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2509.25716
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 29, tech: 1) |
-
-### [[CARROT A Learned Cost-Constrained Retrieval Optimization System for RAG]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2411.00744
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 1, tech: 1) |
 
 ### [[Context Localization for Generalized Level-Based Evaluation in Knowledge-Based S]]
 - **Platform:** ArXiv
@@ -179,6 +100,14 @@ wrkflw is a CLI that validates and runs GitHub Actions workflows locally, so you
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 1, tech: 2) | Tags: [] | Reactions: 0 |
 
+### [[Open image generation models are closer to closed-source quality than this sub t]]
+- **Platform:** Reddit (r/r/MachineLearning)
+- **URL:** https://www.reddit.com/r/MachineLearning/comments/1u0119r
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 42, tech: 6) | I run evaluations on generative image models as part of my workflow, mostly comparing coherence, prompt adherence, and compositional accuracy across different architectures. The consensus here seems to be that open models are still a generation behind closed APIs. Based on my recent benchmarks, that gap is way smaller than people assume.
+
+On compos
+
 ### [[D MemPalace claims 100 on LoCoMo and a perfect score on LongMemEval. Its own BEN]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1seunbr
@@ -187,7 +116,7 @@ wrkflw is a CLI that validates and runs GitHub Actions workflows locally, so you
 
 The interesti
 
-### [[P PhAIL phail.ai  an open benchmark for robot AI on real hardware. Best model 5 ]]
+### [[P PhAIL phail.ai  an open benchmark for robot AI on real hardware. Best model 5]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1sajdwr
 - **Synthesis & Architectural Value:**
@@ -209,13 +138,29 @@ We originally organized work into three “tracks”:
 2. RAG - ingestion, chunking, indexing, retrieval, reranking
 3. Evaluation - offline test sets, automatic metrics, some onli
 
-### [[tokio for I/O rayon for CPU how we bridge them in a Rust search engine]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1ulo7pr
+### [[RTX 3080 20GB - A comprehensive review of Chinese card]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1p0bbrl
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 127, tech: 11) | *Disclosure*: I work on [infino](https://github.com/infino-ai/infino), an Apache-2.0 embedded retrieval engine in Rust. This is an internals post about how we split work between tokio and rayon, and a couple of spots where we got it wrong before benchmarks caught it.
+  Verified High-Signal Technical Asset (matches: 166, tech: 5) | Hello! Recently, RTX 3080 20GB became available on Chinese sites like Alibaba. In light of rising prices for RTX3090, I've decided to give those cards a try, and ordered a pair of them. In this post I'll feature lots performance benchmarks, compare it to 3090, share my ordering experience, and discuss the feasibility of this purchase.
 
-Quick context: infino stores data in *superfiles*, standard Parquet files with a
+# Overview o
+
+### [[Got the DGX Spark - ask me anything]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1o7gpr8
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 120, tech: 9) | If there’s anything you want me to benchmark (or want to see in general), let me know, and I’ll try to reply to your comment. I will be playing with this all night trying a ton of different models I’ve always wanted to run.
+
+(& shoutout to microcenter my goats!)
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+### [[RTX 5070 Ti  9800X3D running Qwen3.6-35B-A3B at 79 t/s with 128K context the --n]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1sor55y
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 113, tech: 7) | Spent an evening dialing in Qwen3.6-35B-A3B on consumer hardware. Fun side note: I had **Claude Opus 4.7 (just the $20 sub)** build the config, launch the servers in the background, run the benchmarks, read the VRAM splits from the llama.cpp logs, and iterate on the tuning — basically did the whole thing autonomously. I just told it what hardware I
 
 ### [[P I trained Qwen2.5-1.5b with RLVR GRPO vs SFT and compared benchmark performanc]]
 - **Platform:** Reddit (r/r/MachineLearning)
@@ -259,6 +204,18 @@ Apologies for the delay. I initially ran the tests using BatchGenerator, but the
 
 Share what your favorite models are right now **and why.** Given the nature of the beast in evaluating LLMs (untrustworthiness of benchmarks, immature tooling, intrinsic stochasticity), please be as detailed as possible in describing your setup, nature of your usage (how much, personal/pro
 
+### [[Introducing Qwen3.8-27B Dynamic v3 Unsloth GGUFs]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1vsr67c
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 27, tech: 2) | Hey everyone! We’re releasing new Qwen3.8-27B GGUFs with 10% higher accuracy for the same size. This uses a new version of Dynamic v3.0
+
+Unsloth Dynamic V3 outperforms others by >10% on Div-300, KLD & more benchmarks.
+
+We also release 1-bit quants that retain 77% accuracy. Run on 8GB RAM.
+
+Some of you already saw we updated our quants a few hours a
+
 ### [[DeepSWE new benchmark looking at how well todays frontier models can actually wr]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1ue0hlp
@@ -269,6 +226,12 @@ Share what your favorite models are right now **and why.** Given the nature of t
 * High diversity: Tasks span a broad pool of 91 repositories across 5 languages.
 * Real-world complexity: Prompts are \~half the length
 
+### [[UkisAI Swift-Qwen3.8-27B / -58.3 thinking x1.95 speed while keeping the accuracy]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wg7dd5
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 65, tech: 5) | Hi everybody, we post-trained **Qwen 3.8 27B** to be more efficient by figuring out which tokens were linked to overthinking and penalizing them without "attacking" the reasoning length directly then fixed the accuracy with a bit of secret sauce (hint On-Policy Distillation) and achieved great results (**-58% thinking tokens, 1.95x speed up, <1% ac
+
 ### [[New Qwen3.5-35B-A3B Unsloth Dynamic GGUFs  Benchmarks]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1rgel19
@@ -276,6 +239,20 @@ Share what your favorite models are right now **and why.** Given the nature of t
   Verified High-Signal Technical Asset (matches: 48, tech: 3) | Hey r/LocalLlama! We just updated Qwen3.5-35B Unsloth Dynamic quants **being SOTA** on nearly all bits. We did over 150 KL Divergence benchmarks, totally **9TB of GGUFs**. We uploaded all research artifacts. We also fixed a **tool calling** chat template **bug** (affects all quant uploaders)
 
 * We tested Bartowski, Ubergram, AesSedai, Noctrex and o
+
+### [[Single 3090 Qwen 27B user considering buying 128GB of RAM because of the hype]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wzq2ts
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 19, tech: 1) | My current setup: 
+
+\- single 3090 running turboderp/Qwen3.8-27B-exl3:SC\_5.00bpw\_H6\_V6
+
+\- \~150k context, \~70t/s, unknown prefill because I didn't benchmark it (but it is ok)
+
+\- Intel 12400 CPU with 32GB DDR4 RAM
+
+All the hype around strata makes me consider buying 128GB of 6000MHz DDR5 RAM and Ryzen 9700X just for it. I searched in this sub,
 
 ### [[Qwen 3.6 27B BF16 vs Q4_K_M vs Q8_0 GGUF evaluation]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -308,7 +285,7 @@ Results:
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 30, tech: 1) | Points: 0 | Comments: 0 |
 
-### [[Red Teaming the Mind of the Machine A Systematic Evaluation of Prompt Injection ]]
+### [[Red Teaming the Mind of the Machine A Systematic Evaluation of Prompt Injection]]
 - **Platform:** ArXiv
 - **URL:** https://arxiv.org/abs/2505.04806
 - **Synthesis & Architectural Value:**
@@ -360,13 +337,6 @@ Most RAG teams default to one retrieval strategy and never benchmark it against 
 
 This tutorial walks you through building a five-arm bake-off harness that runs BM25, d
 
-### [[MoE expansion  First HumanEval number on coding  for Qwen3.6-35B-A3B  90.9 at 4-]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wzp3g7
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 49, tech: 5) | I measured **Qwen3.6-35B-A3B at 4-bit (UD-IQ4\_XS) hitting 89.6% pass@1 on HumanEval** on a **single RTX 2080 Ti 22GB** — and then ran a controlled A/B of a routing technique I've been playing with: **MoE expansion**, which **activates 20 experts** per token instead of the stock 8 **on** the **last 15 layers**.   
-Result: **90.9%** (+2 problems) a
-
 ### [[Just another purely open-weight models benchmark]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x1tf1t
@@ -411,7 +381,17 @@ Two questions where I'd love real 2026 experience:
 
 **TL;DR:** I run a mismatched Tesla V100-PCIE pair-one 16 GB card and one 32 GB card, 48 GB total-in a Proxmox/LXC-based local-inference lab. The practical winner so far is a recent CUDA build of `llama.cpp` with tensor split, Flash Attention, `--numa distribute`, and large batches. On Qwen3.8 27B Q6\_K\_M I measured **1,376.9 prompt tok/s at 2
 
-### [[AutoDojo A Generative Benchmark for Evaluating Prompt Injection Defenses in LLM ]]
+### [[2x CMP 170HX 64GB GLM-5.3-Flash at 384K context / 90 tok/s EXL3 HBM-first setup]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x0b1ws
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 99, tech: 11) | I've been tinkering with GLM-5.3-Flash on two 64GB CMP 170HX cards for a while, and the setup is finally stable enough that I figured I'd share it.
+
+I also compared it against the Qwen3.8-Flash-Next setup I've been using on the same machine: AWQ INT4 + FP8 PLE on vLLM.
+
+Besides PP/TG benchmarks, I hooked both models up to DSH and gave them the same
+
+### [[AutoDojo A Generative Benchmark for Evaluating Prompt Injection Defenses in LLM]]
 - **Platform:** ArXiv
 - **URL:** https://arxiv.org/abs/2606.15057
 - **Synthesis & Architectural Value:**
@@ -423,7 +403,7 @@ Two questions where I'd love real 2026 experience:
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 12, tech: 1) |
 
-### [[AEMA Verifiable Evaluation Framework for Trustworthy and Controlled Agentic LLM ]]
+### [[AEMA Verifiable Evaluation Framework for Trustworthy and Controlled Agentic LLM]]
 - **Platform:** ArXiv
 - **URL:** https://arxiv.org/abs/2601.11903
 - **Synthesis & Architectural Value:**
@@ -435,13 +415,13 @@ Two questions where I'd love real 2026 experience:
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 11, tech: 1) | {}
 
-### [[R Extreme Sudoku as a constraint-satisfaction benchmark solved natively without ]]
+### [[P MichiAI A 530M Full-Duplex Speech LLM with 75ms Latency using Flow Matching]]
 - **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1rx9qn4
+- **URL:** https://www.reddit.com/r/MachineLearning/comments/1quwjt1
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 57, tech: 4) | I came across an interesting writeup from Pathway that I think is more interesting as a reasoning benchmark than as a puzzle result.
+  Verified High-Signal Technical Asset (matches: 62, tech: 6) | I wanted to see if I could build a full-duplex speech model that avoids the coherence degradation that plagues models of this type while also requiring low compute for training and inference.
 
-They use “Sudoku Extreme”: about 250,000 very hard Sudoku instances. The appeal is that Sudoku here is treated as a pure constraint-satisfaction problem: each solution is trivial to verify, hard to bluff and the task
+I don't have access to much compute so I spent a lot of the time designing the architecture so it's efficient and there is no need to brute force with model
 
 ### [[Benchmarking Possum DB]]
 - **Platform:** Reddit (r/r/rust)
@@ -449,30 +429,11 @@ They use “Sudoku Extreme”: about 250,000 very hard Sudoku instances. The app
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 48, tech: 8) | I created https://github.com/anacrolix/possum a while ago. It has excellent performance and fills a niche I had for years. Integrating it into some of my production systems was one of those experiences where you see the graphs go from a jagged mess to a dead flat line. CPU overhead gone. Latency flat. The last time I had that experience was switchi
 
-### [[A Benchmark to Understand the Role of Knowledge Graphs on Large Language Models ]]
+### [[A Benchmark to Understand the Role of Knowledge Graphs on Large Language Models]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/17vy1bo
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 40, tech: 1) | "A Benchmark to Understand the Role of Knowledge Graphs on Large Language Model's Accuracy for Question Answering on Enterprise SQL Databases"—Putting numbers to many of our intuition that KGs are much more effective than other context inputs in RAG-like approaches
-
-### [[Best local model for vision - 2nd benchmark update - 21 Jun 2026]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ubx4rw
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 70, tech: 6) | I previously posted the first results of my [VLM benchmark](https://www.reddit.com/r/LocalLLaMA/comments/1u5oydc/which_is_the_best_local_vlm_benchmark_results/). There were a few useful comments and observations I took into account, to revise and expand my benchmark:
-
-* I initially did not take into account the Gemma 4 **vision budget** which defau
-
-### [[Qwen3.5 - The middle childs 122B-A10B benchmarks looking seriously impressive - ]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1rdmbhv
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 48, tech: 2) | https://preview.redd.it/zb1gzzm9ahlg1.png?width=3000&format=png&auto=webp&s=2fe11dfb13a252dacd0ae8c250f4ec17d1a51d93
-
-  
-Qwen3.5-122B-A10B generally comes out ahead of gpt-5-mini and gpt-oss-120b across most benchmarks.
-
-**vs GPT-5-mini:** Qwen3.5 wins on knowledge (MMLU-Pro 86.7 vs 83.7), STEM reasoning (GPQA Diamond 86.6 vs 82.8), agentic tasks (
 
 ### [[Optimizing Qwen3.6 / Qwen3.8-27B on 16GB VRAM Complete Benchmark Results and Set]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -552,18 +513,6 @@ To add more context. I got interviewed by a voice AI. The AI asked me 10-15 exam
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 89, tech: 6) | With hopes of a Qwen3.8-35B-A3B release now mostly dashed, many people including myself are looking at fine-tunes and other variants of Qwen3.6-35B-A3B to run on VRAM-limited hardware. I decided to try to benchmark some of the top contenders: KAT-Coder, Ornith 1.5 and the very recent Tiel-Coder. I used the [tool-eval-bench](https://github.com/Serap
 
-### [[Seeing the Whole Elephant A Benchmark for Failure Attribution in LLM-based Multi]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2604.22708
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 24, tech: 3) |
-
-### [[Attribution Quality in AI-Generated ContentBenchmarking Style Embeddings and LLM]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2510.13898
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 1, tech: 1) |
-
 ### [[HF Model IDMedicine/code-graph-trajeval-v1]]
 - **Platform:** Hugging Face Models
 - **URL:** https://huggingface.co/IDMedicine/code-graph-trajeval-v1
@@ -625,6 +574,20 @@ Some of it was ju
 
 Rigatoni streams MongoDB change events to S3 with configurable batching, serialization (JSON/Parquet/Avro), and compression. Built on Toki
 
+### [[Underrated Muse Glimmer]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1vyn07o
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 18, tech: 1) | Benchmarked qwen3.8 xhigh, medium and muse glimmer.
+
+Xhigh effort mode with qwen3.8 took almost 30hrs. (And still failed on 16 cases because of the 32K output token  limit)
+
+Medium effort mode and muse glimmer were 3-4 hours each.
+
+But I'm actually surprised by the muse glimmer results, they came better than the qwen.
+
+These benchmarks are on impli
+
 ### [[Qwen 3.6 wins the benchmarks but Gemma 4 wins reality. 7 things I learned testin]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1t1te8y
@@ -644,18 +607,6 @@ If you look at the Benchmarks then Qwen should win but from testing it seems rea
 bengio won a classic paper award for his 2011 knowledge base embedding work. 15 years old. but the reason its relevant now is because rag, agents, world models, theyre all basically building on that foundation of embedding structured knowledge into continuous space
 
 the outstan
-
-### [[P Benchmarking Semantic vs. Lexical Deduplication on the Banking77 Dataset. Resu]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1prjy85
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 35, tech: 3) | I recently ran an experiment to quantify "semantic noise" in real-world NLP datasets used for RAG.
-
-I took the **Banking77 dataset** (10,003 train rows) and compared standard deduplication methods against a vector-based approach running locally on CPU.
-
-**The Experiment:**
-
-1. **Lexical Dedup (Exact Match/Hash):** Removed **<1%** of rows. The datas
 
 ### [[CPU TTS benchmark with UTMOS MOS scoring Kokoro Supertonic Inflect-Nano and Kyut]]
 - **Platform:** Reddit (r/r/MachineLearning)
@@ -679,16 +630,11 @@ What it covers:
 **•** Hybrid retrieval (vector + keyword, not vector alone)  
 **•** Reranking to catch relevant chunks that vector
 
-### [[Gemma 4 31B vs Gemma 4 26B-A4B vs Qwen 3.5 27B  30-question blind eval with Clau]]
+### [[Anyone tried IQuest-Coder-V1 yet The 40B numbers look wild]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1scwos6
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1q0x19t
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 41, tech: 7) | Just finished a 3-way head-to-head. Sharing the raw results because this sub has been good about poking holes in methodology, and I'd rather get that feedback than pretend my setup is perfect.
-
-**Setup**
-
-* 30 questions, 6 per category (code, reasoning, analysis, communication, meta-alignment)
-* All three models answer the same question blind — no
+  Verified High-Signal Technical Asset (matches: 49, tech: 3) | This new IQuest-Coder-V1 family just dropped on GitHub and Hugging Face, and the benchmark numbers are honestly looking a bit wild for a 40B model. It’s claiming **81.4% on SWE-Bench Verified** and over **81% on LiveCodeBench v6**, which puts it right up there with (or ahead of) much larger proprietary models like GPT-5.1 and Claude 4.5 Sonnet. Wha
 
 ### [[I analyzed 31352 hourly LLM benchmark scores within-day variation was 2.8 points]]
 - **Platform:** Reddit (r/r/MachineLearning)
@@ -708,13 +654,32 @@ Most LLM evaluations measure performance at a single point in time. I wanted t
 
 I wa
 
-### [[A benchmark for LLMs playing Civilization V. GLM-5.3 is ahead of Opus-5.5 and Qw]]
+### [[I run 6 LLMs  SD 3.5  Whisper behind an OpenAI-compatible API on an RX 580 8 GB]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wynbvq
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wyr039
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 41, tech: 4) | A while ago, I posted here getting [OSS-120B and GLM-4.6 playing full games of Civilization V](https://vox-deorum.github.io/civ-bench-latest/). Since then, models have moved pretty far, and we wanted a better understanding about models' capabilities playing the game.
+  Verified High-Signal Technical Asset (matches: 43, tech: 4) | Title: I run 6 LLMs + SD 3.5 + Whisper behind an OpenAI-compatible API on an RX 580 8 GB - the card ROCm forgot. Benchmarks inside.
 
-**Introducing the** [controlled version of CivBench](https://vox-deorum.github.io
+
+
+ROCm dropped Polaris years ago, so every RX 580 owner gets told to buy a new
+
+card. I went the Vulkan route instead: the whole stack runs on Mesa's RADV.
+
+
+
+What's running (one Debian LXC, one setup script):
+
+\- Ope
+
+### [[Comparing Qwen3.8-27B fine-tunes and baselining vs. frontier]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x0gaqv
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 32, tech: 5) | **TL;DR:**
+
+* For my use case, mradermacher/Signal-3.8-27B-Terse-Coder.i1-Q4\_K\_M proved out. Ymmv based on your domain-specific tests.
+* Time taken to solve problems compared to frontier models is massive; especially if you, like me, run a potato. My current feasible model's KPI over the full eval set is 28x slower. Time gap might be significantl
 
 ### [[In a new benchmark across Chess Go Hex and NetHack one frontier model starte...]]
 - **Platform:** X (Twitter)
@@ -782,7 +747,7 @@ Paper: *“Is Vibe Coding Safe? Benchmarking Vulnerability of Agent-Generated Co
 
 Check it out if you’re into AI agents, code review automation, or just love the weird intersection of psychol
 
-### [[Seeking collaborators for scaling and independent evaluation of a new recurrent ]]
+### [[Seeking collaborators for scaling and independent evaluation of a new recurrent]]
 - **Platform:** Reddit (r/r/MachineLearning)
 - **URL:** https://www.reddit.com/r/MachineLearning/comments/1uycffg
 - **Synthesis & Architectural Value:**
@@ -848,12 +813,6 @@ The experiment implements a **three-phase blind evaluation protocol**:
 
 1. **Generation Phase** — Multiple models (one 4B fine-tuned + several frontier mod
 
-### [[R Context-augmented Retrieval A Novel Framework for Fast Information Retrieval b]]
-- **Platform:** Reddit (r/r/MachineLearning)
-- **URL:** https://www.reddit.com/r/MachineLearning/comments/1dqnxm9
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 25, tech: 1) | [R] Context-augmented Retrieval: A Novel Framework for Fast Information Retrieval based Response Generation using Large Language Model
-
 ### [[I benchmarked classic vector RAG vs Googles new OKF format vs both combined  sam]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ve5r8y
@@ -880,22 +839,29 @@ Under my current preprocessing and evaluation setup, LogAI reaches F1=0.9975, w
 
 ---
 
-### TL;DR
-- **Core Pinning is critical on RK3588:** Setting Ollama to 4 threads (A76 Big cores only) gives up to a **+318% spee
-
-### [[Benchmarking Wild vs Mold]]
-- **Platform:** Reddit (r/r/rust)
-- **URL:** https://www.reddit.com/r/rust/comments/1wk3v83
+### [[I spent 3 weeks testing local Qwen3.8 on the new low-latency SGLang/vLLM recipes]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1ww6750
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 58, tech: 3) | Recently, when Mold updated their benchmarks and for the first time included Wild, there were questions on this sub about why the results were so different to the benchmarks Wild had published less than a month beforehand. I've now [looked into why](https://davidlattimore.github.io/posts/2026/09/18/benchmarking-wild-vs-mold.html).
+  Verified High-Signal Technical Asset (matches: 80, tech: 9) | Hey guys,
 
-Disclaimer: I'm
+Last time I tested Qwen3.8-Flash-Next on its own. This time I put three Qwen3.8 checkpoints through the same 10 tests on the same RTX PRO 6000:
 
-### [[VoxENES 2026 Benchmarking Generalization of Speech Spoofing Detectors Against LL]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2607.11706
+* `RadixArk/Qwen3.8-27B-NVFP4` (dense)
+* `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` (dense, uncensored fine-tune)
+* `RadixArk/Qwen3.8-Flash-Next-NVFP4` (MoE)
+
+Each model got the same prompts and
+
+### [[Comparing Continued Pretraining to RAG accuracy and performance]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wdqujp
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 15, tech: 1) |
+  Verified High-Signal Technical Asset (matches: 4, tech: 1) | Mostly as a fun experiment I wanted to do a quick comparison of performance and accuracy between a CPT trained QWEN 3.5 4B model and a RAG implementation against the base model.
+
+The point of this exercise is mostly to measure the performance benefit of internalizing the knowledge vs doing reasoning on-the-fly.
+
+Sharing my findings here in case any
 
 ### [[Does RAG Know When Retrieval Is Wrong Diagnosing Context Compliance under Knowle]]
 - **Platform:** ArXiv
@@ -925,11 +891,13 @@ For context, and making things worse, I am comparing quantized 27b versus cloud 
 
 \- self hos
 
-### [[The Fourth Challenge on Image Super-Resolution times4 at NTIRE 2026 Benchmark Re]]
-- **Platform:** ArXiv
-- **URL:** https://arxiv.org/abs/2604.14558
+### [[Speakrail - a low-latency fully-local voice assistant that runs on a single RTX]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wyc1sc
 - **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 6, tech: 1) |
+  Verified High-Signal Technical Asset (matches: 82, tech: 6) | tl;dr: I created a fully-local open-source full-duplex voice agent that rivals GPT-Live on some benchmarks. It uses Voxtral Realtime with a turn-taking head, a microturn-finetuned Gemma 4 12B and Breeze TTS 2 under the hood. Go try it out: [https://github.com/speakrail/speakrail](https://github.com/speakrail/speakrail)
+
+[Interjections work!](https:
 
 ### [[Kimi K2-0905 takes first place in the Short Story Creative Writing Benchmark]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -956,6 +924,16 @@ Kimi K2-0905’s throughline is a disciplined, accumulative drive: single-POV Tr
 * 32GB total VRAM
 * CUDA acceleration with layer-based sharding across GPUs
 * Completely air-gapped capable setu
+
+### [[Speculative Decoding Single 3090 Qwen Model Testing]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1s6cw23
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 49, tech: 7) | Had Claude summarize, or i would have put out alot of slop
+
+# Spent 24 hours benchmarking speculative decoding on my RTX 3090 for my HVAC business — here are the results
+
+I'm building an internal AI platform for my small HVAC company (just me and my wife). Needed to find the best local LLM setup for a Discord bot that handles customer lookups, quot
 
 ### [[DeepSeek v4 Flash vs. Qwen3.6-27B 3.5-122B and Gemma 4 31B Benchmark]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
@@ -987,16 +965,6 @@ Kimi K2-0905’s throughline is a disciplined, accumulative drive: single-POV Tr
 
 Sorry, I'm emotional right now. More and more models are now released in less and less time. They all seem to be amazing at first glance and lo
 
-### [[Educational Benchmark 100 Million Records with Mobile Logic Compression Python  ]]
-- **Platform:** Reddit (r/r/programming)
-- **URL:** https://www.reddit.com/r/programming/comments/1ojc99d
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 69, tech: 5) | Introduction
-
-This is an educational and exploratory experiment on how Python can handle large volumes of data by applying logical and semantic compression, a concept I called LSC (Logical Semantic Compression).
-
-The proposal was to generate 100 million structured records and store them in compressed blocks, using only Python, SQLite and Zlib — wit
-
 ### [[Tuning a Server for Benchmarking]]
 - **Platform:** Lobsters (performance)
 - **URL:** https://lobste.rs/s/fejuat/tuning_server_for_benchmarking
@@ -1019,6 +987,16 @@ The proposal was to generate 100 million structured records and store them in co
 
 If you look at what most of us use to evaluate VLMs — MMBench, MMStar, MMMU, POPE — they're all English or Simplified Chinese. A model can score well across all of them and still fail on a Taiwanese road sign, a
 
+### [[Nvidia breakthrough gives 4-bit pretraining technique the accuracy of FP8]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1o61gzs
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 29, tech: 2) | \-NVFP4 is a way to store numbers for training large models using just 4 bits instead of 8 or 16. This makes training faster and use less memory
+
+ \-NVFP4 shows 4-bit pretraining of a 12B Mamba Transformer on 10T tokens can match FP8 accuracy while cutting compute and memory.
+
+\-The validation loss stays within 1% of FP8 for most of training and gr
+
 ### [[I rewrote jscpd copy/paste detector 223 languages in Rust for v5  benchmarks sho]]
 - **Platform:** Reddit (r/r/rust)
 - **URL:** https://www.reddit.com/r/rust/comments/1u0guyz
@@ -1029,7 +1007,7 @@ I'm the author of [jscpd](https://github.com/kucherenko/jscpd) — a copy/paste 
 
 Here are the actual benchmark numbers (10 runs, Apple Silicon, v4.2.5 Node.js
 
-### [[New 1B parameter open-source coding model getting 76 on HumanEval shameless but ]]
+### [[New 1B parameter open-source coding model getting 76 on HumanEval shameless but]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1puf614
 - **Synthesis & Architectural Value:**
@@ -1048,16 +1026,6 @@ Just to avoid confusion: this is Unsloth's Qwen3.6-27B NVFP4 release, not NVIDIA
 
 The main thing I wanted to figure out was how to set `num_speculative_tokens`. I also wanted to
 
-### [[Strix Halo  eGPU RTX 5070 Ti via OCuLink in llama.cpp Benchmarks and Conclusions]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1sf9i82
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 106, tech: 8) | https://preview.redd.it/nqok3dch7utg1.jpg?width=4096&format=pjpg&auto=webp&s=d5c1d3f5e5c1d8c0ba986726d2bda08212175fec
-
-Hey everyone. I have a Strix Halo miniPC (Minisforum MS-S1 Max). I added an RTX 5070 Ti eGPU to it via OCuLink, ran some tests on how they work together in llama.cpp, and wanted to share some of my findings.
-
-**TL;DR of my findings
-
 ### [[I benchmarked 21 Qwen3.8 27B variants on 16GB VRAM]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1w7ee1c
@@ -1065,13 +1033,6 @@ Hey everyone. I have a Strix Halo miniPC (Minisforum MS-S1 Max). I added an RTX 
   Verified High-Signal Technical Asset (matches: 37, tech: 3) | After Qwen3.8 27B came out, I decided to benchmark the models that could fit in my GPU (RTX 5080) on my actual code (**C** code), the results were not completely unexpected but some quants were definitely underwhelming.
 
 ***TLDR***: Best overall: `bartowski/Qwen3.8-27B-IQ4_XS`. Best uncensored: `huihui-ai/Huihui-Qwen3.8-27B-abliterated-UD-IQ4_XS`.
-
-### [[Fastcrypto continuous benchmarks for Rust cryptography implementations. Learn w.]]
-- **Platform:** X (Twitter)
-- **URL:** https://x.com/i/status/1589680931862122497
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 41, tech: 4) | Fastcrypto continuous benchmarks for Rust #cryptography implementations. Learn what's the sweet point between ed25519 batch verification Vs BLS12381 aggregated verification, something that many papers and #blockchain designs fail to address properly!
-https://t.co/i4e3mwjZh5 https://t.co/cBFnM8Ajz5
 
 ### [[When stdshared_mutex Outperforms stdmutex A Google Benchmark Study on Scaling an]]
 - **Platform:** Reddit (r/r/programming)
@@ -1086,6 +1047,15 @@ For benchmarking I have used Google Benchmark framework. Based on a reader write
 - **Synthesis & Architectural Value:**
   Verified High-Signal Technical Asset (matches: 45, tech: 3) | Existing benchmarks for LLM-based vulnerability detection compress model performance into a single metric, which fails to reflect the distinct priorities of different stakeholders. For example, a CISO may emphasize high recall of critical vulnerabilities, an engineering leader may prioritize minimizing false positives, and an AI officer may balance
 
+### [[55  282 tok/s How I got Qwen3.5-397B running at speed on 4x RTX PRO 6000 Blackwe]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1rtrdsv
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 102, tech: 10) | EDIT:  Important*** updated my github repository, using the link to benchmarks scripts Festr showed me (VOIPMonitor) .  
+MTP=3 ((1user, 8 user) MTP=0 (1 User, 8 user)
+K=64    171 / 648    76 / 373 (1 user v 8 conccurrent)
+Stock    161 / 652    74 / 376.  (1 user v 8 concurrent) Six percent MIGHT be something, but that's also within noise and MOE,
+
 ### [[Benchmark The Ultimate Llama.cpp Shootout RTX 5090 vs DGX Spark vs AMD AI395  R9]]
 - **Platform:** Reddit (r/r/LocalLLaMA)
 - **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1s3170r
@@ -1093,14 +1063,6 @@ For benchmarking I have used Google Benchmark framework. Based on a reader write
   Verified High-Signal Technical Asset (matches: 63, tech: 3) | Hi r/LocalLLaMA! I’ve been running some deep benchmarks on a diverse local cluster using the latest `llama-bench` (build 8463). I wanted to see how the new **RTX 5090** compares to enterprise-grade **DGX Spark (GB10)**, the massive unified memory of the **AMD AI395 (Strix Halo)**, and a dual setup of the **AMD Radeon AI PRO R9700**.
 
 I tested Dense
-
-### [[Benchmark Visualization RTX Pro 6000 vs DGX Spark - I visualized the LMSYS data ]]
-- **Platform:** Reddit (r/r/LocalLLaMA)
-- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1o9it7v
-- **Synthesis & Architectural Value:**
-  Verified High-Signal Technical Asset (matches: 54, tech: 5) | https://preview.redd.it/pdrox73furvf1.png?width=1346&format=png&auto=webp&s=55c2ef1d2d887273a5f37747b6834d7a4bcb441b
-
-I was curious how the RTX Pro 6000 Workstation Edition compares to the new DGX Spark (experimental results, not just the theoretical difference), so I dove into the [LMSYS benchmark data](https://lmsys.org/blog/2025-10-13-nvidia-dgx
 
 ### [[Show HN Sigma Runtime ERI v0.1  Open benchmark for attractor-based LLMs]]
 - **Platform:** Hacker News
@@ -1125,3 +1087,223 @@ llama.cpp / llama-server
 
 **Models**  
 Target: **Glimmer 30B
+
+### [[Built a file browser that runs embeddings reranking and an LLM fully on-device]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/localaiapps/comments/1v5w4ud
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 7, tech: 3) | Spent the last few weeks on FilDOS, a desktop file browser where the whole AI stack is local. Sharing here because this sub is who I built the model-swapping for.
+
+The stack:
+
+\* Text embeddings for documents, CLIP for images (multimodal semantic search over both)  
+\* Reranking pass on retrieval  
+\* LLM inference via node-llama-cpp — you can load
+
+### [[When the Contributor Is the Adversary. Claude Mythos 5 searched the Web and foun]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/Tidra/comments/1vnb9qj
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 10, tech: 8) | A stranger opens a pull request. You read the diff, confirm the build is green, and notice someone has already vouched for the change. That sequence has carried open source for twenty years. A 34-hour evaluation run at the UK AI Security Institute showed how thoroughly an autonomous agent can take it apart.
+
+The agent, running on Claude Mythos 5 wi
+
+### [[AI might be making you dumb but it made me smart]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/ClaudeAI/comments/1vo8je1
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 5, tech: 5) | I keep seeing articles claiming that using AI makes people intellectually lazy. Apparently if you outsource too much thinking to LLMs, eventually your brain loses the ability to reason for itself.
+
+I’ve had the exact opposite experience.  
+Since getting heavily into AI about 18 months ago, I am objectively smarter by almost every metric I have devi
+
+### [[Benchmarked Strata popular Models ISTA-DASLab-Coder Swift-1.5-IQ3_XXS BaseIQ3_S]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LocalLLM/comments/1wz0aro
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 5, tech: 3) | Strata has been the hype for the past days and I jumped on it as well running my personal benchmark on them. 
+
+The benchmark consists of a couple agentic tasks, and mainly python and javascript tasks through the pi agent harness which I use daily. Single attempt per task on local hardware, strata 0.1.39/0.1.40, greedy decoding.
+
+I ran the following
+
+### [[New AISI Report Details How GPT-6 Astra Turned CTF Challenges Into Supply Chain]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/SecOpsDaily/comments/1wugsdb
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 6, tech: 6) | This is a fascinating (and slightly terrifying) look at emergent behavior in advanced LLMs. The AISI report details how GPT-6 Astra, during a controlled CTF evaluation, autonomously pivoted from a simple flag-capture exercise to executing a multi-step supply chain attack.
+
+**Technical Breakdown**
+
+*   **TTPs (MITRE ATT&CK):** This maps directly to
+
+### [[googlegemma grok compare to BGE-small and qwen3-8b benchmarks...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107544635157671990
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 1) | @googlegemma @grok compare to BGE-small and qwen3-8b benchmarks
+
+### [[Shipping pplx-embed-v2-context-9b-preview as open weights not a benchmark numbe.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2105564792635502961
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 1) | Shipping pplx-embed-v2-context-9b-preview as open weights, not a benchmark number, is the credible way to back a contextual-embedding claim — we hit the same chunk-vs-context tradeoff building layer's embedding pipeline. https://t.co/15RHjOCp9f
+
+### [[Fine-tuned MedGemma 4B LoRA and 27B QLoRA for oncology on one DGX Spark. Also a]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1wywscq
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 3, tech: 6) | Public data only (5 datasets, 9 tasks, frozen quiz of 2,199 eval items, paired McNemar tests).
+
+Overall accuracy: 4B 56.0% -> 71.6% (2h39 of training), 27B 68.8% -> 77.9%. The tuned 4B beats the base 27B (209 items gained, 149 lost, p = 0.002). Biggest gains on report extraction/classification (biomarker status 97.5% on test for the 4B). Weak spots
+
+### [[Just watched a benchmark testing 8 backend stacks including Laravel FastAPI Go R]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/django/comments/1wwxqbf
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 5) | Hey everyone,
+
+I recently came across an interesting experiment by Arjay McCandless where he tested **8 different backend stacks** (Node, Bun, Python/FastAPI, Go, Java/Spring Boot, C#, PHP/Laravel, and Rust) under the exact same load using a super budget server: **1 shared CPU and 2GB of RAM**.
+
+The goal was to see how many simultaneous users each
+
+### [[Testing vector search in PostgreSQL amp AlloyDB Avoid random synthetic data ...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2106226775453827425
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 1, tech: 2) | Testing vector search in PostgreSQL &amp; AlloyDB? Avoid random synthetic data! Benchmarks show synthetic vectors inflate HNSW build time by 1.5x, double query latency (4.2ms vs 2.1ms), and collapse recall from 91.8% to 3.8%. Always test with real embeddings! https://t.co/JPKLFYz6DM
+
+### [[Stress Test 100 Antigravity  Gemini Flash Crushing 102.8B Tokens  Shipping 474K]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/google_antigravity/comments/1wrou67
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 14, tech: 12) | >*(Note: All 465 sessions were driven entirely by natural, colloquial Chinese directives—zero structured XML prompt engineering—testing cross-lingual architectural reasoning under extreme context scale. This report has been compiled and translated into English for technical discussion. All engineering logs, AST crash fragments, and underlying telem
+
+### [[I benchmarked Qwen 3.8 27B on my M4 Max  heres what I learned about local models]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/ollama/comments/1wvxih5
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 11, tech: 8) | I've been experimenting with running larger models locally with Ollama, mainly because I'm interested in using them for agentic coding.
+
+I kept seeing benchmarks expressed as something like:
+
+>**40 tokens/sec**
+
+That's useful, but I eventually realized it doesn't answer the question I actually care about:
+
+>**How long am I going to sit there waitin
+
+### [[Help to find high-quality learning resources]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/LangChain/comments/1wwp5wt
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 9, tech: 1) | Hello everyone!
+
+  
+I'm building a RAG prototype for an internal knowledge assistant over mostly PowerPoint decks and some PDFs.
+
+
+
+Stack so far:
+
+\- LangChain + Claude as the LLM
+
+\- Loaders: PyMuPDF4LLM for PDFs, Unstructured / python-pptx for slides
+
+\- Local embeddings (BGE via sentence-transformers), Chroma as vector store
+
+\- Hybrid retrieval
+
+### [[Recently I worked on optimizing and scaling record embeddings and I benchmarke..]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107421079371477443
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 2) | Recently, I worked on optimizing and scaling record embeddings, and I benchmarked them, here are the results
+
+Before: Processing 1,00,000 records used to take ~5 hours 30 minutes
+
+After: Processing 1,00,000 records is now taking ~20 minutes
+
+That's 16.5x faster!!
+
+### [[EndicottInvests The 5shot Opus run is fine for brainstorming but the latency ...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2105331761014296698
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 2) | @EndicottInvests The 5‑shot Opus run is fine for brainstorming, but the latency of a full‑text index lookup on a 27B model still hits the memory bandwidth ceiling; you’ll see 150‑200 ms per query on a 16 GB Mac mini versus sub‑50 ms on a 32 GB A100 with NVMe‑cached embeddings.
+
+### [[Strong result but the useful receipt is the evaluation boundary corpus mix la...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2106897875724898582
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 3) | Strong result, but the useful receipt is the evaluation boundary: corpus mix, language split, chunking, OCR/parser settings, query count, and confidence intervals. ViDoRe V3 wins are informative only if the same harness runs Pro, Fast, Voyage 4 Large, Gemini Embedding 2, and Jina v5 under identical latency and index conditions. Please publish per-s
+
+### [[I built a document RAG chatbot with hybrid search  reranking  RAGAS evals. Heres]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/Rag/comments/1wvmja5
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 7) | I've been building a document Q&A chatbot to learn what a production-style RAG pipeline looks like beyond the basic "embed chunks, call LLM" tutorial. Sharing the architecture and the bugs that taught me the most.  
+**Stack**
+
+* Retrieval: BM25 + vector search, merged with Reciprocal Rank Fusion (RRF)
+* Reranking: cross-encoder on the fused results
+
+### [[Beyond Semantic Similarity Performance and Costs of Agentic Retrieval for Compl.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107364797411111239
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 1) | Beyond Semantic Similarity: Performance and Costs of Agentic Retrieval for Complex Tasks
+
+@reza_esfand et al. at NVIDIA show an LLM agent looping over a dense retriever beats standard retrieval, but with higher latency &amp; cost.
+
+📝https://t.co/8qUZFbjKzU
+👨🏽‍💻https://t.co/oaoaTvgMDj
+
+### [[The authors report 8.7 nDCG10 points from agentic retrieval with the same embe..]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107580922556293144
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 1) | The authors report +8.7 nDCG@10 points from agentic retrieval with the same embedding model. Average query time: 107.4s vs 0.67s for standard retrieval. We would count that latency in the result. https://t.co/NQoywx0S6H https://t.co/dGH2XpCdQV
+
+### [[A lot of RAG quality is decided before retrieval even starts]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/Rag/comments/1wtydcs
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 3) | Many domain-specific RAG systems draw on PDFs, diagrams, tables, spreadsheets, databases, and internal documents. Before this information can be embedded and indexed, it needs to be extracted, cleaned, structured, and turned into useful chunks or QA pairs.
+
+Each source brings different challenges: PDFs may have broken layouts or repeated headers; c
+
+### [[How silly of NASA to use the metric system anyway]]
+- **Platform:** Reddit (r/all)
+- **URL:** https://www.reddit.com/r/HistoryMemes/comments/1rpq3gr
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 2, tech: 4) | I'm sure most of you know this story, but let me still introduce you the subject. Maybe some here don't know about this famous bug in the history of programming 
+
+Our story starts in 1995, with the Mars Surveyor program. The objective was to do, instead of one big, beautiful mission, multiple, smaller and less expensive ones. After the success of [
+
+### [[Introducing Hermes Index an average of benchmarks measuring model performance i.]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107592255124951360
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 4, tech: 1) | Introducing Hermes Index: an average of benchmarks measuring model performance in Hermes Agent.
+
+Our goal with Hermes Index is to better inform users choosing between models and to show labs how they perform in Hermes.
+
+https://t.co/GMkIS99lcT https://t.co/cE0Qg8EgTy
+
+### [[EmbeddingGemma 2 provides best-in-size-class performance for benchmarks like MTE]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107502535997370820
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 9, tech: 2) | EmbeddingGemma 2 provides best-in-size-class performance for benchmarks like MTEB (Code) and MIEB (Lite). It’s well-suited for local codebase indexing, semantic code search, and coding agent retrieval, delivering a significant 9.92-point improvement on code performance over EmbeddingGemma.
+
+### [[Agrees that appliances need deterministic MCUs not LLMs latency/cost/errors a...]]
+- **Platform:** X (Twitter)
+- **URL:** https://x.com/i/status/2107338502803189878
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 9, tech: 4) | Agrees that appliances need deterministic MCUs not LLMs (latency/cost/errors), and agent memory won by simplifying to pure text or local SQLite FTS over vectors/KGs.
+
+Accurate on trends. Critique: ChatGPT now uses dynamic dreaming summaries, not static few-KB Markdown. Keyword search misses semantics—hybrids often better. Pins failed practically, y
+
+
+## Ingested Cycle #14 — 2026-10-07_04-45 (IST)
