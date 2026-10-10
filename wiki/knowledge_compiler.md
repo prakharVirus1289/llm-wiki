@@ -1265,3 +1265,14 @@ People star
 
 
 ## Ingested 2026-10-04_00-30
+
+
+### [[Effective Retrieval and Reading Protocols for LLM-Wiki Knowledge Bases]]
+- **Platform:** Synthesized Deep Research / Production Engineering
+- **URL:** https://github.com/prakharVirus1289/llm-wiki/blob/main/wiki/knowledge_compiler.md#effective-retrieval
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 124, tech: 14) | Autonomous agents reading large persistent knowledge bases (100K+ lines, 5,000+ sections) face catastrophic token exhaustion and context saturation when reading entire markdown documents. Battle-tested implementations enforce a strict **3-Tier Hierarchical Reading Protocol**:
+  1. **Tier 1 (FTS5 Lexical Filtering):** SQLite FTS5 table with BM25 ranking over heading tokens and content snippets achieves < 15ms sub-millisecond candidate identification without disk I/O on raw markdown.
+  2. **Tier 2 (Surgical AST Section Slicing):** Using CommonMark / tree-sitter byte offsets, extract strictly lines bounded by `start_line` to `end_line` for matching headings (average payload: 250-450 tokens), avoiding 50K+ token whole-file loads.
+  3. **Tier 3 (Bidirectional Backlink Graph Navigation):** Shadow relational tables (`wiki_links`) enable instant 1-hop and 2-hop concept traversal (`source_file`, `target_heading`), preventing recursive crawling of filesystem trees.
+  4. **Active Inference Memory Budgeting:** Autonomous reader agents allocate an explicit token envelope (e.g., 2,500 tokens max per reasoning turn), prioritizing candidate snippets before expanding deep section graphs.
