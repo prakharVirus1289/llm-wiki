@@ -28,10 +28,56 @@ def get_connection(db_path: Path, timeout: float = 5.0) -> sqlite3.Connection:
     conn.execute("PRAGMA cache_size = -64000;")
     return conn
 
+def normalize_slug(text: str) -> str:
+    """Normalizes a concept string into a canonical lowercase underscore slug."""
+    s = text.strip().lower()
+    s = re.sub(r'[\s\-]+', '_', s)
+    s = re.sub(r'[^\w]', '', s)
+    return s.strip('_')
+
+def parse_wikilink(raw_target: str, default_domain: str = None) -> tuple[str, str, str | None]:
+    """
+    Parses a raw wikilink target (e.g., 'consensus/leases', 'consensus/leases#anchor|alias', 'sqlite_wal').
+    Returns (domain_scope, target_slug, canonical_display).
+    """
+    raw_target = raw_target.strip().lstrip("[").rstrip("]")
+    # Strip alias if present
+    if "|" in raw_target:
+        raw_target = raw_target.split("|", 1)[0].strip()
+    # Strip anchor if present
+    if "#" in raw_target:
+        raw_target = raw_target.split("#", 1)[0].strip()
+
+    domain = None
+    concept = raw_target
+    
+    # Check if target starts with an explicit short domain scope: e.g. 'consensus/leases' or 'storage/wal'
+    if "/" in raw_target:
+        parts = raw_target.split("/", 1)
+        candidate_domain = parts[0].strip()
+        # Domain scopes must be valid identifiers without spaces, <= 30 chars
+        if re.match(r'^[a-zA-Z0-9_\-]{2,30}$', candidate_domain):
+            domain = candidate_domain.lower()
+            concept = parts[1].strip()
+            
+    if not domain:
+        domain = default_domain.lower() if default_domain else "general"
+    
+    slug = normalize_slug(concept)
+    return domain, slug, raw_target
+
 def init_db(db_path: Path):
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = get_connection(db_path)
     try:
+        # Check if wiki_links needs schema migration
+        cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='wiki_links';")
+        if cursor.fetchone():
+            col_cursor = conn.execute("PRAGMA table_info(wiki_links);")
+            cols = {row[1] for row in col_cursor.fetchall()}
+            if "target_anchor" not in cols or "domain_scope" not in cols:
+                conn.execute("DROP TABLE wiki_links;")
+
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS raw_firehose (
                 id TEXT PRIMARY KEY,
@@ -56,8 +102,13 @@ def init_db(db_path: Path):
                 source_file TEXT NOT NULL,
                 source_heading TEXT NOT NULL,
                 target_concept TEXT NOT NULL,
-                PRIMARY KEY (source_file, source_heading, target_concept)
+                target_anchor TEXT NOT NULL DEFAULT '',
+                link_alias TEXT,
+                domain_scope TEXT,
+                PRIMARY KEY (source_file, source_heading, target_concept, target_anchor)
             );
+            CREATE INDEX IF NOT EXISTS idx_wiki_links_target ON wiki_links(target_concept, source_file);
+            CREATE INDEX IF NOT EXISTS idx_wiki_links_domain ON wiki_links(domain_scope, target_concept);
 
             CREATE TABLE IF NOT EXISTS wiki_sections_index (
                 file_path TEXT NOT NULL,
@@ -81,10 +132,26 @@ def init_db(db_path: Path):
                 content='raw_firehose',
                 content_rowid='rowid'
             );
+
+            DROP VIEW IF EXISTS wiki_dangling_links;
+            CREATE VIEW wiki_dangling_links AS
+            SELECT 
+                l.target_concept,
+                l.domain_scope,
+                COUNT(*) AS incoming_citations,
+                GROUP_CONCAT(DISTINCT l.source_file) AS citing_files
+            FROM wiki_links l
+            LEFT JOIN wiki_sections_index s 
+              ON LOWER(s.heading) = LOWER(l.target_concept)
+              OR LOWER(REPLACE(REPLACE(s.heading, ' ', '_'), '-', '_')) = LOWER(l.target_concept)
+              OR LOWER(REPLACE(s.file_path, '.md', '')) = LOWER(l.target_concept)
+            WHERE s.heading IS NULL
+            GROUP BY l.target_concept, l.domain_scope
+            ORDER BY incoming_citations DESC;
         """)
     finally:
         conn.close()
-    print(f"[OK] Database initialized at {db_path} with WAL & FTS5.")
+    print(f"[OK] Database initialized at {db_path} with WAL, FTS5 & wiki_links graph schema.")
 
 def truncate_wal(db_path: Path):
     conn = get_connection(db_path)
@@ -110,7 +177,8 @@ def snapshot_db(db_path: Path, out_path: Path):
 def index_wiki(db_path: Path, wiki_dir: Path):
     init_db(db_path)
     heading_regex = re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE)
-    wikilink_regex = re.compile(r'\[\[(.+?)\]\]')
+    # Support [[target#anchor|alias]] or [[domain/concept#anchor|alias]]
+    wikilink_regex = re.compile(r'\[\[([^\]#|]+)(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]')
     
     conn = get_connection(db_path)
     try:
@@ -123,6 +191,7 @@ def index_wiki(db_path: Path, wiki_dir: Path):
         link_count = 0
         for md_file in wiki_dir.glob("*.md"):
             rel_path = md_file.name
+            default_domain = md_file.stem
             content = md_file.read_text(encoding="utf-8")
             matches = list(heading_regex.finditer(content))
             
@@ -146,20 +215,123 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                 )
                 count += 1
                 
-                # Extract [[wikilinks]] and populate the relational shadow graph table
+                # Extract [[wikilinks]] with slug normalization, anchors, aliases, and domain scoping
                 for wl in wikilink_regex.finditer(section_text):
-                    concept = wl.group(1).strip()
-                    if concept and concept != heading:
-                        conn.execute(
-                            "INSERT OR IGNORE INTO wiki_links (source_file, source_heading, target_concept) VALUES (?, ?, ?)",
-                            (rel_path, heading, concept)
-                        )
-                        link_count += 1
+                    raw_target = wl.group(1).strip()
+                    anchor = wl.group(2).strip() if wl.group(2) else ""
+                    alias = wl.group(3).strip() if wl.group(3) else None
+                    
+                    if raw_target:
+                        domain, slug, display = parse_wikilink(raw_target, default_domain=default_domain)
+                        if slug and slug != normalize_slug(heading):
+                            conn.execute(
+                                """INSERT OR IGNORE INTO wiki_links 
+                                   (source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope) 
+                                   VALUES (?, ?, ?, ?, ?, ?)""",
+                                (rel_path, heading, slug, anchor, alias or display, domain)
+                            )
+                            link_count += 1
                         
         conn.commit()
     finally:
         conn.close()
     print(f"[OK] Indexed {count} sections and {link_count} graph edges into SQLite FTS5 & wiki_links.")
+
+def get_backlinks(db_path: Path, concept: str) -> list[dict]:
+    """Returns all chapters and headings citing the given concept."""
+    domain, slug, _ = parse_wikilink(concept)
+    conn = get_connection(db_path)
+    try:
+        if "/" in concept:
+            cursor = conn.execute("""
+                SELECT source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope
+                FROM wiki_links
+                WHERE target_concept = ? AND domain_scope = ?
+                ORDER BY source_file, source_heading;
+            """, (slug, domain))
+        else:
+            cursor = conn.execute("""
+                SELECT source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope
+                FROM wiki_links
+                WHERE target_concept = ?
+                ORDER BY source_file, source_heading;
+            """, (slug,))
+        rows = cursor.fetchall()
+        if not rows:
+            cursor = conn.execute("""
+                SELECT source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope
+                FROM wiki_links
+                WHERE target_concept LIKE ?
+                ORDER BY source_file, source_heading
+                LIMIT 25;
+            """, (f"%{slug}%",))
+            rows = cursor.fetchall()
+
+        return [
+            {
+                "source_file": r[0],
+                "source_heading": r[1],
+                "target_concept": r[2],
+                "target_anchor": r[3],
+                "link_alias": r[4],
+                "domain_scope": r[5]
+            }
+            for r in rows
+        ]
+    finally:
+        conn.close()
+
+def get_related_concepts(db_path: Path, concept: str, depth: int = 1) -> list[dict]:
+    """Returns co-cited and graph-neighbor concepts for a given entity."""
+    domain, slug, _ = parse_wikilink(concept)
+    conn = get_connection(db_path)
+    try:
+        # Find concepts cited within the same sections that cite this concept (co-citation network)
+        cursor = conn.execute("""
+            SELECT l2.target_concept, l2.domain_scope, COUNT(*) as co_citation_count
+            FROM wiki_links l1
+            JOIN wiki_links l2 
+              ON l1.source_file = l2.source_file 
+             AND l1.source_heading = l2.source_heading
+            WHERE (l1.target_concept = ? OR (l1.target_concept = ? AND l1.domain_scope = ?))
+              AND l2.target_concept != ?
+            GROUP BY l2.target_concept, l2.domain_scope
+            ORDER BY co_citation_count DESC
+            LIMIT 15;
+        """, (slug, slug, domain, slug))
+        rows = cursor.fetchall()
+        return [
+            {
+                "target_concept": r[0],
+                "domain_scope": r[1],
+                "co_citation_count": r[2]
+            }
+            for r in rows
+        ]
+    finally:
+        conn.close()
+
+def get_dangling_links(db_path: Path, limit: int = 30) -> list[dict]:
+    """Returns top cited concepts that do not yet have a defining section."""
+    conn = get_connection(db_path)
+    try:
+        cursor = conn.execute("""
+            SELECT target_concept, domain_scope, incoming_citations, citing_files
+            FROM wiki_dangling_links
+            LIMIT ?;
+        """, (limit,))
+        rows = cursor.fetchall()
+        return [
+            {
+                "target_concept": r[0],
+                "domain_scope": r[1],
+                "incoming_citations": r[2],
+                "citing_files": r[3]
+            }
+            for r in rows
+        ]
+    finally:
+        conn.close()
 
 def query_section(db_path: Path, query_text: str):
     conn = get_connection(db_path)
@@ -184,11 +356,13 @@ def query_section(db_path: Path, query_text: str):
 
 def main():
     parser = argparse.ArgumentParser(description="SQLite Manager")
-    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section"])
+    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "backlinks", "related", "dangling"])
     parser.add_argument("--db", default="raw_firehose.db", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--wiki-dir", default=Path("wiki"), type=Path)
     parser.add_argument("--query", type=str)
+    parser.add_argument("--concept", type=str)
+    parser.add_argument("--limit", default=20, type=int)
     args = parser.parse_args()
 
     if args.action == "init":
@@ -207,6 +381,27 @@ def main():
             print("Error: --query is required for query-section.")
             sys.exit(1)
         query_section(args.db, args.query)
+    elif args.action == "backlinks":
+        if not args.concept:
+            print("Error: --concept is required for backlinks.")
+            sys.exit(1)
+        bls = get_backlinks(args.db, args.concept)
+        print(f"[BACKLINKS] Found {len(bls)} citing sections for '{args.concept}':")
+        for b in bls:
+            print(f"  - {b['source_file']} -> {b['source_heading']} (scope: {b['domain_scope']}, alias: {b['link_alias']})")
+    elif args.action == "related":
+        if not args.concept:
+            print("Error: --concept is required for related.")
+            sys.exit(1)
+        rel = get_related_concepts(args.db, args.concept)
+        print(f"[RELATED] Concepts co-cited with '{args.concept}':")
+        for r in rel:
+            print(f"  - {r['target_concept']} ({r['domain_scope']}): {r['co_citation_count']} co-citations")
+    elif args.action == "dangling":
+        dang = get_dangling_links(args.db, limit=args.limit)
+        print(f"[DANGLING] Top {len(dang)} uncategorized / dangling concepts:")
+        for d in dang:
+            print(f"  - [[{d['target_concept']}]] ({d['domain_scope']}): cited {d['incoming_citations']} times by {d['citing_files']}")
 
 if __name__ == "__main__":
     main()

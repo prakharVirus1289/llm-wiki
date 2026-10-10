@@ -25,7 +25,7 @@ DB_PATH = WORKSPACE_ROOT / "raw_firehose.db"
 # Import our AST Splicer and SQLite utility
 sys.path.append(str(WORKSPACE_ROOT / "scripts"))
 from ast_splicer import ASTSplicer
-from sqlite_manager import get_connection
+from sqlite_manager import get_connection, get_backlinks, get_related_concepts, get_dangling_links
 
 def handle_read_section(params: dict) -> dict:
     file_name = params.get("file", "")
@@ -142,13 +142,42 @@ def handle_stage_git_pr(params: dict) -> dict:
     subprocess.run(["git", "commit", "-m", f"{title}\n\n{diff_summary}"], cwd=WORKSPACE_ROOT, check=True)
     return {"staged": True, "branch": branch, "commit_msg": title}
 
+def handle_get_backlinks(params: dict) -> dict:
+    concept = params.get("concept", "")
+    if not concept:
+        return {"error": "Parameter 'concept' is required"}
+    if not DB_PATH.exists():
+        return {"backlinks": [], "warning": "raw_firehose.db does not exist yet"}
+    bls = get_backlinks(DB_PATH, concept)
+    return {"concept": concept, "count": len(bls), "backlinks": bls}
+
+def handle_get_related_concepts(params: dict) -> dict:
+    concept = params.get("concept", "")
+    depth = params.get("depth", 1)
+    if not concept:
+        return {"error": "Parameter 'concept' is required"}
+    if not DB_PATH.exists():
+        return {"related": [], "warning": "raw_firehose.db does not exist yet"}
+    rel = get_related_concepts(DB_PATH, concept, depth=depth)
+    return {"concept": concept, "related": rel}
+
+def handle_get_dangling_links(params: dict) -> dict:
+    limit = params.get("limit", 20)
+    if not DB_PATH.exists():
+        return {"dangling": [], "warning": "raw_firehose.db does not exist yet"}
+    dang = get_dangling_links(DB_PATH, limit=limit)
+    return {"dangling": dang}
+
 TOOL_REGISTRY = {
     "read_section": handle_read_section,
     "patch_section": handle_patch_section,
     "query_firehose_fts": handle_query_firehose_fts,
     "query_wiki_sections": handle_query_wiki_sections,
     "acquire_section_lease": handle_acquire_section_lease,
-    "stage_git_pr": handle_stage_git_pr
+    "stage_git_pr": handle_stage_git_pr,
+    "get_backlinks": handle_get_backlinks,
+    "get_related_concepts": handle_get_related_concepts,
+    "get_dangling_links": handle_get_dangling_links
 }
 
 def main():
@@ -170,7 +199,10 @@ def main():
                     {"name": "query_firehose_fts", "description": "Searches raw scraped items via SQLite FTS5."},
                     {"name": "query_wiki_sections", "description": "Searches compiled wiki headings and content via SQLite FTS5 in <1ms."},
                     {"name": "acquire_section_lease", "description": "Acquires a concurrency lease on a target section."},
-                    {"name": "stage_git_pr", "description": "Stages wiki edits to a dedicated Git PR branch."}
+                    {"name": "stage_git_pr", "description": "Stages wiki edits to a dedicated Git PR branch."},
+                    {"name": "get_backlinks", "description": "Finds all chapters and section headings citing a specific concept slug or domain/concept (e.g., 'sqlite_wal' or 'consensus/leases')."},
+                    {"name": "get_related_concepts", "description": "Finds related and co-cited concepts within the knowledge graph."},
+                    {"name": "get_dangling_links", "description": "Finds top cited concepts that lack a defining section in the wiki (knowledge gaps)."}
                 ]
                 response = {"jsonrpc": "2.0", "id": req_id, "result": {"tools": tools}}
             elif method in TOOL_REGISTRY:

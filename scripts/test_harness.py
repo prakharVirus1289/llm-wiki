@@ -178,16 +178,54 @@ def test_mcp_server_protocol():
         }
         proc.stdin.write(json.dumps(req_read) + "\n")
         proc.stdin.flush()
-        
         resp_line = proc.stdout.readline()
         resp_read = json.loads(resp_line)
         assert resp_read.get("result", {}).get("found") is True
         print("  ✓ read_section executed successfully on wiki/index.md")
+
+        # Request 3: get_backlinks via MCP tools/call
+        req_backlinks = {
+            "jsonrpc": "2.0",
+            "id": 3,
+            "method": "tools/call",
+            "params": {"name": "get_backlinks", "arguments": {"concept": "storage"}}
+        }
+        proc.stdin.write(json.dumps(req_backlinks) + "\n")
+        proc.stdin.flush()
+        
+        resp_line = proc.stdout.readline()
+        resp_bl = json.loads(resp_line)
+        content_text = resp_bl.get("result", {}).get("content", [{}])[0].get("text", "{}")
+        bl_data = json.loads(content_text)
+        assert bl_data.get("count", 0) > 0, "No backlinks returned for 'storage' via MCP!"
+        print("  ✓ get_backlinks executed successfully via MCP tools/call")
         
     finally:
         proc.terminate()
         proc.wait()
     print("  ✓ Passed: MCP server stdio JSON-RPC 2.0 interface fully compliant.")
+
+def test_wiki_graph_traversal():
+    print("\n[TEST 5] Knowledge Graph Wikilinks & Reverse Indexing...")
+    db_path = WORKSPACE_ROOT / "raw_firehose.db"
+    assert db_path.exists(), "raw_firehose.db not found"
+
+    # 1. Test wikilink parser
+    domain, slug, raw = sqlite_manager.parse_wikilink("consensus/leases#quorum|Distributed Leases", default_domain="consensus")
+    assert domain == "consensus"
+    assert slug == "leases"
+    print("  ✓ Domain-scoped slug parsing and alias normalization verified.")
+
+    # 2. Test backlinks retrieval
+    bls = sqlite_manager.get_backlinks(db_path, "storage")
+    assert len(bls) > 0, "Backlinks for 'storage' empty"
+    print(f"  ✓ Reverse index verified: found {len(bls)} citing sections for 'storage'.")
+
+    # 3. Test dangling links detection
+    dangling = sqlite_manager.get_dangling_links(db_path, limit=5)
+    assert len(dangling) > 0, "Dangling links view returned 0 rows"
+    print(f"  ✓ Dangling link detection verified: {len(dangling)} gap concepts detected.")
+    print("  ✓ Passed: Knowledge graph schema, reverse index & void detection operating with zero errors.")
 
 def main():
     print("=================================================================")
@@ -197,8 +235,9 @@ def main():
     test_sqlite_wal_and_truncation()
     test_sqlite_fts5_speed()
     test_mcp_server_protocol()
+    test_wiki_graph_traversal()
     print("\n=================================================================")
-    print("  ALL 4 INTEGRATION TEST SUITES PASSED WITH ZERO ERRORS (100%)   ")
+    print("  ALL 5 INTEGRATION TEST SUITES PASSED WITH ZERO ERRORS (100%)   ")
     print("=================================================================\n")
 
 if __name__ == "__main__":
