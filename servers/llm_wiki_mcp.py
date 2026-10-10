@@ -116,9 +116,6 @@ def handle_patch_section(params: dict) -> dict:
     content = params.get("content", "")
     logger.info("MCP patch_section: file='%s', heading='%s' (%d chars)", file_name, heading, len(content))
 
-    if not file_path.exists():
-        return {"status": "error", "error": f"File '{file_name}' does not exist in wiki/"}
-
     try:
         ASTSplicer.splice_section(file_path, heading, content)
         errs = ASTSplicer.lint_file(file_path)
