@@ -19,7 +19,8 @@ if hasattr(sys.stderr, 'reconfigure'):
 
 def init_db(db_path: Path):
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(db_path) as conn:
+    conn = sqlite3.connect(db_path)
+    try:
         conn.executescript("""
             PRAGMA journal_mode = WAL;
             PRAGMA synchronous = NORMAL;
@@ -78,18 +79,27 @@ def init_db(db_path: Path):
                 content_rowid='rowid'
             );
         """)
+    finally:
+        conn.close()
     print(f"[OK] Database initialized at {db_path} with WAL & FTS5.")
 
 def truncate_wal(db_path: Path):
-    with sqlite3.connect(db_path) as conn:
+    conn = sqlite3.connect(db_path)
+    try:
         conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+    finally:
+        conn.close()
     print(f"[OK] WAL file truncated to 0MB for {db_path}.")
 
 def snapshot_db(db_path: Path, out_path: Path):
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(db_path) as conn:
+    conn = sqlite3.connect(db_path)
+    try:
         conn.execute(f"VACUUM INTO '{out_path.as_posix()}';")
+    finally:
+        conn.close()
     print(f"[OK] Crash-consistent snapshot saved to {out_path}.")
+
 
 def index_wiki(db_path: Path, wiki_dir: Path):
     init_db(db_path)
