@@ -173,6 +173,7 @@ def main():
     splice_p.add_argument("--file", required=True, type=Path)
     splice_p.add_argument("--heading", required=True, type=str)
     splice_p.add_argument("--content-file", required=True, type=Path)
+    splice_p.add_argument("--no-sync-db", action="store_true", help="Skip automatic SQLite and embedding refresh")
 
     lint_p = subparsers.add_parser("lint")
     lint_p.add_argument("--file", required=True, type=Path)
@@ -193,6 +194,22 @@ def main():
         new_md = args.content_file.read_text(encoding="utf-8")
         ASTSplicer.splice_section(args.file, args.heading, new_md)
         print(f"[OK] Surgically spliced section '{args.heading}' in {args.file}")
+        if not args.no_sync_db:
+            db_candidates = [
+                args.file.parent.parent / "raw_firehose.db",
+                Path("raw_firehose.db"),
+                Path(__file__).resolve().parent.parent / "raw_firehose.db"
+            ]
+            db_path = next((p for p in db_candidates if p.exists()), None)
+            wiki_dir = args.file.parent
+            if db_path:
+                try:
+                    sys.path.insert(0, str(Path(__file__).resolve().parent))
+                    import sqlite_manager
+                    sqlite_manager.index_wiki(db_path, wiki_dir, embed=True)
+                    print(f"[OK] Synchronized SQLite Table 2 & refreshed embeddings for {args.file.name}")
+                except Exception as e:
+                    logger.warning("Automatic SQLite sync failed: %s", e)
     elif args.subcommand == "lint":
         errs = ASTSplicer.lint_file(args.file)
         if errs:
