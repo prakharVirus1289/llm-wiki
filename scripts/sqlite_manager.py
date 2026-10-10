@@ -54,6 +54,20 @@ def get_connection(db_path: Path, timeout: float = 5.0) -> sqlite3.Connection:
     conn.execute("PRAGMA cache_size = -64000;")
     return conn
 
+_embedding_model = None
+
+def get_embedding_model():
+    global _embedding_model
+    if _embedding_model is None:
+        try:
+            from fastembed import TextEmbedding
+            os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
+            _embedding_model = TextEmbedding("sentence-transformers/all-MiniLM-L6-v2")
+        except Exception as e:
+            logger.error("Failed to load fastembed TextEmbedding: %s", e)
+            raise
+    return _embedding_model
+
 def normalize_slug(text: str) -> str:
     """Normalizes a concept string into a canonical lowercase underscore slug."""
     s = text.strip().lower()
@@ -106,6 +120,15 @@ def init_db(db_path: Path):
                 logger.info("Migrating wiki_links table schema to include target_anchor and domain_scope")
                 conn.execute("DROP TABLE wiki_links;")
 
+        # Check if wiki_sections_index needs schema migration for embedding column
+        cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='wiki_sections_index';")
+        if cursor.fetchone():
+            col_cursor = conn.execute("PRAGMA table_info(wiki_sections_index);")
+            cols = {row[1] for row in col_cursor.fetchall()}
+            if "embedding" not in cols:
+                logger.info("Migrating wiki_sections_index table schema to include embedding BLOB column")
+                conn.execute("ALTER TABLE wiki_sections_index ADD COLUMN embedding BLOB;")
+
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS raw_firehose (
                 id TEXT PRIMARY KEY,
@@ -143,6 +166,7 @@ def init_db(db_path: Path):
                 heading TEXT NOT NULL,
                 level INTEGER NOT NULL,
                 content TEXT NOT NULL,
+                embedding BLOB,
                 PRIMARY KEY (file_path, heading)
             );
 
@@ -208,9 +232,9 @@ def snapshot_db(db_path: Path, out_path: Path):
         conn.close()
     print(f"[OK] Crash-consistent snapshot saved to {out_path}.")
 
-def index_wiki(db_path: Path, wiki_dir: Path):
+def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
     init_db(db_path)
-    logger.info("Starting wiki indexing pass for directory: %s", wiki_dir)
+    logger.info("Starting wiki indexing pass for directory: %s (embed=%s)", wiki_dir, embed)
     t0 = time.perf_counter()
     heading_regex = re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE)
     # Support [[target#anchor|alias]] or [[domain/concept#anchor|alias]]
@@ -218,13 +242,12 @@ def index_wiki(db_path: Path, wiki_dir: Path):
     
     conn = get_connection(db_path)
     try:
-        # Clear existing indexes
-        conn.execute("DELETE FROM wiki_sections_index;")
-        conn.execute("DELETE FROM wiki_sections_fts;")
+        # Clear existing graph links to refresh topological edges
         conn.execute("DELETE FROM wiki_links;")
         
         count = 0
         link_count = 0
+        active_sections = []
         for md_file in wiki_dir.glob("*.md"):
             rel_path = md_file.name
             default_domain = md_file.stem
@@ -242,10 +265,15 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                         end_pos = next_match.start()
                         break
                 section_text = content[start_pos:end_pos].strip()
-                conn.execute(
-                    "INSERT OR REPLACE INTO wiki_sections_index (file_path, heading, level, content) VALUES (?, ?, ?, ?)",
-                    (rel_path, heading, level, section_text)
-                )
+                active_sections.append((rel_path, heading))
+                conn.execute("""
+                    INSERT INTO wiki_sections_index (file_path, heading, level, content)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(file_path, heading) DO UPDATE SET
+                        level = excluded.level,
+                        embedding = CASE WHEN wiki_sections_index.content = excluded.content THEN wiki_sections_index.embedding ELSE NULL END,
+                        content = excluded.content
+                """, (rel_path, heading, level, section_text))
                 count += 1
                 file_sections += 1
                 
@@ -266,11 +294,46 @@ def index_wiki(db_path: Path, wiki_dir: Path):
                             )
                             link_count += 1
             logger.debug("Indexed %d sections from %s", file_sections, rel_path)
+
+        # Prune deleted sections
+        existing_rows = conn.execute("SELECT file_path, heading FROM wiki_sections_index;").fetchall()
+        active_set = set(active_sections)
+        to_delete = [r for r in existing_rows if (r[0], r[1]) not in active_set]
+        if to_delete:
+            conn.executemany("DELETE FROM wiki_sections_index WHERE file_path = ? AND heading = ?", to_delete)
                         
         # Synchronize FTS5 external content table cleanly
         logger.debug("Rebuilding FTS5 external content index...")
         conn.execute("INSERT INTO wiki_sections_fts(wiki_sections_fts) VALUES('rebuild');")
         conn.commit()
+
+        # If embedding requested, calculate embeddings for any new or updated sections
+        if embed:
+            cursor = conn.execute("SELECT file_path, heading, content FROM wiki_sections_index WHERE embedding IS NULL;")
+            unembedded = cursor.fetchall()
+            if unembedded:
+                print(f"[EMBEDDING] Generating vector embeddings for {len(unembedded)} new/modified sections using all-MiniLM-L6-v2...")
+                model = get_embedding_model()
+                import numpy as np
+                batch_size = 64
+                t_emb0 = time.perf_counter()
+                for i in range(0, len(unembedded), batch_size):
+                    batch = unembedded[i:i + batch_size]
+                    texts = [f"{r[1]}: {r[2][:500]}" for r in batch]
+                    batch_embs = list(model.embed(texts, batch_size=len(texts)))
+                    updates = [
+                        (np.array(emb, dtype=np.float32).tobytes(), r[0], r[1])
+                        for r, emb in zip(batch, batch_embs)
+                    ]
+                    conn.executemany(
+                        "UPDATE wiki_sections_index SET embedding = ? WHERE file_path = ? AND heading = ?",
+                        updates
+                    )
+                    conn.commit()
+                emb_elapsed = time.perf_counter() - t_emb0
+                print(f"[OK] Successfully generated embeddings for {len(unembedded)} sections in {emb_elapsed:.2f}s.")
+            else:
+                print("[EMBEDDING] All sections already have up-to-date embeddings.")
     finally:
         conn.close()
     elapsed_ms = (time.perf_counter() - t0) * 1000
@@ -410,6 +473,112 @@ def query_section(db_path: Path, query_text: str, limit: int = 20):
     finally:
         conn.close()
 
+def query_hybrid(db_path: Path, query_text: str, limit: int = 20):
+    logger.info("Hybrid search executing for query: '%s' (limit=%d)", query_text, limit)
+    t0 = time.perf_counter()
+    conn = get_connection(db_path)
+    try:
+        # 1. Lexical FTS5 candidate matching
+        keyword_ranks = {}
+        fts_query = re.sub(r'[^\w\s]', ' ', query_text).strip()
+        fts_words = [w for w in fts_query.split() if len(w) > 1]
+        if fts_words:
+            fts_expr = " OR ".join(fts_words[:8])
+            try:
+                cursor = conn.execute("""
+                    SELECT file_path, heading, snippet(wiki_sections_fts, 2, '<b>', '</b>', '...', 12)
+                    FROM wiki_sections_fts
+                    WHERE wiki_sections_fts MATCH ?
+                    LIMIT 50;
+                """, (fts_expr,))
+                fts_rows = cursor.fetchall()
+                for rank, row in enumerate(fts_rows):
+                    keyword_ranks[(row[0], row[1])] = (rank + 1, row[2])
+            except Exception as e:
+                logger.warning("FTS5 match failed for '%s': %s", fts_expr, e)
+
+        # 2. Vector Semantic Similarity
+        cursor = conn.execute("""
+            SELECT file_path, heading, embedding
+            FROM wiki_sections_index
+            WHERE embedding IS NOT NULL;
+        """)
+        emb_rows = cursor.fetchall()
+        meaning_ranks = {}
+        if emb_rows:
+            try:
+                import numpy as np
+                model = get_embedding_model()
+                q_emb = list(model.embed([query_text]))[0]
+                q_vec = np.array(q_emb, dtype=np.float32)
+                q_norm = np.linalg.norm(q_vec)
+                if q_norm > 0:
+                    q_vec = q_vec / q_norm
+
+                files_headings = []
+                vecs = []
+                for r in emb_rows:
+                    files_headings.append((r[0], r[1]))
+                    vecs.append(np.frombuffer(r[2], dtype=np.float32))
+
+                mat = np.stack(vecs)
+                norms = np.linalg.norm(mat, axis=1, keepdims=True)
+                norms[norms == 0] = 1.0
+                mat = mat / norms
+
+                sims = np.dot(mat, q_vec)
+                top_indices = np.argsort(sims)[::-1][:50]
+                for rank, idx in enumerate(top_indices):
+                    fh = files_headings[idx]
+                    meaning_ranks[fh] = (rank + 1, float(sims[idx]))
+            except Exception as e:
+                logger.warning("Vector semantic search failed: %s", e)
+
+        # 3. Reciprocal Rank Fusion (RRF)
+        all_candidates = set(keyword_ranks.keys()).union(set(meaning_ranks.keys()))
+        if not all_candidates:
+            print(f"[NOT FOUND] No sections matched query: '{query_text}'")
+            return
+
+        scored = []
+        for cand in all_candidates:
+            kw_data = keyword_ranks.get(cand)
+            mn_data = meaning_ranks.get(cand)
+            kw_rank = kw_data[0] if kw_data else None
+            mn_rank = mn_data[0] if mn_data else None
+
+            kw_score = 1.0 / (60 + kw_rank) if kw_rank is not None else 0.0
+            mn_score = 1.0 / (60 + mn_rank) if mn_rank is not None else 0.0
+            rrf_score = kw_score + mn_score
+            snippet_text = kw_data[1] if kw_data else ""
+            mn_sim = mn_data[1] if mn_data else 0.0
+
+            scored.append({
+                "file_path": cand[0],
+                "heading": cand[1],
+                "rrf_score": rrf_score,
+                "kw_rank": kw_rank,
+                "mn_rank": mn_rank,
+                "mn_sim": mn_sim,
+                "snippet": snippet_text
+            })
+
+        scored.sort(key=lambda x: x["rrf_score"], reverse=True)
+        top_results = scored[:limit]
+
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("Hybrid search returned %d candidates in %.2f ms", len(top_results), elapsed_ms)
+        print(f"[HYBRID MATCHES] Found {len(top_results)} candidates in {elapsed_ms:.2f} ms:")
+        for idx, res in enumerate(top_results, 1):
+            kw_label = f"KW Rank #{res['kw_rank']}" if res['kw_rank'] else "KW: None"
+            mn_label = f"Vector Rank #{res['mn_rank']} (sim: {res['mn_sim']:.3f})" if res['mn_rank'] else "Vector: None"
+            print(f"  {idx}. [{res['file_path']}] -> {res['heading']}")
+            print(f"     Score: {res['rrf_score']:.4f} | {kw_label} | {mn_label}")
+            if res['snippet']:
+                print(f"     Snippet: {res['snippet']}")
+    finally:
+        conn.close()
+
 
 def query_firehose(db_path: Path, keyword: str, limit: int = 5):
     logger.info("FTS5 query_firehose executing for keyword: '%s' (limit=%d)", keyword, limit)
@@ -439,13 +608,14 @@ def query_firehose(db_path: Path, keyword: str, limit: int = 5):
 
 def main():
     parser = argparse.ArgumentParser(description="SQLite Manager")
-    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "query-firehose", "backlinks", "related", "dangling"])
+    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "query-firehose", "query-hybrid", "backlinks", "related", "dangling"])
     parser.add_argument("--db", default="raw_firehose.db", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--wiki-dir", default=Path("wiki"), type=Path)
     parser.add_argument("--query", type=str)
     parser.add_argument("--concept", type=str)
     parser.add_argument("--limit", default=20, type=int)
+    parser.add_argument("--embed", action="store_true", help="Generate vector embeddings for new/modified sections")
     args = parser.parse_args()
 
     if args.action == "init":
@@ -458,12 +628,17 @@ def main():
             sys.exit(1)
         snapshot_db(args.db, args.out)
     elif args.action == "index-wiki":
-        index_wiki(args.db, args.wiki_dir)
+        index_wiki(args.db, args.wiki_dir, embed=args.embed)
     elif args.action == "query-section":
         if not args.query:
             print("Error: --query is required for query-section.")
             sys.exit(1)
         query_section(args.db, args.query, limit=args.limit)
+    elif args.action == "query-hybrid":
+        if not args.query:
+            print("Error: --query is required for query-hybrid.")
+            sys.exit(1)
+        query_hybrid(args.db, args.query, limit=args.limit)
     elif args.action == "query-firehose":
         if not args.query:
             print("Error: --query is required for query-firehose.")
