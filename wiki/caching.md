@@ -3310,3 +3310,13 @@ When agents write intermediate reasoning to memory, errors compound:
 - **URL:** https://github.com/7xuanlu/wenlan
 - **Synthesis & Architectural Value:**
   Battle-tested production pattern: implementation, agentmemory | Published: N/A Author: N/A - **LLM-wiki v1:** Karpathy defined immutable Sources, an AI-maintained Markdown Wiki, and a co-evolving Schema of rules for structuring and maintaining it. Wenlan implements that foundation with typed Memory fields and built-in rules for Page structure, provenance, citat
+
+
+### [[Multi-Agent Context Caching and Concurrency in Large Living Knowledge Bases]]
+- **Platform:** Reddit (r/r/LocalLLaMA)
+- **URL:** https://www.reddit.com/r/LocalLLaMA/comments/1x0ms0m
+- **Synthesis & Architectural Value:**
+  Verified High-Signal Technical Asset (matches: 91, tech: 15) | Operating massive persistent agent fleets against a living knowledge base exposes concurrency and context cache hit rates as critical performance boundaries:
+  1. **Deterministic Prefix Context Caching:** Structuring retrieval payloads with a strict deterministic hierarchy (frozen base ontology $\rightarrow$ schema index $\rightarrow$ dynamic AST section) enables modern inference engines (vLLM, SGLang, Claude prompt caching) to achieve $> 75\%$ prefix cache hits, reducing per-turn latency from $1.8\text{s}$ to $< 220\text{ms}$.
+  2. **WAL Concurrency Isolation:** While SQLite WAL mode permits concurrent readers without blocking writes, frequent DDL/schema updates trigger table lock contention. Decoupling ephemeral runtime scratch tables from the persistent Markdown shadow database eliminates `database is locked` errors during burst reads.
+  3. **Context Budget Envelopes:** High-throughput multi-agent simulations bound retrieved knowledge context to $\le 12\%$ of total token capacity, preserving the majority of context window depth for active reasoning and tool validation.
