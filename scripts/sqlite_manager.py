@@ -386,8 +386,8 @@ def get_dangling_links(db_path: Path, limit: int = 30) -> list[dict]:
     finally:
         conn.close()
 
-def query_section(db_path: Path, query_text: str):
-    logger.info("FTS5 query_section executing for query: '%s'", query_text)
+def query_section(db_path: Path, query_text: str, limit: int = 20):
+    logger.info("FTS5 query_section executing for query: '%s' (limit=%d)", query_text, limit)
     t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
@@ -395,8 +395,8 @@ def query_section(db_path: Path, query_text: str):
             SELECT file_path, heading, snippet(wiki_sections_fts, 2, '<b>', '</b>', '...', 12)
             FROM wiki_sections_fts
             WHERE wiki_sections_fts MATCH ?
-            LIMIT 5;
-        """, (query_text,))
+            LIMIT ?;
+        """, (query_text, limit))
         rows = cursor.fetchall()
         elapsed_ms = (time.perf_counter() - t0) * 1000
         logger.info("FTS5 query_section returned %d matching sections in %.2f ms", len(rows), elapsed_ms)
@@ -463,7 +463,7 @@ def main():
         if not args.query:
             print("Error: --query is required for query-section.")
             sys.exit(1)
-        query_section(args.db, args.query)
+        query_section(args.db, args.query, limit=args.limit)
     elif args.action == "query-firehose":
         if not args.query:
             print("Error: --query is required for query-firehose.")
