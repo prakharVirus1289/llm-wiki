@@ -11,7 +11,7 @@ This document outlines the high-level architecture of the autonomous textbook it
 4. **Targeted Textbook Reading (`wiki-reader`):** Dual-track prompt decomposition, MCP similarity & keyword search, relevance filtering, and surgical cross-link destination audit.
 5. **Surgical Patching (`ast-markdown-patcher`):** Single-section updates, automatic cross-chapter wikilinking, and index synchronization.
 6. **Remote Version Control (`git-pr-arbiter`):** Atomic Git staging, commit creation, and remote push.
-7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Invokes `wiki-reader` for textbook retrieval, runs first-principles gap reasoning, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
+7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Supplies `parent_prompt` to `wiki-reader`, runs first-principles gap reasoning on vetted findings, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
 
 ---
 
@@ -89,7 +89,7 @@ flowchart TD
     subgraph S7 ["Stage 7: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
         RemoteRepo --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
         
-        InputsIQG --> SkillReaderIQG["Skill: wiki-reader<br/>(Deconstructs prompt, queries MCP similarity & keywords,<br/>filters boilerplate, audits cross-links & destinations)"]
+        InputsIQG --> SkillReaderIQG["Skill: wiki-reader<br/>(Supply: parent_prompt)"]
         
         SkillReaderIQG -->|"Returns: vetted_sections & audited_destinations"| Step5Gaps["Skill: first-principle-reasoning<br/>(Critiques findings, surfaces missing numbers & failure modes)"]
         
