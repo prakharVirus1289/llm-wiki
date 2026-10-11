@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, seventeen distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, eighteen distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -200,6 +200,14 @@ Across empirical stress testing and continuous agent cycles, seventeen distinct 
   1. **The 6-Month Absorption Test:** Mentally simulate the foundation model releasing your core feature natively tomorrow. If the product cannot survive through proprietary data flywheels, on-premise operational plumbing, or deep system-of-record integrations, the project must be discarded before building.
   2. **The Habit Friction Threshold:** Verify that the product either embeds directly inside the user's primary working environment without tab switching, or runs completely asynchronously in the background requiring zero manual intervention.
   3. **The Power-User Margin Invariant:** Prohibit flat-rate unlimited pricing for variable-compute systems. Require metered usage gates, credit allowances, and hybrid semantic caching (routing simple queries to localized models or cached vectors) to guarantee gross margins remain positive as power-user engagement scales. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures|Agent Cognitive Architectures]].
+
+### 4.18 Singular Option Mental Simulation & Brier Calibration (The RPD Protocol)
+* **Symptom:** Founders spend weeks trapped in analysis paralysis, trying to evaluate dozens of competing features or architectural options inside massive decision matrices. When a decision is finally made, the founder exhibits extreme overconfidence, only to be caught completely off guard by basic operational bottlenecks.
+* **Root Cause:** The multi-option comparison trap and uncalibrated forecasting. Comparing 5+ options simultaneously overwhelms working memory, obscuring mechanical failure points. Furthermore, founders treat beliefs as binary truths ("users will buy this") rather than calibrated probabilities, failing to update their mental models when real-world evidence shifts.
+* **Systemic Fix & Strategic Calibration Primitives:**
+  1. **Gary Klein's Recognition-Primed Decision (RPD) Singular Simulation:** Reject exhaustive decision matrices. Instead, identify the single most plausible initial course of action based on historical pattern matching. Mentally simulate that specific option forward in time from inception to completion. If the simulation encounters an obstacle, modify the action to clear the bottleneck. Only if the option cannot be patched do you discard it and mentally simulate the next plausible candidate. This singular simulation loop arrives at actionable strategic conclusions $10\times$ faster than multi-option matrices.
+  2. **The Brier Score Calibration Invariant:** Replace binary assertions with explicit numerical probabilities ($f_t \in [0, 1]$) for every milestone (e.g. *"70% probability customer onboarding takes >10 days"*). Log predictions in a decision journal and score them against real binary outcomes ($o_t \in \{0, 1\}$) using the Brier formula $\text{BS} = \frac{1}{N}\sum (f_t - o_t)^2$. Target a Brier score $< 0.15$ over rolling 90-day intervals to eliminate overconfidence and ground mental simulations in empirical reality.
+  3. **The Bayesian Update Mandate:** Every strategic mental model must define explicit disconfirming signals that force an immediate probability update. If fresh data arrives (e.g. pilot conversion stalls or vendor pricing doubles), holding an unrevised strategic stance is treated as an operational defect. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]].
 
 ---
 
