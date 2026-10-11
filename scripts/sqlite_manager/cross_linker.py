@@ -128,89 +128,13 @@ def build_concept_dictionary(db_path: Path, min_length: int = 6) -> dict[str, tu
 
 def scan_and_link_text(content: str, current_file: str, concept_dict: dict[str, tuple[str, str, str]]) -> tuple[str, list[dict]]:
     """
-    Scans markdown text, identifies mentions of concepts belonging to OTHER chapters,
-    and formats them as [[target_domain/target_slug|matched_text]].
-    
-    Protects:
-    - Code blocks (fenced ``` and inline `)
-    - Existing [[wikilinks]]
-    - URLs (http://, https://)
-    - Heading lines (# Heading)
+    Deprecated / Disabled:
+    Deterministic regex string replacement for cross-links has been removed to prevent knowledge graph corruption.
+    All cross-chapter wikilinks must be authored intentionally by agents via the 4-Point Epistemic Link Audit.
+    Returns the content completely unchanged and an empty list of applied links.
     """
-    current_stem = Path(current_file).stem.lower()
-    placeholders = []
-
-    def mask_match(match):
-        token = f"\x1fMASK_{len(placeholders)}\x1f"
-        placeholders.append(match.group(0))
-        return token
-
-    # 1. Mask fenced code blocks
-    masked = re.sub(r'```[\s\S]*?```', mask_match, content)
-
-    # 2. Mask inline code spans
-    masked = re.sub(r'`[^`\n]+`', mask_match, masked)
-
-    # 3. Mask existing wikilinks
-    masked = re.sub(r'\[\[[\s\S]*?\]\]', mask_match, masked)
-
-    # 4. Mask URLs
-    masked = re.sub(r'https?://[^\s)\]]+', mask_match, masked)
-
-    # 5. Mask heading lines so headers themselves are not recursively linked
-    masked = re.sub(r'^(#{1,6}\s+.*)$', mask_match, masked, flags=re.MULTILINE)
-
-    applied_links = []
-    
-    # 6. Build single combined regex for cross-chapter concepts
-    valid_dict = {
-        phrase: (owner_file, target_slug, original_heading)
-        for phrase, (owner_file, target_slug, original_heading) in concept_dict.items()
-        if Path(owner_file).stem.lower() != current_stem and owner_file != current_file
-    }
-
-    if not valid_dict:
-        # Restore all masked tokens in reverse order to resolve nested masks
-        max_passes = 10
-        passes = 0
-        while "\x1fMASK_" in masked and passes < max_passes:
-            for idx in range(len(placeholders) - 1, -1, -1):
-                masked = masked.replace(f"\x1fMASK_{idx}\x1f", placeholders[idx])
-            passes += 1
-        return masked, []
-
-    sorted_phrases = sorted(valid_dict.keys(), key=len, reverse=True)
-    pattern = re.compile(rf'\b({"|".join(re.escape(p) for p in sorted_phrases)})\b', re.IGNORECASE)
-
-    def link_replacer(m):
-        matched_text = m.group(1)
-        key = matched_text.lower()
-        if key not in valid_dict:
-            return matched_text
-        owner_file, target_slug, original_heading = valid_dict[key]
-        owner_stem = Path(owner_file).stem.lower()
-        target_link = f"[[{owner_stem}/{target_slug}|{matched_text}]]"
-        applied_links.append({
-            "matched_text": matched_text,
-            "target_file": owner_file,
-            "target_heading": original_heading,
-            "target_link": target_link
-        })
-        token = f"\x1fMASK_{len(placeholders)}\x1f"
-        placeholders.append(target_link)
-        return token
-
-    masked = pattern.sub(link_replacer, masked)
-
-    # 7. Restore all masked tokens in reverse order to resolve nested masks
-    max_passes = 10
-    passes = 0
-    while "\x1fMASK_" in masked and passes < max_passes:
-        for idx in range(len(placeholders) - 1, -1, -1):
-            masked = masked.replace(f"\x1fMASK_{idx}\x1f", placeholders[idx])
-        passes += 1
-
-    return masked, applied_links
+    logger.warning("scan_and_link_text called, but deterministic regex auto-linking is permanently disabled. Content left unchanged.")
+    return content, []
 
 
 def find_cross_chapter_similarities(db_path: Path, threshold: float = 0.82, limit: int = 25) -> list[dict]:

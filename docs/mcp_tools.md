@@ -66,10 +66,10 @@ Add the server to your MCP configuration file (e.g. `claude_desktop_config.json`
 | [`llm_wiki_search_keyword`](#4-llm_wiki_search_keyword) | `search_keyword` | Pure FTS5 BM25 search with stopword filtering | No | 2–8 ms |
 | [`llm_wiki_search_similarity`](#5-llm_wiki_search_similarity) | `search_similarity` | Pure fastembed vector cosine similarity search | No | 20–60 ms |
 | [`llm_wiki_read_section`](#6-llm_wiki_read_section) | `read_section` | Reads only one section under a markdown heading | No | 1–3 ms |
-| [`llm_wiki_patch_section`](#7-llm_wiki_patch_section) | `patch_section` | Updates one section, adds cross-links, updates search | Yes (File + DB) | 40–120 ms |
+| [`llm_wiki_patch_section`](#7-llm_wiki_patch_section) | `patch_section` | Surgically updates one section, validates syntax, updates shadow indexes & embeddings | Yes (File + DB) | 40–120 ms |
 | [`llm_wiki_get_graph`](#8-llm_wiki_get_graph) | `get_graph` | Inspects backlinks, related topics, and missing topics | No | 2–8 ms |
-| [`llm_wiki_suggest_links`](#9-llm_wiki_suggest_links) | `suggest_links` | Finds related sections across different chapters | No | 150–250 ms |
-| [`llm_wiki_scan_links`](#10-llm_wiki_scan_links) | `scan_links` | Scans chapter text and adds cross-chapter wikilinks | Optional (File + DB) | 50–150 ms |
+| [`llm_wiki_suggest_links`](#9-llm_wiki_suggest_links) | `suggest_links` | Finds candidate related sections across chapters using vector similarity | No | 150–250 ms |
+| [`llm_wiki_scan_links`](#10-llm_wiki_scan_links) | `scan_links` | [DISABLED] Deterministic regex auto-linking is permanently disabled | No | < 1 ms |
 | [`llm_wiki_git_commit_and_push`](#11-llm_wiki_git_commit_and_push) | `git_commit_and_push` | Stages, commits, and pushes changes to GitHub | Yes (Git repo) | 1000–3000 ms |
 | [`llm_wiki_reindex`](#12-llm_wiki_reindex) | `reindex` | Synchronizes shadow tables, FTS5, and link graph from markdown | Yes (DB) | 150–300 ms |
 
@@ -587,45 +587,32 @@ If the section does not exist:
 *Alias: `patch_section`*
 
 #### Purpose
-Surgically replaces or appends a specific section inside a chapter file, automatically creates cross-chapter wikilinks, validates syntax, and updates search embeddings.
+Surgically replaces or appends a specific section inside a chapter file, validates CommonMark syntax, updates shadow indexes, and refreshes the link graph.
 
 #### Architecture & Workflow
 ```mermaid
 flowchart TD
-    Input["Input: file, heading, content, auto_cross_link"] --> CheckAutoLink{"auto_cross_link == true?"}
-    CheckAutoLink -->|true| BuildDict["Query wiki_sections_index for Concept Dictionary"]
-    BuildDict --> ScanLink["Scan content and replace terms with [[domain/slug|alias]]"]
-    CheckAutoLink -->|false| Splice["ASTSplicer.splice_section"]
-    ScanLink --> Splice
+    Input["Input: file, heading, content"] --> Splice["ASTSplicer.splice_section"]
     Splice --> TempFile["Write spliced chapter to tempfile in same dir"]
     TempFile --> AtomicReplace["Atomic os.replace(tempfile, wiki/<file>)"]
     AtomicReplace --> Lint["Validate Markdown syntax (code fences, brackets)"]
-    Lint --> Return["Return JSON status, cross-links created, and lint warnings"]
+    Lint --> Reindex["index_wiki(embed=False) to sync wiki_links & FTS5"]
+    Reindex --> Return["Return JSON status and lint warnings"]
 ```
 
 #### Execution Logic
-1. **Automatic Cross-Linking:** If `auto_cross_link=True`, loads the sorted concept dictionary from `wiki_sections_index`. Masks code blocks, URLs, and existing brackets, then transforms unlinked terms into `[[domain/slug|alias]]` links.
-2. **Surgical AST Splicing:** Finds target heading line coordinates in `wiki/<file>` and swaps the bytes with the updated section (or appends if the heading is new).
-3. **Atomic File Write:** Writes content to a temporary file in the same filesystem folder and replaces the original via `os.replace` to prevent partial file writes.
-4. **Syntax Linting:** Runs a validation check ensuring that code fences and bracket pairs are balanced.
-5. Returns confirmation payload with lists of created cross-links and any syntax warnings.
-
-#### Database Tables & SQL Queries
-* **Table Read:** `wiki_sections_index` (for concept dictionary lookup)
-* **SQL Statement:**
-  ```sql
-  SELECT file_path, heading, heading_slug 
-  FROM wiki_sections_index 
-  WHERE LENGTH(heading) >= ?;
-  ```
+1. **Surgical AST Splicing:** Finds target heading line coordinates in `wiki/<file>` and swaps the bytes with the updated section (or appends if the heading is new). All `[[chapter/slug|alias]]` cross-chapter links authored by the agent are preserved exactly as written.
+2. **Atomic File Write:** Writes content to a temporary file in the same filesystem folder and replaces the original via `os.replace` to prevent partial file writes.
+3. **Syntax Linting:** Runs a validation check ensuring that code fences and bracket pairs are balanced.
+4. **Relational Index Synchronization:** Calls `index_wiki(embed=False)` to immediately parse all genuine authored `[[wikilinks]]` into the SQLite `wiki_links` table and rebuild `wiki_sections_fts`.
+5. Returns confirmation payload with file status and any syntax warnings.
 
 #### Input Parameters
 | Parameter | Type | Required? | Default | Description |
-| :--- | :--- | :---: | :---: | :--- |
+| :--- | :--- | :--- | :--- | :--- |
 | `file` | string | **Yes** | — | Markdown chapter file name inside `wiki/` (e.g. `"caching.md"`). |
 | `heading` | string | **Yes** | — | Exact heading title to update or append. |
-| `content` | string | **Yes** | — | New replacement markdown content for the section. |
-| `auto_cross_link` | boolean | No | `true` | If true, automatically scans new content and inserts cross-chapter wikilinks. |
+| `content` | string | **Yes** | — | New replacement markdown content for the section (including any authored `[[chapter/slug|alias]]` links). |
 
 #### Return Structure
 ```json
@@ -633,17 +620,8 @@ flowchart TD
   "status": "success",
   "file": "storage.md",
   "heading": "Write-Ahead Logging Implementation",
-  "cross_links_created": 2,
-  "cross_links": [
-    {
-      "matched_text": "Raft Consensus",
-      "target_file": "consensus.md",
-      "target_heading": "Raft Consensus",
-      "target_link": "[[consensus/raft-consensus|Raft Consensus]]"
-    }
-  ],
   "lint_warnings": [],
-  "message": "Section 'Write-Ahead Logging Implementation' spliced cleanly in storage.md with embeddings and cross-links updated."
+  "message": "Section 'Write-Ahead Logging Implementation' spliced cleanly in storage.md with AST and indexes synchronized."
 }
 ```
 
@@ -651,7 +629,7 @@ flowchart TD
 - Modifies markdown chapter file on disk (`wiki/<file>`).
 - Updates `wiki_sections_index` table (text and vector embedding).
 - Rebuilds `wiki_sections_fts` full-text search index.
-- Registers newly created wikilinks in `wiki_links`.
+- Registers newly authored wikilinks in `wiki_links`.
 
 #### Example JSON-RPC Request
 ```json
@@ -664,8 +642,7 @@ flowchart TD
     "arguments": {
       "file": "storage.md",
       "heading": "Write-Ahead Logging Implementation",
-      "content": "### Write-Ahead Logging Implementation\n\nWAL guarantees durability by appending all changes to an append-only log before modifying page tables. This pairs with Raft Consensus for multi-node replication.",
-      "auto_cross_link": true
+      "content": "### Write-Ahead Logging Implementation\n\nWAL guarantees durability by appending all changes to an append-only log before modifying page tables. This pairs with [[consensus/raft-consensus|Raft Consensus]] for multi-node replication."
     }
   }
 }
@@ -931,105 +908,26 @@ flowchart TD
 
 ---
 
-### 10. `llm_wiki_scan_links`
+### 10. `llm_wiki_scan_links` [DISABLED]
 *Alias: `scan_links`*
 
+> [!WARNING]
+> **Permanently Disabled:** Deterministic regex auto-linking is permanently disabled. Mechanically replacing dictionary words across markdown text creates false links, word collisions across unrelated codebases, and graph corruption. Linking is a cognitive semantic decision: all cross-chapter links must be authored directly by agents using the 4-Point Epistemic Link Audit.
+
 #### Purpose
-Scans an entire markdown chapter against all 5,360+ known textbook concepts to discover or apply cross-chapter wikilinks.
+Formerly scanned an entire markdown chapter against concept titles to mechanically insert `[[chapter/slug|alias]]` links. Now returns an explicit error explaining that deterministic regex linking is disabled.
 
-#### Dry-Run Mode vs Apply Mode
-- **Dry-run (`apply: false`, default):** Scans the file and returns a list of all potential cross-chapter links discovered without changing the file on disk.
-- **Apply (`apply: true`):** Writes the modified text to disk with `[[chapter/slug|alias]]` links inserted, and refreshes the database link index.
-
-#### Architecture & Workflow
-```mermaid
-flowchart TD
-    Req["Input: file, apply=false/true"] --> VerifyFile["Verify wiki/<file> exists"]
-    VerifyFile -->|Not Found| ErrorOut["Return error: File does not exist"]
-    VerifyFile -->|Exists| BuildDict["build_concept_dictionary(): Query wiki_sections_index"]
-    BuildDict --> ReadDisk["Read raw markdown text from wiki/<file>"]
-    ReadDisk --> MaskTokens["Mask code blocks, inline backticks, [[links]], URLs, and # headings"]
-    MaskTokens --> FilterDict["Filter dictionary: Keep only concepts owned by OTHER chapters"]
-    FilterDict --> RegexCompile["Compile single regex matching sorted concept phrases (longest first)"]
-    RegexCompile --> ReplaceTerms["Replace unmasked matches with [[owner_stem/target_slug|matched_text]]"]
-    ReplaceTerms --> RestoreMasks["Restore masked code blocks, links, and headings"]
-    RestoreMasks --> CheckApply{"apply == true?"}
-    CheckApply -->|true| WriteDisk["Write modified content back to wiki/<file>"]
-    WriteDisk --> Reindex["Run index_wiki(embed=False) to refresh wiki_links and FTS5"]
-    CheckApply -->|false| ReturnPreview["Return preview of found links (dry-run)"]
-    Reindex --> ReturnPreview
-```
-
-#### Execution Logic
-1. **Target Existence Check:** Verifies that `wiki/<file>` exists on the local disk.
-2. **Concept Dictionary Assembly:** Queries all section headings from `wiki_sections_index`, filters out generic and conversational phrases using `is_substantive_concept_heading()`, and constructs a dictionary mapping lowercase concept phrases to `(owner_file, target_slug, original_heading)`. Sorts phrases by length descending to prevent sub-string collision.
-3. **Syntax Shielding & Token Masking:** Masks fenced code blocks (```` ``` ````), inline code spans (`` `...` ``), existing wikilinks (`[[...]]`), URLs (`http://`, `https://`), and Markdown heading lines (`# ...`) with placeholder tokens (`\x1fMASK_N\x1f`).
-4. **Cross-Chapter Boundary Enforcement:** Filters out concepts that belong to the current file so that sections are never linked within their own chapter.
-5. **Regex Search & Link Insertion:** Compiles a regex containing all target phrases sorted longest-first to prevent sub-phrase truncation. Replaces matching phrases with standard wikilinks: `[[owner_stem/target_slug|Matched Text]]`.
-6. **Mask Unwrapping:** Restores all protected code blocks, URLs, and existing links in reverse index order.
-7. **Branching on Apply Flag:**
-   - If `apply=False` (default dry-run): Returns a preview list of all detected cross-chapter links without modifying the chapter file or database.
-   - If `apply=True`: Overwrites `wiki/<file>` on disk with the linked markdown and executes `index_wiki(embed=False)` to rebuild `wiki_links` and `wiki_sections_fts`.
-
-#### Database Tables & SQL Queries
-* **Tables Read:** `wiki_sections_index` (for concept dictionary lookup)
-* **Tables Modified (when `apply=true`):** `wiki_links`, `wiki_sections_fts`
-* **SQL Statements:**
-  - Concept Dictionary Lookup:
-    ```sql
-    SELECT file_path, heading, heading_slug 
-    FROM wiki_sections_index 
-    WHERE LENGTH(heading) >= ?;
-    ```
-  - Re-indexing Graph and FTS5 (executed when `apply=true` via `index_wiki`):
-    ```sql
-    DELETE FROM wiki_links;
-    INSERT OR IGNORE INTO wiki_links (source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope)
-    VALUES (?, ?, ?, ?, ?, ?);
-    INSERT INTO wiki_sections_fts(wiki_sections_fts) VALUES('rebuild');
-    ```
-
-#### Input Parameters
-| Parameter | Type | Required? | Default | Description |
-| :--- | :--- | :---: | :---: | :--- |
-| `file` | string | **Yes** | — | Markdown chapter file name inside `wiki/` (e.g. `"caching.md"`). |
-| `apply` | boolean | No | `false` | If true, writes the generated cross-links to disk and updates the index. |
+#### Discovery Alternative
+To discover candidate cross-chapter relationships without blind regex replacement:
+1. Use [`llm_wiki_suggest_links`](#9-llm_wiki_suggest_links) to find cross-chapter section pairs with high vector similarity ($\ge 0.82$).
+2. Audit candidate pairs against the 4-Point Epistemic Link Audit (Causal/Mechanical Dependency, No Scraped Artifacts, No Conversational Filler, Explicit 1-Sentence Rationale).
+3. If valid, author intentional `[[chapter/slug|alias]]` links directly into the section markdown and apply using [`llm_wiki_patch_section`](#7-llm_wiki_patch_section).
 
 #### Return Structure
 ```json
 {
-  "status": "success",
-  "file": "caching.md",
-  "applied_count": 14,
-  "applied_changes": true,
-  "links_found": [
-    {
-      "matched_text": "Consistent Hashing",
-      "target_file": "networking.md",
-      "target_heading": "Consistent Hashing Ring",
-      "target_link": "[[networking/consistent-hashing-ring|Consistent Hashing]]"
-    }
-  ]
-}
-```
-
-#### Side Effects
-- If `apply=true`: Modifies `wiki/<file>` on disk and refreshes the `wiki_links` table in SQLite.
-- If `apply=false`: None (read-only preview).
-
-#### Example JSON-RPC Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 108,
-  "method": "tools/call",
-  "params": {
-    "name": "llm_wiki_scan_links",
-    "arguments": {
-      "file": "agent_architectures.md",
-      "apply": false
-    }
-  }
+  "status": "error",
+  "error": "Deterministic regex auto-linking is disabled to prevent knowledge graph corruption. All cross-chapter links must be authored intentionally by agents."
 }
 ```
 
@@ -1243,23 +1141,25 @@ flowchart TD
 1. **Ingest Fresh Findings:** Scraped items are pushed via [`llm_wiki_firehose_ingest`](#1-llm_wiki_firehose_ingest). Duplicates are filtered out automatically.
 2. **Retrieve Real-World Evidence:** Query the raw discussions via [`llm_wiki_firehose_query`](#2-llm_wiki_firehose_query) to collect real-world benchmarks, war stories, and edge cases.
 3. **Inspect the Chapter:** Find where this knowledge belongs using [`llm_wiki_search_hybrid`](#3-llm_wiki_search_hybrid) (or pure [`llm_wiki_search_keyword`](#4-llm_wiki_search_keyword) / [`llm_wiki_search_similarity`](#5-llm_wiki_search_similarity)) and read the existing section text with [`llm_wiki_read_section`](#6-llm_wiki_read_section).
-4. **Surgically Update:** Call [`llm_wiki_patch_section`](#7-llm_wiki_patch_section). The server automatically creates cross-chapter wikilinks and recalculates search vector embeddings.
+4. **Surgically Update:** Call [`llm_wiki_patch_section`](#7-llm_wiki_patch_section). The server surgically splices the section with your authored markdown (including intentional `[[wikilinks]]`), validates syntax, updates SQLite shadow tables, and recalculates vector embeddings.
 5. **Commit and Push:** Commit and push the updated chapter via [`llm_wiki_git_commit_and_push`](#11-llm_wiki_git_commit_and_push).
 
 ---
 
-### Workflow B: The Knowledge Graph & Cross-Linking Loop
+### Workflow B: The Knowledge Graph & Epistemic Cross-Linking Loop
 ```mermaid
 flowchart TD
-    V["1. Find missing topics: llm_wiki_get_graph(action='dangling')"] --> S["2. Find related chapters: llm_wiki_suggest_links(threshold=0.82)"]
-    S --> L["3. Batch link chapter: llm_wiki_scan_links(file, apply=true)"]
-    L --> P["4. Commit changes: llm_wiki_git_commit_and_push"]
+    V["1. Find missing topics: llm_wiki_get_graph(action='dangling')"] --> S["2. Surface candidate links: llm_wiki_suggest_links(threshold=0.82)"]
+    S --> A["3. Run 4-Point Epistemic Link Audit"]
+    A --> P["4. Splice authored [[links]]: llm_wiki_patch_section"]
+    P --> G["5. Commit and push: llm_wiki_git_commit_and_push"]
 ```
 
 1. **Discover Knowledge Voids:** Call [`llm_wiki_get_graph(action='dangling')`](#8-llm_wiki_get_graph) to see which concepts are cited the most across chapters but haven't been written yet.
-2. **Surface Unlinked Relations:** Call [`llm_wiki_suggest_links`](#9-llm_wiki_suggest_links) to see high-similarity section pairs that should connect.
-3. **Weave the Graph:** Call [`llm_wiki_scan_links(apply=true)`](#10-llm_wiki_scan_links) to convert unlinked topic names into proper cross-chapter links.
-4. **Save:** Push the newly connected graph to GitHub via [`llm_wiki_git_commit_and_push`](#11-llm_wiki_git_commit_and_push).
+2. **Surface Unlinked Relations:** Call [`llm_wiki_suggest_links`](#9-llm_wiki_suggest_links) to see high-similarity section pairs that are potential candidates for connection.
+3. **Epistemic Link Audit:** Audit candidate pairs against the 4-Point Epistemic Link Audit (Causal/mechanical dependency, permanent textbook target, no conversational filler, explicit 1-sentence rationale).
+4. **Author & Splice:** Write verified `[[chapter/slug|alias]]` links directly into the section markdown and splice via [`llm_wiki_patch_section`](#7-llm_wiki_patch_section).
+5. **Save & Push:** Push changes atomically to GitHub via [`llm_wiki_git_commit_and_push`](#11-llm_wiki_git_commit_and_push).
 
 ---
 

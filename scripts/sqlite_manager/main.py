@@ -83,22 +83,9 @@ def main():
         for d in dang:
             print(f"  - [[{d['target_concept']}]] ({d['domain_scope']}): cited {d['incoming_citations']} times by {d['citing_files']}")
     elif args.action == "scan-links":
-        if not args.file:
-            print("Error: --file is required for scan-links.")
-            sys.exit(1)
-        if not args.file.exists():
-            print(f"Error: File {args.file} does not exist.")
-            sys.exit(1)
-        cdict = build_concept_dictionary(args.db)
-        print(f"[SCAN-LINKS] Loaded {len(cdict)} concepts into dictionary. Scanning {args.file.name}...")
-        raw_text = args.file.read_text(encoding="utf-8")
-        new_text, applied = scan_and_link_text(raw_text, args.file.name, cdict)
-        print(f"[SCAN-LINKS] Discovered {len(applied)} cross-chapter link opportunities.")
-        for item in applied[:15]:
-            print(f"  - '{item['matched_text']}' -> {item['target_link']} in {item['target_file']}")
-        if not args.dry_run and applied:
-            args.file.write_text(new_text, encoding="utf-8")
-            print(f"[SCAN-LINKS] Successfully updated {args.file.name} with {len(applied)} cross-chapter links.")
+        print("[SCAN-LINKS] Notice: Deterministic regex auto-linking is permanently disabled to prevent knowledge graph corruption.")
+        print("[SCAN-LINKS] All cross-chapter links must be authored intentionally by agents via the 4-Point Epistemic Link Audit.")
+        print("[SCAN-LINKS] Use 'suggest-links' instead to discover candidate pairs for agent evaluation.")
     elif args.action == "suggest-links":
         cands = find_cross_chapter_similarities(args.db, threshold=args.threshold, limit=args.limit)
         print(f"[SUGGEST-LINKS] Top {len(cands)} cross-chapter candidate pairs (threshold={args.threshold}):")

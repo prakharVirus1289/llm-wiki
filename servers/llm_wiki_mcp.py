@@ -279,16 +279,13 @@ def handle_read_section(params: dict) -> dict:
 
 def handle_patch_section(params: dict) -> dict:
     """
-    Surgically updates a single section inside a markdown chapter file, auto-creates cross-links, lints syntax, and updates search embeddings.
+    Surgically updates a single section inside a markdown chapter file, lints syntax, and updates search embeddings.
 
     Workflow executed in a single atomic pass:
-    1. Auto Cross-Linking: If auto_cross_link is True, scans content against all 5,360+ known concepts
-       and replaces mentions of other chapters' topics with [[chapter/slug|alias]] wikilinks.
-       Skips code blocks, URLs, and existing brackets.
-    2. AST Splicing: Cuts out only the target section lines from disk and replaces them with new content.
+    1. AST Splicing: Cuts out only the target section lines from disk and replaces them with new content exactly as authored.
        If heading does not exist, appends it cleanly.
-    3. Syntax Linting: Validates that code fence blocks and bracket tags are properly balanced and closed.
-    4. Database Indexing: Updates section text, computes fresh 384-d vector embeddings, rebuilds FTS5,
+    2. Syntax Linting: Validates that code fence blocks and bracket tags are properly balanced and closed.
+    3. Database Indexing: Updates section text, computes fresh 384-d vector embeddings, rebuilds FTS5,
        and registers newly created wikilinks in the knowledge graph.
 
     Args:
@@ -296,16 +293,12 @@ def handle_patch_section(params: dict) -> dict:
             - file (str, required): Chapter file name in wiki/ (e.g. 'caching.md').
             - heading (str, required): Exact heading title to update or append.
             - content (str, required): New markdown text for the section.
-            - auto_cross_link (bool, optional): Automatically detect and insert cross-chapter
-              wikilinks. Default: True.
 
     Returns:
         dict: Patch summary dictionary:
             - status (str): 'success' or 'error'.
             - file (str): Chapter file modified.
             - heading (str): Heading updated.
-            - cross_links_created (int): Count of cross-chapter links automatically inserted.
-            - cross_links (list[dict]): Details of inserted cross-links (matched text, target file, heading, link).
             - lint_warnings (list[str]): Any markdown formatting or unclosed block warnings.
             - message (str): Human-readable confirmation message.
             - error (str, optional): Error details if operation failed.
@@ -320,30 +313,21 @@ def handle_patch_section(params: dict) -> dict:
     file_path = WIKI_DIR / file_name
     heading = params.get("heading", "")
     content = params.get("content", "")
-    auto_cross_link = params.get("auto_cross_link", True)
-    logger.info("MCP patch_section: file='%s', heading='%s' (%d chars, auto_cross_link=%s)", file_name, heading, len(content), auto_cross_link)
+    logger.info("MCP patch_section: file='%s', heading='%s' (%d chars)", file_name, heading, len(content))
 
     try:
-        applied_cross_links = []
-        if auto_cross_link and content:
-            try:
-                cdict = build_concept_dictionary(DB_PATH)
-                content, applied_cross_links = scan_and_link_text(content, file_name, cdict)
-                if applied_cross_links:
-                    logger.info("Auto cross-linked %d concepts in '%s'", len(applied_cross_links), heading)
-            except Exception as ex:
-                logger.warning("Auto cross-link failed for patch_section: %s", ex)
-
         ASTSplicer.splice_section(file_path, heading, content)
         errs = ASTSplicer.lint_file(file_path)
+        try:
+            index_wiki(DB_PATH, WIKI_DIR, embed=False)
+        except Exception as ex_idx:
+            logger.warning("Fast index_wiki sync after patch_section failed: %s", ex_idx)
         return {
             "status": "success",
             "file": file_name,
             "heading": heading,
-            "cross_links_created": len(applied_cross_links),
-            "cross_links": applied_cross_links,
             "lint_warnings": errs,
-            "message": f"Section '{heading}' spliced cleanly in {file_name} with embeddings and cross-links updated."
+            "message": f"Section '{heading}' spliced cleanly in {file_name} with AST and indexes synchronized."
         }
     except Exception as e:
         logger.exception("MCP patch_section error: %s", e)
@@ -399,63 +383,13 @@ def handle_suggest_links(params: dict) -> dict:
 
 def handle_scan_links(params: dict) -> dict:
     """
-    Scans an entire markdown chapter against all known textbook concepts to discover or apply cross-chapter links.
-
-    Performs a single-pass dictionary scan over the file. It finds mentions of topics belonging
-    to other chapters and converts them to [[target_chapter/target_slug|Matched Text]] wikilinks.
-    Protects fenced code blocks, inline code, URLs, and existing wikilinks from modification.
-
-    Args:
-        params: Dictionary containing:
-            - file (str, required): Markdown chapter file name in wiki/ (e.g. 'caching.md').
-            - apply (bool, optional): If False (dry-run preview), only discovers links without touching
-              the file on disk. If True, writes modified text to disk and refreshes the database link index. Default: False.
-
-    Returns:
-        dict: Scan results dictionary:
-            - status (str): 'success' or 'error'.
-            - file (str): Chapter file scanned.
-            - applied_count (int): Total cross-chapter links discovered or applied.
-            - applied_changes (bool): Whether changes were saved to disk.
-            - links_found (list[dict]): Sample of links found (first 50), each with:
-                - matched_text (str): Exact phrase found in text.
-                - target_file (str): Owner chapter file of that topic.
-                - target_heading (str): Owner section heading title.
-                - target_link (str): Generated [[chapter/slug|alias]] wikilink syntax.
-            - error (str, optional): Error details if operation failed.
-
-    Side Effects:
-        - If apply=True: Overwrites wiki/<file> on disk with linked content.
-        - If apply=True: Re-indexes wiki links in wiki_links table (fast lexical index pass).
-        - If apply=False: None (read-only preview).
+    Deprecated / Disabled: Deterministic regex auto-linking has been disabled to prevent knowledge graph corruption.
+    All cross-links must be authored intentionally by agents via the 4-Point Epistemic Link Audit.
     """
-    file_name = params.get("file", "")
-    apply_changes = params.get("apply", False)
-    file_path = WIKI_DIR / file_name
-    logger.info("MCP scan_links: file='%s', apply=%s", file_name, apply_changes)
-
-    if not file_path.exists():
-        return {"status": "error", "error": f"File '{file_name}' does not exist in wiki/"}
-
-    try:
-        cdict = build_concept_dictionary(DB_PATH)
-        raw_text = file_path.read_text(encoding="utf-8")
-        new_text, applied = scan_and_link_text(raw_text, file_name, cdict)
-
-        if apply_changes and applied:
-            file_path.write_text(new_text, encoding="utf-8")
-            index_wiki(DB_PATH, WIKI_DIR, embed=False)
-
-        return {
-            "status": "success",
-            "file": file_name,
-            "applied_count": len(applied),
-            "applied_changes": apply_changes,
-            "links_found": applied[:50]
-        }
-    except Exception as e:
-        logger.exception("MCP scan_links error: %s", e)
-        return {"status": "error", "error": str(e)}
+    return {
+        "status": "error",
+        "error": "Deterministic regex auto-linking is disabled to prevent knowledge graph corruption. All cross-chapter links must be authored intentionally by agents."
+    }
 
 
 def handle_get_graph(params: dict) -> dict:
@@ -767,12 +701,7 @@ TOOL_SCHEMAS = [
                 },
                 "content": {
                     "type": "string",
-                    "description": "New replacement markdown content for the section."
-                },
-                "auto_cross_link": {
-                    "type": "boolean",
-                    "default": True,
-                    "description": "If true (default), automatically discovers mentions of topics from other chapters and converts them to [[chapter/slug|alias]] wikilinks."
+                    "description": "New replacement markdown content for the section (with intentional, verified [[wikilinks]] authored directly)."
                 }
             },
             "required": ["file", "heading", "content"]
@@ -824,7 +753,7 @@ TOOL_SCHEMAS = [
     },
     {
         "name": "llm_wiki_scan_links",
-        "description": "Scans an entire markdown chapter against all known textbook concepts to discover and optionally apply cross-chapter wikilinks.",
+        "description": "[DISABLED] Deterministic regex auto-linking is disabled to prevent knowledge graph corruption. All cross-chapter links must be authored intentionally by agents via the 4-point epistemic audit.",
         "inputSchema": {
             "type": "object",
             "properties": {
