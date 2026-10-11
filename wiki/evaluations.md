@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, sixteen distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, seventeen distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -189,6 +189,17 @@ Across empirical stress testing and continuous agent cycles, sixteen distinct sy
   1. **The Makefile Invariant (Artifact Dependency Modeling):** Structure project simulation strictly as an artifact DAG: every target outcome (e.g. `paying-pilot`, `v1-deployment`) depends solely on concrete, verified artifacts (e.g. `signed-loi`, `dirty-tree-clean`), not calendar days or positive sentiments. When an underlying condition alters, the graph node is marked "dirty," which mechanically invalidates all dependent targets and forces re-evaluation back to the root prerequisite.
   2. **The Two-Item Prerequisite Decoupling:** To eliminate verification momentum, never attach more than two prerequisites to a single decision milestone. Decouple all gates into strict `(Artifact State, Adversarial Disproof Gate)` pairs.
   3. **Counterfactual Shock Propagation:** Model enterprise failure propagation along dependency edges: if a supplier or key distribution channel experiences a shock ($S$), calculate downstream ripple effects ($S \rightarrow \text{inventory} \rightarrow \text{fulfillment} \rightarrow \text{cash flow}$) across the entire balance sheet before committing investment capital. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
+
+### 4.17 The Wrapper Fragility Triad & The Power-User Margin Inversion
+* **Symptom:** Early-stage software ventures build functional AI tools that acquire early users, only to collapse within 90 days from rapid churn, platform feature absorption, or bankrupting infrastructure bills.
+* **Root Cause:** Three hidden operational assumptions that founders fail to mentally simulate prior to development:
+  1. *The "Prompt-as-a-Moat" Illusion:* If the core differentiator of the product is an API key, an interface, and a 200-word system prompt, the product is an unpaid UX prototype for underlying foundation models. When the provider updates native context windows or adds simple parameter flags, the venture is wiped out overnight.
+  2. *The "Convenience Overrides Habit" Fallacy:* Founders assume saving a user 10 minutes a day will induce them to pay and switch workflows. In reality, human workflow inertia is immense and free. If an application requires a user to leave their primary tool (IDE, Slack, CRM) to log in elsewhere and copy-paste results, cognitive friction causes churn within 60 days.
+  3. *The Power-User Margin Inversion:* Unlike traditional SaaS where user query marginal cost is $\approx \$0$, LLM inference has non-zero marginal cost. Pricing an AI system as flat-rate unlimited software causes top 5% power users (running large context windows, continuous agent loops, or high-volume PDF parsing) to consume $5\times$ to $10\times$ their subscription fee in API bills.
+* **Systemic Fix & Pre-Building Invariants:**
+  1. **The 6-Month Absorption Test:** Mentally simulate the foundation model releasing your core feature natively tomorrow. If the product cannot survive through proprietary data flywheels, on-premise operational plumbing, or deep system-of-record integrations, the project must be discarded before building.
+  2. **The Habit Friction Threshold:** Verify that the product either embeds directly inside the user's primary working environment without tab switching, or runs completely asynchronously in the background requiring zero manual intervention.
+  3. **The Power-User Margin Invariant:** Prohibit flat-rate unlimited pricing for variable-compute systems. Require metered usage gates, credit allowances, and hybrid semantic caching (routing simple queries to localized models or cached vectors) to guarantee gross margins remain positive as power-user engagement scales. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures|Agent Cognitive Architectures]].
 
 ---
 
