@@ -11,7 +11,7 @@ This document outlines the high-level architecture of the autonomous textbook it
 4. **Targeted Textbook Reading (`wiki-reader`):** Sub-15ms lexical and semantic lookup, followed by surgical section extraction with zero token bloat.
 5. **Surgical Patching (`ast-markdown-patcher`):** Single-section updates, automatic cross-chapter wikilinking, and index synchronization.
 6. **Remote Version Control (`git-pr-arbiter`):** Atomic Git staging, commit creation, and remote push.
-7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Dual-track decomposition, cross-link destination audit, and first-principles gap formulation for the next research round.
+7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Dual-track decomposition, cross-link destination audit, first-principles gap formulation, and multi-platform manifest synthesis across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
 
 ---
 
@@ -102,9 +102,11 @@ flowchart TD
         
         Step3Filter --> Step4Audit["Step 4: Cross-Link & Destination Audit<br/>(Check wiki_links via llm_wiki_get_graph,<br/>read destination content via llm_wiki_read_section)"]
         
-        Step4Audit --> Step5Gaps["Step 5: Gap Reasoning & Query Synthesis<br/>(Invoke /first-principle-reasoning with payload:<br/>parent_prompt, vetted_sections, audited_destinations)"]
+        Step4Audit --> Step5Gaps["Step 5: Gap Reasoning via /first-principle-reasoning<br/>(Critiques findings, surfaces missing numbers & failure modes)"]
         
-        Step5Gaps --> Manifest["Write Targeted Search Queries<br/>(Directly to required manifest_path)"]
+        Step5Gaps --> Step6Dialects["Step 6: Multi-Platform Dialect Synthesis<br/>(Reddit, HN, Lobsters, GitHub, Twitter, ArXiv, SO, HF)"]
+        
+        Step6Dialects --> Manifest["Write Platform-Tailored query_manifest.json<br/>(Directly to required manifest_path)"]
         Manifest -->|"Feeds next harvesting iteration"| SkillDWA
     end
 
@@ -119,5 +121,5 @@ flowchart TD
     class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit,ToolKW,ToolSim mcp;
     class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
     class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
-    class InputsIQG,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps steer;
+    class InputsIQG,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps,Step6Dialects steer;
 ```
