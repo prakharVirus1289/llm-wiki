@@ -7,7 +7,7 @@ This document outlines the high-level architecture of the autonomous textbook it
 ### System Workflow Overview
 1. **Web Harvesting (`deep-web-analysis`):** Multi-platform discovery across Reddit, Twitter/X, Hacker News, GitHub, Lobsters, ArXiv, etc.
 2. **Adversarial Curation & Ingestion (`filtering-raw-dump`):** Non-deterministic 4-point relevance filtering followed by atomic deduplication and storage in `raw_firehose` via `llm_wiki_firehose_ingest`.
-3. **Textbook Reading & Placement (`wiki-reader`):** Groups vetted items by architectural topic, retrieves existing chapter sections with zero token bloat, and determines where new knowledge belongs.
+3. **Textbook Reading & Placement (`wiki-reader`):** Groups vetted items by architectural topic, deconstructs prompt into dual semantic and keyword searches (`llm_wiki_search_similarity` & `llm_wiki_search_keyword`), filters noise, retrieves existing chapter sections via `llm_wiki_read_section` with zero token bloat, and determines where new knowledge belongs.
 4. **Surgical Patching & Cross-Linking (`ast-markdown-patcher`):** Single-section updates, targeted link discovery via `llm_wiki_suggest_links(file, heading)`, epistemic link auditing, and index synchronization.
 5. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council) across newly indexed records to extract enduring architectural invariants.
 6. **Remote Version Control (`git-pr-arbiter`):** Atomic Git staging, commit creation, and remote push.
@@ -39,8 +39,10 @@ flowchart TD
     %% ==========================================
     subgraph S3 ["Stage 3: Read Existing Textbook (wiki-reader)"]
         IngestedClean --> SkillReader["Skill: wiki-reader (Groups by Topic)"]
-        SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query)"| ToolSearch["MCP Tool: llm_wiki_search_hybrid"]
-        ToolSearch -->|"Returns: Ranked matching sections"| MatchList["Target Chapter & Heading Identified"]
+        SkillReader -->|"Branch 1: llm_wiki_search_similarity(query)"| ToolSim["MCP Tool: llm_wiki_search_similarity"]
+        SkillReader -->|"Branch 2: llm_wiki_search_keyword(keywords)"| ToolKey["MCP Tool: llm_wiki_search_keyword"]
+        ToolSim --> MatchList["Filter Noise & Identify Target Sections"]
+        ToolKey --> MatchList
         
         MatchList -->|"Tool Call: llm_wiki_read_section(file, heading)"| ToolRead["MCP Tool: llm_wiki_read_section"]
         ToolRead -->|"Returns: Exact section markdown (Zero token bloat)"| SectionText["Existing Section Text"]
@@ -107,7 +109,7 @@ flowchart TD
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
     class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR,SkillReaderIQG,Step5Gaps skill;
-    class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolSuggest,ToolGit mcp;
+    class ToolIngest,ToolSim,ToolKey,ToolRead,ToolPatch,ToolSuggest,ToolGit mcp;
     class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
     class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts council;
     class InputsIQG,Step6Dialects steer;
