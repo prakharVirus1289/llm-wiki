@@ -9,8 +9,7 @@ This document outlines the high-level architecture of the autonomous textbook it
 2. **Adversarial Curation & Ingestion (`filtering-raw-dump`):** Non-deterministic 4-point relevance filtering followed by atomic deduplication and storage in `raw_firehose` via `llm_wiki_firehose_ingest`.
 3. **Textbook Reading & Placement (`wiki-reader`):** Groups vetted items by architectural topic, deconstructs prompt into dual semantic and keyword searches (`llm_wiki_search_similarity` & `llm_wiki_search_keyword`), filters noise, retrieves existing chapter sections via `llm_wiki_read_section` with zero token bloat, and determines where new knowledge belongs.
 4. **Surgical Patching, Cross-Linking & Atomic Push (`ast-markdown-patcher`):** Slices section on disk (`llm_wiki_patch_section`), discovers candidate cross-links for the new content (`llm_wiki_suggest_links`), vets candidates against the 4-Point Epistemic Link Audit, splices verified `[[wikilinks]]`, and pushes atomically to GitHub (`llm_wiki_git_commit_and_push`).
-5. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council) across newly indexed records to extract enduring architectural invariants into the cycle digest.
-6. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Supplies `parent_prompt` to `wiki-reader`, runs first-principles gap reasoning on vetted findings, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
+5. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Supplies `parent_prompt` to `wiki-reader`, runs first-principles gap reasoning on vetted findings, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
 
 ---
 
@@ -68,27 +67,10 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 5: DATA-POINT REASONING (LLM-COUNCIL)
+    %% STAGE 5: DYNAMIC QUERY STEERING & REASONING
     %% ==========================================
-    subgraph S5 ["Stage 5: Data-Point Reasoning (LLM-Council)"]
-        RemoteRepo --> SkillDPR["Skill: data-point-reasoning"]
-        
-        subgraph Phase1 ["Phase 1: Raw Data Council"]
-            SkillDPR -->|"invoke_subagent (Parallel Fleet)"| SubAgents["Sub-Agent Fleet (Reasoning on Every Item)"]
-            SubAgents -->|"Synthesizes individual findings"| InitialSynth["Initial Synthesis (V1 Draft)"]
-        end
-        
-        subgraph Phase2 ["Phase 2: Adversarial Review Council"]
-            InitialSynth -->|"invoke_subagent (Specialist Personas)"| ReviewCouncil["Review Council (Adversarial Critique)"]
-            ReviewCouncil -->|"Hardens facts & discards hype"| HardenedFacts["Hardened Truth & Architectural Invariants"]
-        end
-    end
-
-    %% ==========================================
-    %% STAGE 6: DYNAMIC QUERY STEERING & REASONING
-    %% ==========================================
-    subgraph S6 ["Stage 6: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
-        HardenedFacts --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
+    subgraph S5 ["Stage 5: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
+        RemoteRepo --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
         
         InputsIQG --> SkillReaderIQG["Skill: wiki-reader<br/>(Supply: parent_prompt)"]
         
@@ -107,9 +89,9 @@ flowchart TD
     classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
-    class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillReaderIQG,Step5Gaps skill;
+    class SkillDWA,SkillFRD,SkillReader,SkillPatch,SkillReaderIQG,Step5Gaps skill;
     class ToolIngest,ToolSim,ToolKey,ToolRead,ToolPatch1,ToolSuggest,ToolPatch2,ToolGit mcp;
     class RawJSON,IngestedClean,SplicedDraft,PatchedChapter,RemoteRepo,Manifest data;
-    class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,EpistemicAudit council;
+    class EpistemicAudit council;
     class InputsIQG,Step6Dialects steer;
 ```
