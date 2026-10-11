@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, twenty distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, twenty-one distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -226,6 +226,14 @@ Across empirical stress testing and continuous agent cycles, twenty distinct sys
   1. **Strategic vs. Tactical Decoupling:** In mental simulation, explicitly separate the *Strategic Horizon Policy* (the 100-turn terminal invariants: data portability, multi-tenant isolation, gross margin floor $>70\%$) from the *Tactical Execution Engine* (immediate sprint tasks). Never allow sprint-level convenience to violate a terminal invariant.
   2. **The 100-Turn Latency Audit:** For every foundational architectural decision, force a simulated projection 100 "turns" (quarters) into the future: *"If our transaction volume increases by $100\times$, does this architecture scale gracefully or require a total ground-up rewrite that paralyzes product development for 6 months?"*
   3. **The Blindspot Ensemble Ledger:** Never rely on a single mental model or single advisor. Interrogate the strategic roadmap across an ensemble of heterogeneous perspectives (e.g. an ultra-conservative infrastructure architect, a cynical enterprise buyer, and a regulatory compliance officer). Extract their distinct negative critique vectors and synthesize an immutable *Blindspot Ledger*. If multiple independent viewpoints identify divergent structural failure risks, resolve all identified risks before authorizing heavy software implementation. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures|Agent Cognitive Architectures]].
+
+### 4.21 The Single-Platform Custody Fragility & The Sovereign Data Invariant
+* **Symptom:** An early-stage venture achieves functional product deployment and positive user feedback, but experiences sudden total operational shutdown due to third-party automated account freezes, 2FA auth lockouts, or unannounced API price quadrupling. Alternatively, solo founders lose months of strategic plans and customer research when cloud-hosted conversation threads are silently wiped or corrupted.
+* **Root Cause:** Single-platform custody dependency. Founders mistake third-party platform access (e.g. an API key, a hosted social account, or an ephemeral cloud chat session) for durable business assets. In single-platform setups, platform risk compounds non-linearly: automated moderation bots and zero-support ticketing systems can sever the venture from its users and its data with zero human appeal or warning.
+* **Systemic Fix & Sovereign Architecture Primitives:**
+  1. **The Automated Gatekill Pre-Simulation:** Before writing code, mentally simulate an immediate, permanent lockout: *"If Platform X locks our main service account or revokes API access tomorrow with zero human support, does the business survive?"* If the answer is no, the architecture is structurally unviable and must be redesigned with platform optionality.
+  2. **The Sovereign Data & Auth Invariant:** Prohibit storing core business rules, customer profiles, or strategic specifications exclusively in hosted cloud threads or proprietary vector stores. All core operational artifacts must exist in open, local, version-controlled formats (Markdown, Git, local SQLite) with automated offline backups.
+  3. **The Owned Distribution Fallback:** Never rely 100% on a third-party platform's internal messaging or authentication system for customer contact. Require an independent communication channel (direct email auth, self-hosted web portal, Stripe direct billing) so that a third-party account lockout does not destroy customer relationships. See [[storage/the-lock-escalation-deadlock-hazard|Lock Escalation Deadlock Hazard]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
