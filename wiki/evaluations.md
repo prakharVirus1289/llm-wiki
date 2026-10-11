@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, eighteen distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, nineteen distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -208,6 +208,16 @@ Across empirical stress testing and continuous agent cycles, eighteen distinct s
   1. **Gary Klein's Recognition-Primed Decision (RPD) Singular Simulation:** Reject exhaustive decision matrices. Instead, identify the single most plausible initial course of action based on historical pattern matching. Mentally simulate that specific option forward in time from inception to completion. If the simulation encounters an obstacle, modify the action to clear the bottleneck. Only if the option cannot be patched do you discard it and mentally simulate the next plausible candidate. This singular simulation loop arrives at actionable strategic conclusions $10\times$ faster than multi-option matrices.
   2. **The Brier Score Calibration Invariant:** Replace binary assertions with explicit numerical probabilities ($f_t \in [0, 1]$) for every milestone (e.g. *"70% probability customer onboarding takes >10 days"*). Log predictions in a decision journal and score them against real binary outcomes ($o_t \in \{0, 1\}$) using the Brier formula $\text{BS} = \frac{1}{N}\sum (f_t - o_t)^2$. Target a Brier score $< 0.15$ over rolling 90-day intervals to eliminate overconfidence and ground mental simulations in empirical reality.
   3. **The Bayesian Update Mandate:** Every strategic mental model must define explicit disconfirming signals that force an immediate probability update. If fresh data arrives (e.g. pilot conversion stalls or vendor pricing doubles), holding an unrevised strategic stance is treated as an operational defect. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]].
+
+### 4.19 The Intuitive Expertise Mirage & The Kahneman-Klein Validity Boundary
+* **Symptom:** Technical founders rely on "gut instinct" and internal product visions to greenlight speculative features, declaring that *"Steve Jobs never did market research."* The resulting launches encounter near-total customer indifference, draining runway on unneeded capabilities.
+* **Root Cause:** Conflating familiarity with true expertise across differing validity domains. The landmark 2009 Kahneman-Klein study (*Conditions for Intuitive Expertise*) established that intuitive mental simulation is valid **only** under two conditions: (1) a high-validity environment with repeatable causal rules, and (2) prolonged opportunity to learn with rapid, unambiguous feedback. Early-stage markets are **low-validity environments with delayed feedback**. In this domain, founder intuition is an optical illusion: cognitive ease is mistaken for predictive accuracy.
+* **Systemic Fix & The Synthetic Arbitration Protocol:**
+  1. **The Validity Domain Partition:** Divide project execution into two distinct cognitive zones:
+     * *High-Validity Subsystems (Code logic, deterministic schemas, database concurrency, unit economics):* Trust seasoned engineering intuition. Pattern matching reliably catches deadlocks and latency bottlenecks here.
+     * *Low-Validity Subsystems (Customer willingness-to-pay, pricing tolerance, workflow displacement):* **Ban intuitive gut calls.** Force formal behavioral disproof tests (paid pilot deposits, written LOIs, cold outbound reply rates).
+  2. **The Adversarial Disagreement Partner:** Prohibit sycophantic validation channels (friends, agreeable colleagues, unconstrained LLMs). Install a dedicated adversarial review gate (human red team or calibrated counter-agent) whose sole operational purpose is to falsify the founder's core adoption hypothesis before code is written.
+  3. **Cash-Flow Volatility vs. Runway Buffer (The 3x Buffer Invariant):** In low-validity markets, collection lags and churn swing violently. When simulating financial runway, multiply expected receivable delays by $3\times$. If cash drops below 6 months under that shock, freeze additive engineering immediately. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
