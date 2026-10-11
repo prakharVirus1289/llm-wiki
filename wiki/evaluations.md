@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, ten distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, eleven distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -125,6 +125,17 @@ Across empirical stress testing and continuous agent cycles, ten distinct system
   1. **The Cynefin Domain Partition:** Categorize project layers into closed technical components (Complicated: analyze and verify) versus human adoption components (Complex: probe, sense, and respond).
   2. **The $10\times$ Extreme Parameter Sensitivity Test:** Stress-test every business and operational spreadsheet by applying $10\times$ multiplier penalties to key assumptions (e.g. what if CAC is $10\times$ higher? What if onboarding takes $5\times$ longer? What if customer churn reaches $50\%$?). If model outputs fail to react realistically, the simulation formula is fundamentally disconnected from operational reality.
   3. **Short-Cycle Probing:** Replace multi-month predictive simulation with low-cost bounded probes that extract unambiguous empirical data from the market. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
+
+### 4.11 Consensus Paralysis & The Falsification Decision Log (DRI Protocol)
+* **Symptom:** Founders and early engineering teams spend weeks locked in open-ended architecture or roadmap debates, or make strategic bets with no structured way to evaluate whether their mental simulation models were accurate.
+* **Root Cause:** Consensus seeking and uncalibrated post-facto rationalization. Requiring full team consensus creates analysis paralysis because different team members optimize for contradictory vectors (velocity vs stability vs architecture elegance). Furthermore, lack of immutable decision records allows hindsight bias to rewrite memory after failure, preventing operators from improving predictive judgment.
+* **Systemic Fix & Strategic Velocity Primitives:**
+  1. **Directly Responsible Individual (DRI) Ownership:** Enforce open debate followed strictly by single-owner executive resolution. The DRI owns the decision and executes against pre-established simplicity invariants (e.g. standard library before custom code; battle-tested platforms before unproven tech).
+  2. **The Falsification Decision Journal:** Record every strategic choice in a structured decision log prior to execution:
+     * *Ground Truth Assertions:* Explicit assumptions and numbers held at the time of the decision.
+     * *The Rejected Counterfactual:* What alternative paths were deliberately abandoned.
+     * *The Falsification Trigger:* A precise, quantifiable signal (e.g. zero paid signups in 7 days, or customer onboarding time exceeding 2 hours) that proves the thesis false and triggers an immediate pivot.
+     * *Calendar Review Checkpoint:* Scheduled retrospective to grade prediction accuracy against reality, eliminating hindsight bias. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
