@@ -91,7 +91,7 @@ flowchart TD
         
         InputsIQG --> SkillReaderIQG["Skill: wiki-reader<br/>(Supply: parent_prompt)"]
         
-        SkillReaderIQG -->|"Returns: vetted_sections & audited_destinations"| Step5Gaps["Skill: first-principle-reasoning<br/>(Critiques findings, surfaces missing numbers & failure modes)"]
+        SkillReaderIQG -->|"Returns: direct_findings & linked_findings"| Step5Gaps["Skill: first-principle-reasoning<br/>(Critiques findings, surfaces missing numbers & failure modes)"]
         
         Step5Gaps --> Step6Dialects["Step 3: Multi-Platform Dialect Synthesis<br/>(Reddit, HN, Lobsters, GitHub, Twitter, ArXiv, SO, HF)"]
         
