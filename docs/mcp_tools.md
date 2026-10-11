@@ -596,7 +596,7 @@ flowchart TD
     Splice --> TempFile["Write spliced chapter to tempfile in same dir"]
     TempFile --> AtomicReplace["Atomic os.replace(tempfile, wiki/<file>)"]
     AtomicReplace --> Lint["Validate Markdown syntax (code fences, brackets)"]
-    Lint --> Reindex["index_wiki(embed=False) to sync wiki_links & FTS5"]
+    Lint --> Reindex["index_wiki(embed=True) to sync wiki_links, FTS5 & compute embeddings"]
     Reindex --> Return["Return JSON status and lint warnings"]
 ```
 
@@ -604,7 +604,7 @@ flowchart TD
 1. **Surgical AST Splicing:** Finds target heading line coordinates in `wiki/<file>` and swaps the bytes with the updated section (or appends if the heading is new). All `[[chapter/slug|alias]]` cross-chapter links authored by the agent are preserved exactly as written.
 2. **Atomic File Write:** Writes content to a temporary file in the same filesystem folder and replaces the original via `os.replace` to prevent partial file writes.
 3. **Syntax Linting:** Runs a validation check ensuring that code fences and bracket pairs are balanced.
-4. **Relational Index Synchronization:** Calls `index_wiki(embed=False)` to immediately parse all genuine authored `[[wikilinks]]` into the SQLite `wiki_links` table and rebuild `wiki_sections_fts`.
+4. **Relational & Vector Index Synchronization:** Calls `index_wiki(embed=True)` to parse authored `[[wikilinks]]` into `wiki_links`, rebuild `wiki_sections_fts`, and compute dense vector embeddings so the section is immediately comparable.
 5. Returns confirmation payload with file status and any syntax warnings.
 
 #### Input Parameters
@@ -835,14 +835,17 @@ flowchart TD
 ```
 
 #### Execution Logic
-1. **Embedding Matrix Loading:** Retrieves all section records from `wiki_sections_index` where precomputed dense vector embeddings are present.
-2. **Existing Link Edge Loading:** Reads all established cross-chapter links from the `wiki_resolved_links` SQL view to identify existing connections.
-3. **Substantive Concept Filtering:** Passes each heading through `is_substantive_concept_heading()`, discarding generic section names (such as `"Overview"`, `"Summary"`, `"Architecture"`, `"Benchmarks"`) and conversational noise.
-4. **Vector Normalization & Matrix Dot Product:** Deserializes raw binary vector blobs into 384-dimensional float32 vectors and stacks them into an `(N, 384)` NumPy matrix. Normalizes rows by their Euclidean L2 norm and computes the complete pairwise cosine similarity matrix with a single dot product (`norm_mat @ norm_mat.T`).
-5. **Cross-Chapter Pair Extraction:** Evaluates upper-triangular matrix indices where `source_file != target_file` and similarity meets or exceeds `threshold`.
-6. **Edge Presence Flagging:** Checks whether an active link already exists between the two files in `existing_edges`, setting `is_already_linked`.
-7. **Sorting & Limiting:** Sorts candidate pairs in descending order of similarity score and returns the top `limit` candidate pairs.
-8. **Pure Read-Only Safety:** Performs all vector calculations in memory without altering database tables or markdown chapters.
+1. **Targeted vs. Global Mode:**
+   - **Targeted Mode (`file` specified):** Evaluates candidate links specifically for the newly modified section. If the section embedding is not yet in SQLite, it computes it on the fly using fastembed. It then runs a 1-to-many vector dot product against substantive sections in other chapters.
+   - **Global Mode (`file` omitted):** Loads all indexed sections across the entire textbook and runs an all-to-all matrix comparison.
+2. **Embedding Loading:** Retrieves dense vector embeddings from `wiki_sections_index`.
+3. **Existing Link Edge Loading:** Reads all established cross-chapter links from the `wiki_resolved_links` SQL view to identify existing connections.
+4. **Substantive Concept Filtering:** Passes each heading through `is_substantive_concept_heading()`, discarding generic section names (such as `"Overview"`, `"Summary"`, `"Architecture"`, `"Benchmarks"`) and conversational noise.
+5. **Vector Normalization & Dot Product:** Deserializes raw binary vector blobs into 384-dimensional float32 vectors, normalizes by Euclidean L2 norm, and computes cosine similarity via dot product.
+6. **Cross-Chapter Pair Extraction:** Filters for pairs where `source_file != target_file` and similarity meets or exceeds `threshold`.
+7. **Edge Presence Flagging:** Checks whether an active link already exists between the two files in `existing_edges`, setting `is_already_linked`.
+8. **Sorting & Limiting:** Sorts candidate pairs in descending order of similarity score and returns the top `limit` candidate pairs.
+9. **Pure Read-Only Safety:** Performs vector calculations in memory without mutating database tables or markdown chapters.
 
 #### Database Tables & SQL Queries
 * **Tables & Views Read:** `wiki_sections_index`, `wiki_resolved_links` (view)

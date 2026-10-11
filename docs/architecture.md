@@ -5,11 +5,11 @@
 This document outlines the high-level architecture of the autonomous textbook iteration loop. Tool calls are treated as clean service boundaries—internal database queries, full-text index rebuilds, and AST file manipulation are encapsulated entirely inside the MCP server.
 
 ### System Workflow Overview
-1. **Web Harvesting (`deep-web-analysis`):** Multi-platform discovery across Reddit, Twitter/X, and GitHub.
+1. **Web Harvesting (`deep-web-analysis`):** Multi-platform discovery across Reddit, Twitter/X, Hacker News, GitHub, Lobsters, ArXiv, etc.
 2. **Adversarial Curation & Ingestion (`filtering-raw-dump`):** Non-deterministic 4-point relevance filtering followed by atomic deduplication and storage in `raw_firehose` via `llm_wiki_firehose_ingest`.
-3. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council).
-4. **Targeted Textbook Reading (`wiki-reader`):** Dual-track prompt decomposition, MCP similarity & keyword search, relevance filtering, and surgical cross-link destination audit.
-5. **Surgical Patching (`ast-markdown-patcher`):** Single-section updates, automatic cross-chapter wikilinking, and index synchronization.
+3. **Textbook Reading & Placement (`wiki-reader`):** Groups vetted items by architectural topic, retrieves existing chapter sections with zero token bloat, and determines where new knowledge belongs.
+4. **Surgical Patching & Cross-Linking (`ast-markdown-patcher`):** Single-section updates, targeted link discovery via `llm_wiki_suggest_links(file, heading)`, epistemic link auditing, and index synchronization.
+5. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council) across newly indexed records to extract enduring architectural invariants.
 6. **Remote Version Control (`git-pr-arbiter`):** Atomic Git staging, commit creation, and remote push.
 7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Supplies `parent_prompt` to `wiki-reader`, runs first-principles gap reasoning on vetted findings, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
 
@@ -22,7 +22,7 @@ flowchart TD
     %% ==========================================
     subgraph S1 ["Stage 1: Web Research & Harvesting"]
         Trigger["User Request / Scheduled Timer / Backlog"] --> SkillDWA["Skill: deep-web-analysis"]
-        SkillDWA -->|"Scrapes Reddit, Twitter/X, GitHub"| RawJSON["harvested_candidates.json (Raw Web Posts)"]
+        SkillDWA -->|"Scrapes multi-platform feeds"| RawJSON["harvested_candidates.json (Raw Web Posts)"]
     end
 
     %% ==========================================
@@ -35,14 +35,36 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 3: DATA-POINT REASONING (LLM-COUNCIL)
+    %% STAGE 3: TEXTBOOK READING & SYNTHESIS
     %% ==========================================
-    subgraph S3 ["Stage 3: Data-Point Reasoning (LLM-Council)"]
-        IngestedClean --> SkillDPR["Skill: data-point-reasoning"]
-        SkillDPR -->|"Partitions raw posts into atomic items"| ChunkPartition["Item Partitioning Engine"]
+    subgraph S3 ["Stage 3: Read Existing Textbook (wiki-reader)"]
+        IngestedClean --> SkillReader["Skill: wiki-reader (Groups by Topic)"]
+        SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query)"| ToolSearch["MCP Tool: llm_wiki_search_hybrid"]
+        ToolSearch -->|"Returns: Ranked matching sections"| MatchList["Target Chapter & Heading Identified"]
+        
+        MatchList -->|"Tool Call: llm_wiki_read_section(file, heading)"| ToolRead["MCP Tool: llm_wiki_read_section"]
+        ToolRead -->|"Returns: Exact section markdown (Zero token bloat)"| SectionText["Existing Section Text"]
+        SectionText --> AgentSynthesize["Synthesize Cohesive Section Update"]
+    end
+
+    %% ==========================================
+    %% STAGE 4: SURGICAL FILE PATCH & RE-INDEXING
+    %% ==========================================
+    subgraph S4 ["Stage 4: Surgical Section Patching (ast-markdown-patcher)"]
+        AgentSynthesize --> SkillPatch["Skill: ast-markdown-patcher"]
+        SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, content)"| ToolPatch["MCP Tool: llm_wiki_patch_section"]
+        SkillPatch -->|"Targeted Suggest Links: llm_wiki_suggest_links(file, heading)"| ToolSuggest["MCP Tool: llm_wiki_suggest_links"]
+        ToolPatch -->|"Returns: Spliced cleanly, cross-links created, search updated"| PatchedChapter["Chapter Updated on Disk (wiki/*.md)"]
+    end
+
+    %% ==========================================
+    %% STAGE 5: DATA-POINT REASONING (LLM-COUNCIL)
+    %% ==========================================
+    subgraph S5 ["Stage 5: Data-Point Reasoning (LLM-Council)"]
+        PatchedChapter --> SkillDPR["Skill: data-point-reasoning"]
         
         subgraph Phase1 ["Phase 1: Raw Data Council"]
-            ChunkPartition -->|"invoke_subagent (Parallel Fleet)"| SubAgents["Sub-Agent Fleet (Reasoning on Every Item)"]
+            SkillDPR -->|"invoke_subagent (Parallel Fleet)"| SubAgents["Sub-Agent Fleet (Reasoning on Every Item)"]
             SubAgents -->|"Synthesizes individual findings"| InitialSynth["Initial Synthesis (V1 Draft)"]
         end
         
@@ -53,32 +75,10 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 4: CHECK EXISTING TEXTBOOK (ZERO BLOAT)
-    %% ==========================================
-    subgraph S4 ["Stage 4: Read Existing Textbook"]
-        HardenedFacts --> SkillReader["Skill: wiki-reader"]
-        SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query)"| ToolSearch["MCP Tool: llm_wiki_search_hybrid"]
-        ToolSearch -->|"Returns: Ranked matching sections"| MatchList["Target Chapter & Heading Identified"]
-        
-        MatchList -->|"Tool Call: llm_wiki_read_section(file, heading)"| ToolRead["MCP Tool: llm_wiki_read_section"]
-        ToolRead -->|"Returns: Exact section markdown (Zero token bloat)"| SectionText["Existing Section Text"]
-        SectionText --> AgentCompare["Agent Compares Existing Text vs New Facts"]
-    end
-
-    %% ==========================================
-    %% STAGE 5: SURGICAL FILE PATCH & RE-INDEXING
-    %% ==========================================
-    subgraph S5 ["Stage 5: Surgical Section Patching"]
-        AgentCompare --> SkillPatch["Skill: ast-markdown-patcher"]
-        SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, content)"| ToolPatch["MCP Tool: llm_wiki_patch_section"]
-        ToolPatch -->|"Returns: Spliced cleanly, cross-links created, search updated"| PatchedChapter["Chapter Updated on Disk (wiki/*.md)"]
-    end
-
-    %% ==========================================
     %% STAGE 6: REMOTE VERSION CONTROL
     %% ==========================================
     subgraph S6 ["Stage 6: Version Control & Remote Sync"]
-        PatchedChapter --> SkillPR["Skill: git-pr-arbiter"]
+        HardenedFacts --> SkillPR["Skill: git-pr-arbiter"]
         SkillPR -->|"Tool Call: llm_wiki_git_commit_and_push(file, message)"| ToolGit["MCP Tool: llm_wiki_git_commit_and_push"]
         ToolGit -->|"Returns: Staged, committed, and pushed"| RemoteRepo["GitHub Remote Tracking Branch"]
     end
@@ -107,8 +107,8 @@ flowchart TD
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
     class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR,SkillReaderIQG,Step5Gaps skill;
-    class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit mcp;
+    class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolSuggest,ToolGit mcp;
     class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
-    class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
+    class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts council;
     class InputsIQG,Step6Dialects steer;
 ```
