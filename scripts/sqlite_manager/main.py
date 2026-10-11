@@ -32,6 +32,7 @@ def main():
     parser.add_argument("--query", type=str)
     parser.add_argument("--concept", type=str)
     parser.add_argument("--limit", default=20, type=int)
+    parser.add_argument("--heading", type=str, help="Target section heading for suggest-links")
     parser.add_argument("--embed", action="store_true", help="Generate vector embeddings for new/modified sections")
     args = parser.parse_args()
 
@@ -87,8 +88,10 @@ def main():
         print("[SCAN-LINKS] All cross-chapter links must be authored intentionally by agents via the 4-Point Epistemic Link Audit.")
         print("[SCAN-LINKS] Use 'suggest-links' instead to discover candidate pairs for agent evaluation.")
     elif args.action == "suggest-links":
-        cands = find_cross_chapter_similarities(args.db, threshold=args.threshold, limit=args.limit)
-        print(f"[SUGGEST-LINKS] Top {len(cands)} cross-chapter candidate pairs (threshold={args.threshold}):")
+        file_arg = str(args.file) if args.file else None
+        cands = find_cross_chapter_similarities(args.db, threshold=args.threshold, limit=args.limit, file=file_arg, heading=args.heading)
+        target_str = f" for '{args.heading}' in '{file_arg}'" if file_arg else ""
+        print(f"[SUGGEST-LINKS] Top {len(cands)} cross-chapter candidate pairs (threshold={args.threshold}{target_str}):")
         for c in cands:
             already = " [ALREADY LINKED]" if c["is_already_linked"] else ""
             print(f"  - ({c['similarity']*100:.1f}%) [{c['source_file']}] '{c['source_heading'][:30]}' <---> [{c['target_file']}] '{c['target_heading'][:30]}'{already}")

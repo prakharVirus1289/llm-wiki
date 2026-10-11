@@ -319,7 +319,7 @@ def handle_patch_section(params: dict) -> dict:
         ASTSplicer.splice_section(file_path, heading, content)
         errs = ASTSplicer.lint_file(file_path)
         try:
-            index_wiki(DB_PATH, WIKI_DIR, embed=False)
+            index_wiki(DB_PATH, WIKI_DIR, embed=True)
         except Exception as ex_idx:
             logger.warning("Fast index_wiki sync after patch_section failed: %s", ex_idx)
         return {
@@ -337,41 +337,42 @@ def handle_patch_section(params: dict) -> dict:
 def handle_suggest_links(params: dict) -> dict:
     """
     Surfaces high-similarity section pairs between different chapters that are not yet cross-linked.
-
-    Uses vector embeddings across all indexed sections and runs a fast matrix dot product
-    to identify sections in different chapters that discuss related concepts (cosine similarity >= threshold).
-    Filters out already-linked pairs and generic titles (like 'Overview' or 'Summary').
+    If 'file' (and optionally 'heading') is specified, restricts candidate pairs to only those
+    directly related to that specific newly added/modified section.
 
     Args:
         params: Dictionary containing:
+            - file (str, optional): Target chapter file name (e.g. 'caching.md').
+            - heading (str, optional): Target section heading title.
             - threshold (float, optional): Minimum cosine similarity cutoff (0.0 to 1.0). Default: 0.82.
             - limit (int, optional): Maximum candidate pairs to return. Default: 20.
 
     Returns:
         dict: Suggestion dictionary:
             - status (str): 'success' or 'error'.
+            - file (str, optional): Target file queried.
+            - heading (str, optional): Target heading queried.
             - threshold (float): Similarity threshold used.
             - count (int): Total pairs found.
-            - suggestions (list[dict]): Candidate pairs, each containing:
-                - source_file (str): First chapter file name.
-                - source_heading (str): First section title.
-                - source_slug (str): Normalized slug of first section.
-                - target_file (str): Second chapter file name.
-                - target_heading (str): Second section title.
-                - target_slug (str): Normalized slug of second section.
-                - similarity (float): Cosine similarity score between the two sections.
-                - is_already_linked (bool): Whether an edge already connects these files.
-
-    Side Effects:
-        None (read-only query on vector embeddings in SQLite database).
+            - suggestions (list[dict]): Candidate pairs.
     """
+    file_name = params.get("file", "").strip() or None
+    heading = params.get("heading", "").strip() or None
     threshold = params.get("threshold", 0.82)
     limit = params.get("limit", 20)
-    logger.info("MCP suggest_links: threshold=%.2f, limit=%d", threshold, limit)
+    logger.info("MCP suggest_links: file='%s', heading='%s', threshold=%.2f, limit=%d", file_name, heading, threshold, limit)
     try:
-        candidates = find_cross_chapter_similarities(DB_PATH, threshold=threshold, limit=limit)
+        candidates = find_cross_chapter_similarities(
+            DB_PATH, 
+            threshold=threshold, 
+            limit=limit,
+            file=file_name,
+            heading=heading
+        )
         return {
             "status": "success",
+            "file": file_name,
+            "heading": heading,
             "threshold": threshold,
             "count": len(candidates),
             "suggestions": candidates
@@ -734,10 +735,18 @@ TOOL_SCHEMAS = [
     },
     {
         "name": "llm_wiki_suggest_links",
-        "description": "Surfaces high-similarity section pairs across different chapters using vector embeddings (> 0.82) to reveal topics that should be cross-linked.",
+        "description": "Surfaces high-similarity section pairs across different chapters using vector embeddings (> 0.82). If file and heading are provided, finds candidate links strictly for that specific newly added/modified content.",
         "inputSchema": {
             "type": "object",
             "properties": {
+                "file": {
+                    "type": "string",
+                    "description": "Optional: Filter candidate links to only those related to this chapter file (e.g. 'storage.md')."
+                },
+                "heading": {
+                    "type": "string",
+                    "description": "Optional: Filter candidate links to only those related to this specific section heading."
+                },
                 "threshold": {
                     "type": "number",
                     "default": 0.82,

@@ -863,6 +863,8 @@ flowchart TD
 #### Input Parameters
 | Parameter | Type | Required? | Default | Description |
 | :--- | :--- | :---: | :---: | :--- |
+| `file` | string | No | `null` | Optional chapter file name (e.g. `"storage.md"`). If provided, restricts similarity search strictly to this newly added/modified content. |
+| `heading` | string | No | `null` | Optional section heading title. When combined with `file`, compares only this specific section against all other chapters. |
 | `threshold` | number | No | `0.82` | Minimum cosine similarity score (between 0.0 and 1.0). |
 | `limit` | integer | No | `20` | Maximum candidate pairs to return. |
 
@@ -870,16 +872,18 @@ flowchart TD
 ```json
 {
   "status": "success",
+  "file": "storage.md",
+  "heading": "SQLite WAL Concurrency",
   "threshold": 0.82,
   "count": 1,
   "suggestions": [
     {
-      "source_file": "agent_architectures.md",
-      "source_heading": "Hierarchical Planner Patterns",
-      "source_slug": "hierarchical-planner-patterns",
-      "target_file": "orchestration.md",
-      "target_heading": "Multi-Agent Task Decomposition",
-      "target_slug": "multi-agent-task-decomposition",
+      "source_file": "storage.md",
+      "source_heading": "SQLite WAL Concurrency",
+      "source_slug": "sqlite-wal-concurrency",
+      "target_file": "consensus.md",
+      "target_heading": "Raft Consensus and Log Replay",
+      "target_slug": "raft-consensus-and-log-replay",
       "similarity": 0.865,
       "is_already_linked": false
     }
@@ -888,7 +892,7 @@ flowchart TD
 ```
 
 #### Side Effects
-- None (read-only calculation across existing database vector embeddings).
+- None (read-only calculation across database vector embeddings).
 
 #### Example JSON-RPC Request
 ```json
@@ -899,7 +903,9 @@ flowchart TD
   "params": {
     "name": "llm_wiki_suggest_links",
     "arguments": {
-      "threshold": 0.85,
+      "file": "storage.md",
+      "heading": "SQLite WAL Concurrency",
+      "threshold": 0.82,
       "limit": 10
     }
   }

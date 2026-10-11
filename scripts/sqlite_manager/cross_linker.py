@@ -15,6 +15,7 @@ from typing import Optional
 import numpy as np
 
 from .connection import get_connection, logger
+from .indexer import normalize_slug
 
 # Words and titles that are too generic to link automatically
 GENERIC_STOP_HEADINGS = {
@@ -137,20 +138,26 @@ def scan_and_link_text(content: str, current_file: str, concept_dict: dict[str, 
     return content, []
 
 
-def find_cross_chapter_similarities(db_path: Path, threshold: float = 0.82, limit: int = 25) -> list[dict]:
+def find_cross_chapter_similarities(
+    db_path: Path, 
+    threshold: float = 0.82, 
+    limit: int = 25,
+    file: str | None = None,
+    heading: str | None = None
+) -> list[dict]:
     """
-    Calculates cosine similarity across all chapter sections using their vector embeddings.
-    Filters for high similarity (> threshold) pairs that belong to DIFFERENT files
-    and are not yet linked in the database.
+    Calculates cosine similarity across chapter sections using their vector embeddings.
+    If file (and optionally heading) is specified, only finds sections in OTHER chapters
+    that are similar to that specific section (targeted search for new/modified content).
+    Otherwise, scans all sections across all chapters for top similar pairs.
     """
     t0 = time.perf_counter()
     conn = get_connection(db_path)
     try:
-        # Load all sections with embeddings
+        # Load all sections
         cursor = conn.execute("""
-            SELECT file_path, heading, heading_slug, embedding 
-            FROM wiki_sections_index 
-            WHERE embedding IS NOT NULL;
+            SELECT file_path, heading, heading_slug, embedding, content
+            FROM wiki_sections_index;
         """)
         rows = cursor.fetchall()
         if len(rows) < 2:
@@ -166,7 +173,95 @@ def find_cross_chapter_similarities(db_path: Path, threshold: float = 0.82, limi
     finally:
         conn.close()
 
-    valid_rows = [r for r in rows if is_substantive_concept_heading(r[1])]
+    # If target file is provided, run targeted 1-to-many similarity search for that section
+    if file:
+        target_stem = Path(file).stem.lower()
+        target_heading_clean = heading.strip().lower() if heading else None
+
+        # Locate the target section
+        target_row = None
+        for r in rows:
+            f_stem = Path(r[0]).stem.lower()
+            if f_stem == target_stem:
+                if target_heading_clean:
+                    if r[1].lower() == target_heading_clean or r[2] == normalize_slug(heading) or target_heading_clean in r[1].lower():
+                        target_row = r
+                        break
+                else:
+                    target_row = r
+                    break
+
+        if not target_row:
+            logger.warning("Target section '%s' in '%s' not found in index for targeted similarity search.", heading, file)
+            return []
+
+        # If embedding is missing for the target section, compute it on the fly
+        target_emb_bytes = target_row[3]
+        if target_emb_bytes is None:
+            from .search import get_embedding_model
+            model = get_embedding_model()
+            text = f"{target_row[1]}: {target_row[4][:500] if target_row[4] else ''}"
+            emb_list = list(model.embed([text]))
+            target_emb = np.array(emb_list[0], dtype=np.float32)
+            # Cache back to database
+            conn = get_connection(db_path)
+            try:
+                conn.execute(
+                    "UPDATE wiki_sections_index SET embedding = ? WHERE file_path = ? AND heading = ?",
+                    (target_emb.tobytes(), target_row[0], target_row[1])
+                )
+                conn.commit()
+            finally:
+                conn.close()
+        else:
+            target_emb = np.frombuffer(target_emb_bytes, dtype=np.float32)
+
+        # Normalize target embedding vector
+        target_norm = target_emb / (np.linalg.norm(target_emb) or 1.0)
+
+        # Filter other sections in different chapters that have embeddings and substantive titles
+        other_rows = [
+            r for r in rows 
+            if Path(r[0]).stem.lower() != target_stem 
+            and r[3] is not None 
+            and is_substantive_concept_heading(r[1])
+        ]
+
+        if not other_rows:
+            return []
+
+        other_mat = np.stack([np.frombuffer(r[3], dtype=np.float32) for r in other_rows])
+        other_norms = np.linalg.norm(other_mat, axis=1, keepdims=True)
+        other_norms[other_norms == 0] = 1.0
+        other_norm_mat = other_mat / other_norms
+
+        # Dot product with target vector
+        sims = other_norm_mat @ target_norm
+
+        candidates = []
+        matching_indices = np.where(sims >= threshold)[0]
+        for idx in matching_indices:
+            r = other_rows[idx]
+            score = float(sims[idx])
+            candidates.append({
+                "source_file": target_row[0],
+                "source_heading": target_row[1],
+                "source_slug": target_row[2],
+                "target_file": r[0],
+                "target_heading": r[1],
+                "target_slug": r[2],
+                "similarity": round(score, 4),
+                "is_already_linked": (target_row[0], r[0]) in existing_edges or (r[0], target_row[0]) in existing_edges
+            })
+
+        candidates.sort(key=lambda x: x["similarity"], reverse=True)
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("Targeted suggest_links for '%s' scanned %d sections in %.2f ms, found %d candidates",
+                    target_row[1], len(other_rows), elapsed_ms, len(candidates))
+        return candidates[:limit]
+
+    # Global all-pairs fallback when no specific file is requested
+    valid_rows = [r for r in rows if is_substantive_concept_heading(r[1]) and r[3] is not None]
     if len(valid_rows) < 2:
         return []
 
@@ -192,14 +287,13 @@ def find_cross_chapter_similarities(db_path: Path, threshold: float = 0.82, limi
         file_i = files[i]
         heading_i = headings[i]
 
-        # Look at upper triangle
         matching_indices = np.where((sim_matrix[i, i+1:] >= threshold))[0] + (i + 1)
         for j in matching_indices:
             file_j = files[j]
             heading_j = headings[j]
 
             # Only cross-chapter
-            if file_i == file_j:
+            if Path(file_i).stem.lower() == Path(file_j).stem.lower():
                 continue
 
             score = float(sim_matrix[i, j])
@@ -215,7 +309,6 @@ def find_cross_chapter_similarities(db_path: Path, threshold: float = 0.82, limi
                 "is_already_linked": (file_i, file_j) in existing_edges or (file_j, file_i) in existing_edges
             })
 
-    # Sort descending by similarity score
     candidates.sort(key=lambda x: x["similarity"], reverse=True)
     elapsed_ms = (time.perf_counter() - t0) * 1000
     logger.info("find_cross_chapter_similarities scanned %d sections in %.2f ms, found %d candidates", 
