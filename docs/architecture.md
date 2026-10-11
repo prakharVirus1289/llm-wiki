@@ -8,10 +8,10 @@ This document outlines the high-level architecture of the autonomous textbook it
 1. **Web Harvesting (`deep-web-analysis`):** Multi-platform discovery across Reddit, Twitter/X, and GitHub.
 2. **Adversarial Curation & Ingestion (`filtering-raw-dump`):** Non-deterministic 4-point relevance filtering followed by atomic deduplication and storage in `raw_firehose` via `llm_wiki_firehose_ingest`.
 3. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council).
-4. **Targeted Textbook Reading (`wiki-reader`):** Sub-15ms lexical and semantic lookup, followed by surgical section extraction with zero token bloat.
+4. **Targeted Textbook Reading (`wiki-reader`):** Dual-track prompt decomposition, MCP similarity & keyword search, relevance filtering, and surgical cross-link destination audit.
 5. **Surgical Patching (`ast-markdown-patcher`):** Single-section updates, automatic cross-chapter wikilinking, and index synchronization.
 6. **Remote Version Control (`git-pr-arbiter`):** Atomic Git staging, commit creation, and remote push.
-7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Dual-track decomposition, cross-link destination audit, first-principles gap formulation, and multi-platform manifest synthesis across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
+7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Invokes `wiki-reader` for textbook retrieval, runs first-principles gap reasoning, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
 
 ---
 
@@ -89,23 +89,11 @@ flowchart TD
     subgraph S7 ["Stage 7: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
         RemoteRepo --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
         
-        %% Dual-track retrieval
-        InputsIQG --> Branch1["Branch 1: Semantic Prompts<br/>(2–4 short 6-word conceptual sub-prompts)"]
-        InputsIQG --> Branch2["Branch 2: Technical Terms<br/>(Key technical nouns, acronyms, flags)"]
+        InputsIQG --> SkillReaderIQG["Skill: wiki-reader<br/>(Deconstructs prompt, queries MCP similarity & keywords,<br/>filters boilerplate, audits cross-links & destinations)"]
         
-        Branch1 -->|"Tool Call (limit=25 per prompt)"| ToolSim["MCP Tool: llm_wiki_search_similarity"]
-        Branch2 -->|"Tool Call (limit=25 per term set)"| ToolKW["MCP Tool: llm_wiki_search_keyword"]
+        SkillReaderIQG -->|"Returns: vetted_sections & audited_destinations"| Step5Gaps["Skill: first-principle-reasoning<br/>(Critiques findings, surfaces missing numbers & failure modes)"]
         
-        ToolSim --> CandidateSections["Compile Candidate Sections"]
-        ToolKW --> CandidateSections
-        
-        CandidateSections --> Step3Filter["Step 3: Garbage Removal & Relevance Filter<br/>(Discard superficial similarity hits & generic boilerplate)"]
-        
-        Step3Filter --> Step4Audit["Step 4: Cross-Link & Destination Audit<br/>(Check wiki_links via llm_wiki_get_graph,<br/>read destination content via llm_wiki_read_section)"]
-        
-        Step4Audit --> Step5Gaps["Step 5: Gap Reasoning via /first-principle-reasoning<br/>(Critiques findings, surfaces missing numbers & failure modes)"]
-        
-        Step5Gaps --> Step6Dialects["Step 6: Multi-Platform Dialect Synthesis<br/>(Reddit, HN, Lobsters, GitHub, Twitter, ArXiv, SO, HF)"]
+        Step5Gaps --> Step6Dialects["Step 3: Multi-Platform Dialect Synthesis<br/>(Reddit, HN, Lobsters, GitHub, Twitter, ArXiv, SO, HF)"]
         
         Step6Dialects --> Manifest["Write Platform-Tailored query_manifest.json<br/>(Directly to required manifest_path)"]
         Manifest -->|"Feeds next harvesting iteration"| SkillDWA
@@ -118,9 +106,9 @@ flowchart TD
     classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
-    class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR skill;
-    class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit,ToolKW,ToolSim mcp;
+    class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR,SkillReaderIQG,Step5Gaps skill;
+    class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit mcp;
     class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
     class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
-    class InputsIQG,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps,Step6Dialects steer;
+    class InputsIQG,Step6Dialects steer;
 ```
