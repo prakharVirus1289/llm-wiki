@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, seven distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, eight distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -101,6 +101,14 @@ Across empirical stress testing and continuous agent cycles, seven distinct syst
   4. **The 1-Jira-Ticket Platform Risk:** Building a workflow or wrapper that is a trivial roadmap item for the underlying platform (e.g., OpenAI, Google, AWS), destroying the business upon the platform's next release.
   5. **The Uneducated Category Drag:** Attempting to sell solutions to problems prospective users do not yet know they have, burning runway trying to educate the market rather than capturing active demand.
 * **Fix:** Subject every proposed project to the 5-Bucket Elimination Audit and verify pre-existing search intent and CAC/LTV unit economic thresholds before initializing software repositories. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
+
+### 4.8 The Synthetic Simulation Sycophancy Cliff (FutureSim Invariants)
+* **Symptom:** Founders and product strategists use LLM persona swarms ("synthetic users") or ungrounded mental simulations to evaluate product ideas, receiving overwhelmingly enthusiastic approval, only to launch and experience near-zero real-world organic adoption.
+* **Root Cause:** Language model agents exhibit natural sycophancy bias and zero-inertia adoption. Without explicit simulated switching costs, real monetary constraints, and negative domain priors, simulated agents accept proposed solutions unconditionally. Furthermore, empirical evaluations (FutureSim 2026 benchmark) demonstrate that unconstrained models top out at $\approx 25\%$ accuracy on long-horizon temporal execution tasks.
+* **Fix:** Enforce the *Adversarial In-Silico Calibration Protocol*:
+  1. **Strict Switching Costs:** Every simulated persona must be initialized with existing incumbent workflows and a quantifiable penalty (time, retraining, integration friction) for switching.
+  2. **Bounded Discretionary Budgets:** Synthetic buyers must possess hard budget limits and competing alternative allocations.
+  3. **Adversarial Red-Team Cohorts:** Minimum $50\%$ of the simulated evaluation cohort must be explicitly seeded with resistant, cynical, or legacy-entrenched priors to stress-test real-world inertia. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
 
 ---
 
