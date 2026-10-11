@@ -86,11 +86,11 @@ flowchart TD
     %% STAGE 7: DYNAMIC QUERY STEERING & REASONING
     %% ==========================================
     subgraph S7 ["Stage 7: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
-        RemoteRepo --> ParentPrompt["Long Parent Prompt"]
+        RemoteRepo --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
         
         %% Dual-track retrieval
-        ParentPrompt --> Branch1["Branch 1: Semantic Prompts<br/>(2–4 short 6-word conceptual sub-prompts)"]
-        ParentPrompt --> Branch2["Branch 2: Technical Terms<br/>(Key technical nouns, acronyms, flags)"]
+        InputsIQG --> Branch1["Branch 1: Semantic Prompts<br/>(2–4 short 6-word conceptual sub-prompts)"]
+        InputsIQG --> Branch2["Branch 2: Technical Terms<br/>(Key technical nouns, acronyms, flags)"]
         
         Branch1 -->|"Tool Call (limit=25 per prompt)"| ToolSim["MCP Tool: llm_wiki_search_similarity"]
         Branch2 -->|"Tool Call (limit=25 per term set)"| ToolKW["MCP Tool: llm_wiki_search_keyword"]
@@ -102,9 +102,9 @@ flowchart TD
         
         Step3Filter --> Step4Audit["Step 4: Cross-Link & Destination Audit<br/>(Check wiki_links via llm_wiki_get_graph,<br/>read destination content via llm_wiki_read_section)"]
         
-        Step4Audit --> Step5Gaps["Step 5: Gap Reasoning & Query Synthesis<br/>(Invoke /first-principle-reasoning to critique vetted findings,<br/>identify missing mechanisms, and formulate targeted queries)"]
+        Step4Audit --> Step5Gaps["Step 5: Gap Reasoning & Query Synthesis<br/>(Invoke /first-principle-reasoning with payload:<br/>parent_prompt, vetted_sections, audited_destinations)"]
         
-        Step5Gaps --> Manifest["Generate Targeted Search Queries<br/>(query_manifest.json)"]
+        Step5Gaps --> Manifest["Write Targeted Search Queries<br/>(Directly to required manifest_path)"]
         Manifest -->|"Feeds next harvesting iteration"| SkillDWA
     end
 
@@ -119,5 +119,5 @@ flowchart TD
     class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit,ToolKW,ToolSim mcp;
     class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
     class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
-    class ParentPrompt,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps steer;
+    class InputsIQG,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps steer;
 ```
