@@ -6,7 +6,7 @@ This document outlines the high-level architecture of the autonomous textbook it
 
 ### System Workflow Overview
 1. **Web Harvesting (`deep-web-analysis`):** Multi-platform discovery across Reddit, Twitter/X, and GitHub.
-2. **Post Deduplication & Storage (`llm_wiki_firehose_ingest`):** Atomic ingestion of unique posts.
+2. **Adversarial Curation & Ingestion (`filtering-raw-dump`):** Non-deterministic 4-point relevance filtering followed by atomic deduplication and storage in `raw_firehose` via `llm_wiki_firehose_ingest`.
 3. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council).
 4. **Targeted Textbook Reading (`wiki-reader`):** Sub-15ms lexical and semantic lookup, followed by surgical section extraction with zero token bloat.
 5. **Surgical Patching (`ast-markdown-patcher`):** Single-section updates, automatic cross-chapter wikilinking, and index synchronization.
@@ -26,11 +26,13 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 2: DEDUPLICATION & INGESTION (MCP)
+    %% STAGE 2: ADVERSARIAL CURATION & INGESTION
     %% ==========================================
-    subgraph S2 ["Stage 2: Post Deduplication & Storage"]
-        RawJSON -->|"Tool Call: llm_wiki_firehose_ingest(items)"| ToolIngest["MCP Tool: llm_wiki_firehose_ingest"]
-        ToolIngest -->|"Returns: Ingested count, duplicates skipped"| IngestedClean["Clean Batch Stored in Central DB"]
+    subgraph S2 ["Stage 2: Adversarial Curation & Ingestion (filtering-raw-dump)"]
+        RawJSON --> SkillFRD["Skill: filtering-raw-dump"]
+        SkillFRD -->|"Applies 4-Point Filter"| ApprovedPosts["filtered_candidates.json (Approved Posts)"]
+        ApprovedPosts -->|"Tool Call: llm_wiki_firehose_ingest(items)"| ToolIngest["MCP Tool: llm_wiki_firehose_ingest"]
+        ToolIngest -->|"Returns: Ingested count, duplicates skipped"| IngestedClean["Clean Batch Stored in Central DB (raw_firehose)"]
     end
 
     %% ==========================================
@@ -117,9 +119,9 @@ flowchart TD
     classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
-    class SkillDWA,SkillDPR,SkillReader,SkillPatch,SkillPR skill;
+    class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR skill;
     class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit,ToolKW,ToolSim mcp;
-    class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
+    class RawJSON,ApprovedPosts,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
     class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
     class InputsIQG,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps,Step6Dialects steer;
 ```
