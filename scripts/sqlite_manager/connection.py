@@ -66,7 +66,7 @@ def init_db(db_path: Path):
                 logger.info("Migrating wiki_links table schema to include target_anchor and domain_scope")
                 conn.execute("DROP TABLE wiki_links;")
 
-        # Check if wiki_sections_index needs schema migration for embedding column
+        # Check if wiki_sections_index needs schema migration for embedding and heading_slug columns
         cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='wiki_sections_index';")
         if cursor.fetchone():
             col_cursor = conn.execute("PRAGMA table_info(wiki_sections_index);")
@@ -74,6 +74,9 @@ def init_db(db_path: Path):
             if "embedding" not in cols:
                 logger.info("Migrating wiki_sections_index table schema to include embedding BLOB column")
                 conn.execute("ALTER TABLE wiki_sections_index ADD COLUMN embedding BLOB;")
+            if "heading_slug" not in cols:
+                logger.info("Migrating wiki_sections_index table schema to include heading_slug column")
+                conn.execute("ALTER TABLE wiki_sections_index ADD COLUMN heading_slug TEXT NOT NULL DEFAULT '';")
 
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS raw_firehose (
@@ -110,6 +113,7 @@ def init_db(db_path: Path):
             CREATE TABLE IF NOT EXISTS wiki_sections_index (
                 file_path TEXT NOT NULL,
                 heading TEXT NOT NULL,
+                heading_slug TEXT NOT NULL DEFAULT '',
                 level INTEGER NOT NULL,
                 content TEXT NOT NULL,
                 embedding BLOB,
@@ -132,6 +136,7 @@ def init_db(db_path: Path):
             );
 
             CREATE INDEX IF NOT EXISTS idx_sections_heading ON wiki_sections_index(heading);
+            CREATE INDEX IF NOT EXISTS idx_sections_slug ON wiki_sections_index(heading_slug);
 
             DROP VIEW IF EXISTS wiki_dangling_links;
             CREATE VIEW wiki_dangling_links AS
@@ -142,10 +147,31 @@ def init_db(db_path: Path):
                 GROUP_CONCAT(DISTINCT l.source_file) AS citing_files
             FROM wiki_links l
             WHERE NOT EXISTS (
-                SELECT 1 FROM wiki_sections_index s WHERE s.heading = l.target_concept
+                SELECT 1 FROM wiki_sections_index s 
+                WHERE s.heading_slug = l.target_concept 
+                   OR s.file_path = l.target_concept || '.md'
             )
             GROUP BY l.target_concept, l.domain_scope
             ORDER BY incoming_citations DESC;
+
+            DROP VIEW IF EXISTS wiki_resolved_links;
+            CREATE VIEW wiki_resolved_links AS
+            SELECT 
+                l.source_file,
+                l.source_heading,
+                COALESCE(s.file_path, s_file.file_path) AS target_file,
+                COALESCE(s.heading, s_file.heading) AS target_heading,
+                l.target_concept,
+                l.target_anchor,
+                l.link_alias,
+                l.domain_scope,
+                CASE WHEN (s.file_path IS NOT NULL OR s_file.file_path IS NOT NULL) THEN 1 ELSE 0 END AS is_resolved,
+                CASE WHEN l.source_file != COALESCE(s.file_path, s_file.file_path) THEN 1 ELSE 0 END AS is_cross_chapter
+            FROM wiki_links l
+            LEFT JOIN wiki_sections_index s 
+              ON s.heading_slug = l.target_concept
+            LEFT JOIN wiki_sections_index s_file
+              ON (s_file.file_path = l.target_concept || '.md' AND s_file.level = 1);
         """)
         logger.info("Database schema initialized with WAL, FTS5 & graph tables.")
     finally:

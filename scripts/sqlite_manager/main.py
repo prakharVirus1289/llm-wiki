@@ -17,14 +17,18 @@ from sqlite_manager.connection import get_connection, init_db, truncate_wal, sna
 from sqlite_manager.indexer import normalize_slug, parse_wikilink, index_wiki
 from sqlite_manager.search import get_embedding_model, query_section, query_firehose, query_hybrid
 from sqlite_manager.graph import get_backlinks, get_related_concepts, get_dangling_links
+from sqlite_manager.cross_linker import build_concept_dictionary, scan_and_link_text, find_cross_chapter_similarities
 
 
 def main():
     parser = argparse.ArgumentParser(description="SQLite Manager Modular CLI")
-    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "query-firehose", "query-hybrid", "backlinks", "related", "dangling"])
+    parser.add_argument("action", choices=["init", "truncate", "snapshot", "index-wiki", "query-section", "query-firehose", "query-hybrid", "backlinks", "related", "dangling", "scan-links", "suggest-links"])
     parser.add_argument("--db", default="raw_firehose.db", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--wiki-dir", default=Path("wiki"), type=Path)
+    parser.add_argument("--file", type=Path, help="Target markdown file for scan-links")
+    parser.add_argument("--threshold", default=0.82, type=float, help="Similarity threshold for suggest-links")
+    parser.add_argument("--dry-run", action="store_true", help="Do not overwrite file in scan-links")
     parser.add_argument("--query", type=str)
     parser.add_argument("--concept", type=str)
     parser.add_argument("--limit", default=20, type=int)
@@ -78,6 +82,29 @@ def main():
         print(f"[DANGLING] Top {len(dang)} uncategorized / dangling concepts:")
         for d in dang:
             print(f"  - [[{d['target_concept']}]] ({d['domain_scope']}): cited {d['incoming_citations']} times by {d['citing_files']}")
+    elif args.action == "scan-links":
+        if not args.file:
+            print("Error: --file is required for scan-links.")
+            sys.exit(1)
+        if not args.file.exists():
+            print(f"Error: File {args.file} does not exist.")
+            sys.exit(1)
+        cdict = build_concept_dictionary(args.db)
+        print(f"[SCAN-LINKS] Loaded {len(cdict)} concepts into dictionary. Scanning {args.file.name}...")
+        raw_text = args.file.read_text(encoding="utf-8")
+        new_text, applied = scan_and_link_text(raw_text, args.file.name, cdict)
+        print(f"[SCAN-LINKS] Discovered {len(applied)} cross-chapter link opportunities.")
+        for item in applied[:15]:
+            print(f"  - '{item['matched_text']}' -> {item['target_link']} in {item['target_file']}")
+        if not args.dry_run and applied:
+            args.file.write_text(new_text, encoding="utf-8")
+            print(f"[SCAN-LINKS] Successfully updated {args.file.name} with {len(applied)} cross-chapter links.")
+    elif args.action == "suggest-links":
+        cands = find_cross_chapter_similarities(args.db, threshold=args.threshold, limit=args.limit)
+        print(f"[SUGGEST-LINKS] Top {len(cands)} cross-chapter candidate pairs (threshold={args.threshold}):")
+        for c in cands:
+            already = " [ALREADY LINKED]" if c["is_already_linked"] else ""
+            print(f"  - ({c['similarity']*100:.1f}%) [{c['source_file']}] '{c['source_heading'][:30]}' <---> [{c['target_file']}] '{c['target_heading'][:30]}'{already}")
 
 
 if __name__ == "__main__":

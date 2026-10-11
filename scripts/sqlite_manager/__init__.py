@@ -21,6 +21,8 @@ from .indexer import (
 )
 from .search import (
     get_embedding_model,
+    search_keywords,
+    search_similarity,
     search_section,
     query_section,
     query_firehose,
@@ -31,6 +33,11 @@ from .graph import (
     get_backlinks,
     get_related_concepts,
     get_dangling_links,
+)
+from .cross_linker import (
+    build_concept_dictionary,
+    scan_and_link_text,
+    find_cross_chapter_similarities,
 )
 from .main import main
 
@@ -46,6 +53,8 @@ __all__ = [
     "parse_wikilink",
     "index_wiki",
     "get_embedding_model",
+    "search_keywords",
+    "search_similarity",
     "search_section",
     "query_section",
     "query_firehose",
@@ -54,5 +63,8 @@ __all__ = [
     "get_backlinks",
     "get_related_concepts",
     "get_dangling_links",
+    "build_concept_dictionary",
+    "scan_and_link_text",
+    "find_cross_chapter_similarities",
     "main",
 ]

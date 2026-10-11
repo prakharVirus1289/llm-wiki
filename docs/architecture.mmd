@@ -3,137 +3,102 @@ flowchart TD
     %% STAGE 1: WEB RESEARCH & HARVESTING
     %% ==========================================
     subgraph S1 ["Stage 1: Web Research & Harvesting"]
-        User["User / Timer / Manifest"] -->|"Starts cycle"| SkillDWA["Skill: deep-web-analysis"]
-        SkillDWA -->|"Runs script with mutated queries"| Runner["runner.py (Portable Scraper)"]
-        Runner -->|"Scrapes Reddit, Twitter, GitHub"| RawJSON["harvested_candidates.json (Raw Posts)"]
+        Trigger["User Request / Scheduled Timer / Backlog"] --> SkillDWA["Skill: deep-web-analysis"]
+        SkillDWA -->|"Scrapes Reddit, Twitter/X, GitHub"| RawJSON["harvested_candidates.json (Raw Web Posts)"]
     end
 
     %% ==========================================
-    %% STAGE 2: DEDUPLICATION & STORAGE (MCP CALL)
+    %% STAGE 2: DEDUPLICATION & INGESTION (MCP)
     %% ==========================================
-    subgraph S2 ["Stage 2: Save Posts & Stop Duplicates"]
-        RawJSON -->|"Tool Call: llm_wiki_firehose_ingest(items)"| MCPServer1["llm_wiki_mcp.py (Blackbox Server)"]
-        MCPServer1 -->|"Calls function"| SM_Firehose["sqlite_manager/firehose.py"]
-        
-        subgraph TX1 ["SQL Transaction: All-or-Nothing"]
-            SM_Firehose -->|"1. Checks if URL already exists"| SQL_Dedup["SELECT 1 FROM raw_firehose WHERE url = ?"]
-            SQL_Dedup -->|"2. If new, save post"| SQL_InsertPost["INSERT OR IGNORE INTO raw_firehose"]
-            SQL_InsertPost -->|"3. Refresh web post search index"| SQL_RebuildFTS1["INSERT INTO firehose_fts VALUES('rebuild')"]
-        end
-        
-        TX1 -->|"Returns: Clean Batch Ingested"| Stage3Trigger["Ready for In-Depth Reasoning"]
+    subgraph S2 ["Stage 2: Post Deduplication & Storage"]
+        RawJSON -->|"Tool Call: llm_wiki_firehose_ingest(items)"| ToolIngest["MCP Tool: llm_wiki_firehose_ingest"]
+        ToolIngest -->|"Returns: Ingested count, duplicates skipped"| IngestedClean["Clean Batch Stored in Central DB"]
     end
 
     %% ==========================================
     %% STAGE 3: DATA-POINT REASONING (LLM-COUNCIL)
     %% ==========================================
     subgraph S3 ["Stage 3: Data-Point Reasoning (LLM-Council)"]
-        Stage3Trigger -->|"Skill: data-point-reasoning"| SkillDPR["Skill: data-point-reasoning"]
-        SkillDPR -->|"Partitions posts into atomic slices"| CouncilTool["council.py (Chunk Partitioning)"]
-        CouncilTool -->|"Splits into chunk files"| Chunks["chunk_1.txt to chunk_N.txt"]
+        IngestedClean --> SkillDPR["Skill: data-point-reasoning"]
+        SkillDPR -->|"Partitions raw posts into atomic items"| ChunkPartition["Item Partitioning Engine"]
         
         subgraph Phase1 ["Phase 1: Raw Data Council"]
-            Chunks -->|"invoke_subagent (Parallel Fleet)"| SubAgents1["Sub-Agent Fleet (50-100 Agents)"]
-            SubAgents1 -->|"Each agent reasons on 1 data point"| AtomicInsights["Atomic Evidence & Metrics"]
+            ChunkPartition -->|"invoke_subagent (Parallel Fleet)"| SubAgents["Sub-Agent Fleet (Reasoning on Every Item)"]
+            SubAgents -->|"Synthesizes individual findings"| InitialSynth["Initial Synthesis (V1 Draft)"]
         end
-        
-        AtomicInsights -->|"Synthesizes initial report"| InitialSynth["Initial Synthesis (V1 Draft)"]
         
         subgraph Phase2 ["Phase 2: Adversarial Review Council"]
-            InitialSynth -->|"invoke_subagent (Specialist Personas)"| ReviewCouncil["Review Council (10 Adversarial Agents)"]
-            ReviewCouncil -.->|"Architect, Infra Lead, QA, Ponytail critique"| BrutalCritique["Brutal Peer Critique"]
+            InitialSynth -->|"invoke_subagent (Specialist Personas)"| ReviewCouncil["Review Council (Adversarial Critique)"]
+            ReviewCouncil -->|"Hardens facts & discards hype"| HardenedFacts["Hardened Truth & Architectural Invariants"]
         end
-        
-        BrutalCritique -->|"Hardens synthesis & discards hype"| HardenedFacts["Hardened Truth & Invariants"]
     end
 
     %% ==========================================
-    %% STAGE 4: READ EXISTING TEXTBOOK (ZERO BLOAT)
+    %% STAGE 4: CHECK EXISTING TEXTBOOK (ZERO BLOAT)
     %% ==========================================
-    subgraph S4 ["Stage 4: Check Existing Knowledge"]
-        HardenedFacts -->|"Skill: wiki-reader"| SkillReader["Skill: wiki-reader"]
-        SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query='caching')"| MCPServer2["llm_wiki_mcp.py"]
-        MCPServer2 -->|"Calls function"| SM_Search["sqlite_manager/search.py"]
+    subgraph S4 ["Stage 4: Read Existing Textbook"]
+        HardenedFacts --> SkillReader["Skill: wiki-reader"]
+        SkillReader -->|"Tool Call: llm_wiki_search_hybrid(query)"| ToolSearch["MCP Tool: llm_wiki_search_hybrid"]
+        ToolSearch -->|"Returns: Ranked matching sections"| MatchList["Target Chapter & Heading Identified"]
         
-        SM_Search -->|"1. Word Match (2ms)"| FTS_Match["SELECT FROM wiki_sections_fts MATCH 'caching'"]
-        SM_Search -->|"2. Meaning Match (Vectors)"| VEC_Match["SELECT embedding FROM wiki_sections_index"]
-        FTS_Match & VEC_Match -->|"Blends both rankings"| TopSection["Found: caching.md -> ## Cache Invalidation"]
-        
-        TopSection -->|"Tool Call: llm_wiki_read_section(file, heading)"| MCPServer3["llm_wiki_mcp.py"]
-        MCPServer3 -->|"Calls"| AST_Reader["ast_splicer.py"]
-        AST_Reader -->|"Cuts out ONLY the 20 lines of that section"| SectionText["20 Lines of Section Text"]
-        SectionText -->|"Sent to Agent context (Zero token bloat)"| AgentComposer["Agent Compares Old vs New Data"]
+        MatchList -->|"Tool Call: llm_wiki_read_section(file, heading)"| ToolRead["MCP Tool: llm_wiki_read_section"]
+        ToolRead -->|"Returns: Exact section markdown (Zero token bloat)"| SectionText["Existing Section Text"]
+        SectionText --> AgentCompare["Agent Compares Existing Text vs New Facts"]
     end
 
     %% ==========================================
     %% STAGE 5: SURGICAL FILE PATCH & RE-INDEXING
     %% ==========================================
-    subgraph S5 ["Stage 5: Surgical Patching & Re-indexing"]
-        AgentComposer -->|"Writes updated section with [[wikilinks]]"| SkillPatch["Skill: ast-markdown-patcher"]
-        SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, new_content)"| MCPServer4["llm_wiki_mcp.py"]
-        
-        MCPServer4 -->|"1. AST Surgery"| AST_Writer["ast_splicer.py"]
-        AST_Writer -->|"Slices out old 20 lines, pastes new 25 lines"| DiskFile["wiki/caching.md on Disk"]
-        AST_Writer -->|"Linter verifies: code fences & brackets closed"| LintPass["Syntax Validation Pass"]
-        
-        subgraph TX2 ["SQL Transaction: Search & Graph Sync"]
-            LintPass -->|"2. Update section text"| SQL_UpdateSec["INSERT OR UPDATE INTO wiki_sections_index"]
-            SQL_UpdateSec -->|"3. Calculate 384 vector numbers"| SQL_Embed["UPDATE SET embedding = new_vector"]
-            SQL_Embed -->|"4. Refresh chapter search index"| SQL_RebuildFTS2["INSERT INTO wiki_sections_fts VALUES('rebuild')"]
-            SQL_RebuildFTS2 -->|"5. Catalog all [[wikilinks]]"| SQL_Links["INSERT OR IGNORE INTO wiki_links"]
-        end
+    subgraph S5 ["Stage 5: Surgical Section Patching"]
+        AgentCompare --> SkillPatch["Skill: ast-markdown-patcher"]
+        SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, content)"| ToolPatch["MCP Tool: llm_wiki_patch_section"]
+        ToolPatch -->|"Returns: Spliced cleanly, cross-links created, search updated"| PatchedChapter["Chapter Updated on Disk (wiki/*.md)"]
     end
 
     %% ==========================================
-    %% STAGE 6: SAVE TO GITHUB (ATOMIC PR)
+    %% STAGE 6: REMOTE VERSION CONTROL
     %% ==========================================
-    subgraph S6 ["Stage 6: Instant Remote Backup"]
-        TX2 -->|"Tool Call: llm_wiki_git_commit_and_push(file, msg)"| MCPServer5["llm_wiki_mcp.py"]
-        MCPServer5 -->|"Runs: git add & git commit"| GitLocal["Local Git Repository"]
-        GitLocal -->|"Runs: git push origin main"| GitHub["GitHub Remote Repository"]
+    subgraph S6 ["Stage 6: Version Control & Remote Sync"]
+        PatchedChapter --> SkillPR["Skill: git-pr-arbiter"]
+        SkillPR -->|"Tool Call: llm_wiki_git_commit_and_push(file, message)"| ToolGit["MCP Tool: llm_wiki_git_commit_and_push"]
+        ToolGit -->|"Returns: Staged, committed, and pushed"| RemoteRepo["GitHub Remote Tracking Branch"]
     end
 
     %% ==========================================
-    %% STAGE 7: 4-WAY DYNAMIC QUERY STEERING
+    %% STAGE 7: DYNAMIC QUERY STEERING & REASONING
     %% ==========================================
-    subgraph S7 ["Stage 7: 4-Way Dynamic Query Steering (iteration-reasoning)"]
-        GitHub -->|"Skill: iteration-reasoning"| SkillReasoning["Skill: iteration-reasoning"]
+    subgraph S7 ["Stage 7: Dynamic Query Steering & Reasoning (iteration-reasoning)"]
+        RemoteRepo --> ParentPrompt["Long Parent Prompt"]
         
-        %% Stream 1: Dangling Links
-        SkillReasoning -->|"Stream 1: llm_wiki_get_graph(action='dangling')"| MCPServer6["llm_wiki_mcp.py"]
-        MCPServer6 -->|"1. Dangling Links"| SQL_Gaps["SELECT * FROM wiki_dangling_links"]
-        SQL_Gaps -->|"Identifies unwritten concept bookmarks"| GapTargets["1. Missing Chapter Queries"]
+        %% Dual-track retrieval
+        ParentPrompt --> Branch1["Branch 1: Semantic Prompts<br/>(2–4 short 6-word conceptual sub-prompts)"]
+        ParentPrompt --> Branch2["Branch 2: Technical Terms<br/>(Key technical nouns, acronyms, flags)"]
         
-        %% Stream 2: Contradictions
-        SkillReasoning -->|"Stream 2: llm_wiki_search_hybrid('Epistemic Conflict')"| MCPServer7["llm_wiki_mcp.py"]
-        MCPServer7 -->|"2. Contradiction Hunt"| SQL_Conflicts["SELECT FROM wiki_sections_fts MATCH 'Epistemic Conflict'"]
-        SQL_Conflicts -->|"Identifies technical disagreements"| ConflictTargets["2. Adversarial Benchmark Queries"]
+        Branch1 -->|"Tool Call (limit=25 per prompt)"| ToolSim["MCP Tool: llm_wiki_search_similarity"]
+        Branch2 -->|"Tool Call (limit=25 per term set)"| ToolKW["MCP Tool: llm_wiki_search_keyword"]
         
-        %% Stream 3: Stale Results / Query Mutation
-        SkillReasoning -->|"Stream 3: Novelty Check on current batch"| NoveltyFilter["Evaluates result redundancy"]
-        NoveltyFilter -->|"Pivots platform: Reddit to GitHub PRs"| MutatedTargets["3. Mutated Deep Code Queries"]
+        ToolSim --> CandidateSections["Compile Candidate Sections"]
+        ToolKW --> CandidateSections
         
-        %% Stream 4: Blind Spots (Negative Space)
-        SkillReasoning -->|"Stream 4: Platform Telemetry Audit"| MCPServer8["llm_wiki_mcp.py"]
-        MCPServer8 -->|"4. Negative Space"| SQL_Audit["SELECT platform, COUNT(*) FROM raw_firehose GROUP BY platform"]
-        SQL_Audit -->|"Spots unrepresented OS / hardware"| BlindSpotTargets["4. Negative Space / OS Gap Queries"]
+        CandidateSections --> Step3Filter["Step 3: Garbage Removal & Relevance Filter<br/>(Discard superficial similarity hits & generic boilerplate)"]
         
-        %% Convergence into Query Manifest
-        GapTargets & ConflictTargets & MutatedTargets & BlindSpotTargets -->|"Synthesizes into next priority backlog"| Manifest["query_manifest.json (Next Round Backlog)"]
-        Manifest -->|"Feeds next iteration queries"| SkillDWA
+        Step3Filter --> Step4Audit["Step 4: Cross-Link & Destination Audit<br/>(Check wiki_links via llm_wiki_get_graph,<br/>read destination content via llm_wiki_read_section)"]
+        
+        Step4Audit --> Step5Gaps["Step 5: Gap Reasoning & Query Synthesis<br/>(Identify missing mechanisms, absent numbers, unverified claims)"]
+        
+        Step5Gaps --> Manifest["Generate Targeted Search Queries<br/>(query_manifest.json)"]
+        Manifest -->|"Feeds next harvesting iteration"| SkillDWA
     end
 
     %% Styling
     classDef skill fill:#2d3748,stroke:#4a5568,color:#fff,stroke-width:2px;
     classDef mcp fill:#4c51bf,stroke:#667eea,color:#fff,stroke-width:2px;
-    classDef sql fill:#2c5282,stroke:#3182ce,color:#fff,stroke-width:2px;
-    classDef disk fill:#276749,stroke:#38a169,color:#fff,stroke-width:2px;
+    classDef data fill:#276749,stroke:#38a169,color:#fff,stroke-width:2px;
     classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
-    class SkillDWA,SkillDPR,SkillReader,SkillPatch,SkillReasoning skill;
-    class MCPServer1,MCPServer2,MCPServer3,MCPServer4,MCPServer5,MCPServer6,MCPServer7,MCPServer8 mcp;
-    class SQL_Dedup,SQL_InsertPost,SQL_RebuildFTS1,FTS_Match,VEC_Match,SQL_UpdateSec,SQL_Embed,SQL_RebuildFTS2,SQL_Links,SQL_Gaps,SQL_Conflicts,SQL_Audit sql;
-    class RawJSON,DiskFile,GitLocal,GitHub,Manifest disk;
-    class SubAgents1,ReviewCouncil,InitialSynth,HardenedFacts council;
-    class GapTargets,ConflictTargets,MutatedTargets,BlindSpotTargets,NoveltyFilter steer;
+    class SkillDWA,SkillDPR,SkillReader,SkillPatch,SkillPR skill;
+    class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit,ToolKW,ToolSim mcp;
+    class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
+    class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
+    class ParentPrompt,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps steer;

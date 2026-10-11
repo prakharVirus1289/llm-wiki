@@ -13,6 +13,11 @@ from .connection import get_connection, init_db, logger
 def normalize_slug(text: str) -> str:
     """Normalizes a concept string into a canonical lowercase underscore slug."""
     s = text.strip().lower()
+    s = s.replace('&', 'and')
+    # Strip leading section numbers like "2.1 ", "1. ", "3.2.1 "
+    stripped = re.sub(r'^[0-9]+(\.[0-9]+)*\s*', '', s)
+    if stripped:
+        s = stripped
     s = re.sub(r'[\s\-]+', '_', s)
     s = re.sub(r'[^\w]', '', s)
     return s.strip('_')
@@ -85,19 +90,24 @@ def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
                         break
                 section_text = content[start_pos:end_pos].strip()
                 active_sections.append((rel_path, heading))
+                section_slug = normalize_slug(heading)
                 conn.execute("""
-                    INSERT INTO wiki_sections_index (file_path, heading, level, content)
-                    VALUES (?, ?, ?, ?)
+                    INSERT INTO wiki_sections_index (file_path, heading, heading_slug, level, content)
+                    VALUES (?, ?, ?, ?, ?)
                     ON CONFLICT(file_path, heading) DO UPDATE SET
+                        heading_slug = excluded.heading_slug,
                         level = excluded.level,
                         embedding = CASE WHEN wiki_sections_index.content = excluded.content THEN wiki_sections_index.embedding ELSE NULL END,
                         content = excluded.content
-                """, (rel_path, heading, level, section_text))
+                """, (rel_path, heading, section_slug, level, section_text))
                 count += 1
                 file_sections += 1
                 
                 # Extract [[wikilinks]] with slug normalization, anchors, aliases, and domain scoping
-                for wl in wikilink_regex.finditer(section_text):
+                # Mask fenced code blocks and inline code backticks so code examples are not indexed as graph edges
+                text_without_code = re.sub(r'```[\s\S]*?```', '', section_text)
+                text_without_code = re.sub(r'`[^`\n]+`', '', text_without_code)
+                for wl in wikilink_regex.finditer(text_without_code):
                     raw_target = wl.group(1).strip()
                     anchor = wl.group(2).strip() if wl.group(2) else ""
                     alias = wl.group(3).strip() if wl.group(3) else None

@@ -27,6 +27,134 @@ def get_embedding_model():
     return _embedding_model
 
 
+STOPWORDS = {
+    "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are",
+    "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both",
+    "but", "by", "can", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does",
+    "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had",
+    "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her",
+    "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd",
+    "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's",
+    "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once",
+    "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same",
+    "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such",
+    "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there",
+    "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those",
+    "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll",
+    "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's",
+    "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would",
+    "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself",
+    "yourselves", "investigate", "explore", "tell", "explain", "find", "describe"
+}
+
+
+def search_keywords(db_path: Path, keywords: str, limit: int = 30) -> list[dict]:
+    """
+    Executes pure lexical FTS5 search across wiki sections with stopword stripping and BM25 ranking.
+    """
+    if not db_path.exists() or not keywords.strip():
+        return []
+
+    t0 = time.perf_counter()
+    clean = re.sub(r'[^\w\s]', ' ', keywords).strip()
+    words = [w for w in clean.split() if len(w) > 1 and w.lower() not in STOPWORDS]
+    if not words:
+        words = [w for w in clean.split() if len(w) > 1]
+    if not words:
+        return []
+
+    fts_expr = " OR ".join(f'"{w}"' for w in words[:25])
+    conn = get_connection(db_path)
+    try:
+        cursor = conn.execute("""
+            SELECT file_path, heading, snippet(wiki_sections_fts, 2, '<b>', '</b>', '...', 15), bm25(wiki_sections_fts) as rank
+            FROM wiki_sections_fts
+            WHERE wiki_sections_fts MATCH ?
+            ORDER BY rank
+            LIMIT ?;
+        """, (fts_expr, limit))
+        results = [
+            {
+                "file": row[0],
+                "heading": row[1],
+                "snippet": row[2],
+                "bm25_rank": round(float(row[3]), 4)
+            }
+            for row in cursor.fetchall()
+        ]
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("FTS5 search_keywords returned %d matches in %.2f ms (query='%s')", len(results), elapsed_ms, fts_expr)
+        return results
+    except Exception as e:
+        logger.warning("search_keywords error on expr '%s': %s", fts_expr, e)
+        return []
+    finally:
+        conn.close()
+
+
+def search_similarity(db_path: Path, query_text: str, limit: int = 30) -> list[dict]:
+    """
+    Executes pure fastembed vector cosine similarity search across all indexed wiki sections.
+    """
+    if not db_path.exists() or not query_text.strip():
+        return []
+
+    t0 = time.perf_counter()
+    conn = get_connection(db_path)
+    try:
+        import numpy as np
+
+        cursor = conn.execute("""
+            SELECT file_path, heading, embedding
+            FROM wiki_sections_index
+            WHERE embedding IS NOT NULL;
+        """)
+        emb_rows = cursor.fetchall()
+        if not emb_rows:
+            return []
+
+        model = get_embedding_model()
+        q_emb = list(model.embed([query_text]))[0]
+        q_vec = np.array(q_emb, dtype=np.float32)
+        q_norm = np.linalg.norm(q_vec)
+        if q_norm > 0:
+            q_vec = q_vec / q_norm
+
+        files_headings = []
+        vecs = []
+        for r in emb_rows:
+            files_headings.append((r[0], r[1]))
+            vecs.append(np.frombuffer(r[2], dtype=np.float32))
+
+        mat = np.stack(vecs)
+        norms = np.linalg.norm(mat, axis=1, keepdims=True)
+        norms[norms == 0] = 1.0
+        mat = mat / norms
+
+        sims = np.dot(mat, q_vec)
+        top_indices = np.argsort(sims)[::-1][:limit]
+
+        results = []
+        for rank, idx in enumerate(top_indices, 1):
+            fh = files_headings[idx]
+            sim_score = float(sims[idx])
+            results.append({
+                "rank": rank,
+                "file": fh[0],
+                "heading": fh[1],
+                "similarity": round(sim_score, 4)
+            })
+
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info("search_similarity returned %d matches in %.2f ms (query='%s')", len(results), elapsed_ms, query_text)
+        return results
+    except Exception as e:
+        logger.warning("search_similarity error for query '%s': %s", query_text, e)
+        return []
+    finally:
+        conn.close()
+
+
 def search_section(db_path: Path, query_text: str, limit: int = 20) -> list[dict]:
     """Executes high-speed lexical search on wiki_sections_fts and returns structured dict list."""
     if not db_path.exists():
@@ -97,9 +225,11 @@ def search_hybrid(db_path: Path, query_text: str, limit: int = 20) -> list[dict]
         # 1. Lexical FTS5 candidate matching
         keyword_ranks = {}
         fts_query = re.sub(r'[^\w\s]', ' ', query_text).strip()
-        fts_words = [w for w in fts_query.split() if len(w) > 1]
+        fts_words = [w for w in fts_query.split() if len(w) > 1 and w.lower() not in STOPWORDS]
+        if not fts_words:
+            fts_words = [w for w in fts_query.split() if len(w) > 1]
         if fts_words:
-            fts_expr = " OR ".join(fts_words[:8])
+            fts_expr = " OR ".join(f'"{w}"' for w in fts_words[:25])
             try:
                 cursor = conn.execute("""
                     SELECT file_path, heading, snippet(wiki_sections_fts, 2, '<b>', '</b>', '...', 12)
