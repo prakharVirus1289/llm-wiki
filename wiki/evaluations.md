@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, six distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, seven distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -91,6 +91,16 @@ Across empirical stress testing and continuous agent cycles, six distinct system
   2. **Second-Order Ripple Modeling (Causal Loop Mapping):** Differentiate first-order direct effects ($A \rightarrow B$) from downstream feedback loops ($B \rightarrow C \rightarrow \neg A$). Trace delays, feedback loops, and unintended behavioral shifts before committing code.
   3. **The Trust Bandwidth Bottleneck (Theory of Constraints Inversion):** System execution speed is rarely constrained by raw code velocity; it is constrained by the organizational and customer trust envelope. Over-engineering architecture without established user trust creates fatal coordination drag.
   4. **The Pre-Building Behavioral Verification Protocol:** Validate customer willingness-to-pay using behavioral commitments (pre-orders, time expenditure, process displacement) rather than hypothetical verbal agreement. If users are not already spending time or money hacking around the problem with inferior tools, building an automated software solution will not create demand. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
+
+### 4.7 The Five Pre-Building Death Buckets (Validation False Positives)
+* **Symptom:** An engineering founder builds an architecturally sound solution with clean code and working pipelines, but experiences complete commercial stalls ($0 MRR, $< 5\%$ retention, or immediate regulatory blockade).
+* **Root Cause:** Failing to screen early hypotheses through the five structural "Death Buckets" before writing code:
+  1. **The Compliance Nightmare:** Underestimating legal and regulatory barriers (e.g. financial licensing, HIPAA, government compliance) that require enterprise legal capital to clear.
+  2. **The "Logical Idea" Vitamin Trap:** The product makes logical sense on paper, but the actual user pain is mild, leading to low organic search volume and customer acquisition costs ($CAC > LTV$) that exceed willingness to pay.
+  3. **The Incumbent Saturated Bloodbath:** Entering an established market where differentiated technical architecture cannot overcome the marketing, distribution, and SEO moat of existing players.
+  4. **The 1-Jira-Ticket Platform Risk:** Building a workflow or wrapper that is a trivial roadmap item for the underlying platform (e.g., OpenAI, Google, AWS), destroying the business upon the platform's next release.
+  5. **The Uneducated Category Drag:** Attempting to sell solutions to problems prospective users do not yet know they have, burning runway trying to educate the market rather than capturing active demand.
+* **Fix:** Subject every proposed project to the 5-Bucket Elimination Audit and verify pre-existing search intent and CAC/LTV unit economic thresholds before initializing software repositories. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
 
 ---
 
