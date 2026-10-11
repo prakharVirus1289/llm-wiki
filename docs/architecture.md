@@ -8,10 +8,9 @@ This document outlines the high-level architecture of the autonomous textbook it
 1. **Web Harvesting (`deep-web-analysis`):** Multi-platform discovery across Reddit, Twitter/X, Hacker News, GitHub, Lobsters, ArXiv, etc.
 2. **Adversarial Curation & Ingestion (`filtering-raw-dump`):** Non-deterministic 4-point relevance filtering followed by atomic deduplication and storage in `raw_firehose` via `llm_wiki_firehose_ingest`.
 3. **Textbook Reading & Placement (`wiki-reader`):** Groups vetted items by architectural topic, deconstructs prompt into dual semantic and keyword searches (`llm_wiki_search_similarity` & `llm_wiki_search_keyword`), filters noise, retrieves existing chapter sections via `llm_wiki_read_section` with zero token bloat, and determines where new knowledge belongs.
-4. **Surgical Patching & Cross-Linking (`ast-markdown-patcher`):** Single-section updates, targeted link discovery via `llm_wiki_suggest_links(file, heading)`, epistemic link auditing, and index synchronization.
-5. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council) across newly indexed records to extract enduring architectural invariants.
-6. **Remote Version Control (`git-pr-arbiter`):** Atomic Git staging, commit creation, and remote push.
-7. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Supplies `parent_prompt` to `wiki-reader`, runs first-principles gap reasoning on vetted findings, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
+4. **Surgical Patching, Cross-Linking & Atomic Push (`ast-markdown-patcher`):** Slices section on disk (`llm_wiki_patch_section`), discovers candidate cross-links for the new content (`llm_wiki_suggest_links`), vets candidates against the 4-Point Epistemic Link Audit, splices verified `[[wikilinks]]`, and pushes atomically to GitHub (`llm_wiki_git_commit_and_push`).
+5. **LLM-Council Deep Reasoning (`data-point-reasoning`):** Two-phase deliberation (Raw Data Council followed by Adversarial Review Council) across newly indexed records to extract enduring architectural invariants into the cycle digest.
+6. **Query Steering & Gap Traversal (`iterative-query-gen` & `first-principle-reasoning`):** Supplies `parent_prompt` to `wiki-reader`, runs first-principles gap reasoning on vetted findings, and synthesizes platform-tailored manifests across Reddit, Hacker News, GitHub, Twitter/X, Lobsters, ArXiv, Stack Overflow, and Hugging Face.
 
 ---
 
@@ -50,20 +49,29 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 4: SURGICAL FILE PATCH & RE-INDEXING
+    %% STAGE 4: SURGICAL FILE PATCH & CROSS-LINKING
     %% ==========================================
-    subgraph S4 ["Stage 4: Surgical Section Patching (ast-markdown-patcher)"]
+    subgraph S4 ["Stage 4: Surgical Section Patching & Cross-Linking (ast-markdown-patcher)"]
         AgentSynthesize --> SkillPatch["Skill: ast-markdown-patcher"]
-        SkillPatch -->|"Tool Call: llm_wiki_patch_section(file, heading, content)"| ToolPatch["MCP Tool: llm_wiki_patch_section"]
-        SkillPatch -->|"Targeted Suggest Links: llm_wiki_suggest_links(file, heading)"| ToolSuggest["MCP Tool: llm_wiki_suggest_links"]
-        ToolPatch -->|"Returns: Spliced cleanly, cross-links created, search updated"| PatchedChapter["Chapter Updated on Disk (wiki/*.md)"]
+        
+        SkillPatch -->|"Step 1: llm_wiki_patch_section(file, heading, content)"| ToolPatch1["MCP Tool: llm_wiki_patch_section"]
+        ToolPatch1 -->|"Spliced & indexed on disk"| SplicedDraft["Section Spliced in Chapter"]
+        
+        SplicedDraft -->|"Step 2: llm_wiki_suggest_links(file, heading)"| ToolSuggest["MCP Tool: llm_wiki_suggest_links"]
+        ToolSuggest -->|"Candidate pairs"| EpistemicAudit["4-Point Epistemic Link Audit (Vets Candidates)"]
+        
+        EpistemicAudit -->|"Step 3: Splice verified [[wikilinks]]"| ToolPatch2["MCP Tool: llm_wiki_patch_section"]
+        ToolPatch2 --> PatchedChapter["Verified Chapters on Disk (wiki/*.md)"]
+        
+        PatchedChapter -->|"Step 4: Atomic Remote Push"| ToolGit["MCP Tool: llm_wiki_git_commit_and_push"]
+        ToolGit --> RemoteRepo["GitHub Remote Tracking Branch"]
     end
 
     %% ==========================================
     %% STAGE 5: DATA-POINT REASONING (LLM-COUNCIL)
     %% ==========================================
     subgraph S5 ["Stage 5: Data-Point Reasoning (LLM-Council)"]
-        PatchedChapter --> SkillDPR["Skill: data-point-reasoning"]
+        RemoteRepo --> SkillDPR["Skill: data-point-reasoning"]
         
         subgraph Phase1 ["Phase 1: Raw Data Council"]
             SkillDPR -->|"invoke_subagent (Parallel Fleet)"| SubAgents["Sub-Agent Fleet (Reasoning on Every Item)"]
@@ -77,19 +85,10 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 6: REMOTE VERSION CONTROL
+    %% STAGE 6: DYNAMIC QUERY STEERING & REASONING
     %% ==========================================
-    subgraph S6 ["Stage 6: Version Control & Remote Sync"]
-        HardenedFacts --> SkillPR["Skill: git-pr-arbiter"]
-        SkillPR -->|"Tool Call: llm_wiki_git_commit_and_push(file, message)"| ToolGit["MCP Tool: llm_wiki_git_commit_and_push"]
-        ToolGit -->|"Returns: Staged, committed, and pushed"| RemoteRepo["GitHub Remote Tracking Branch"]
-    end
-
-    %% ==========================================
-    %% STAGE 7: DYNAMIC QUERY STEERING & REASONING
-    %% ==========================================
-    subgraph S7 ["Stage 7: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
-        RemoteRepo --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
+    subgraph S6 ["Stage 6: Dynamic Query Steering & Reasoning (iterative-query-gen)"]
+        HardenedFacts --> InputsIQG["Inputs from deep-web-analysis:<br/>• parent_prompt<br/>• manifest_path (Required)"]
         
         InputsIQG --> SkillReaderIQG["Skill: wiki-reader<br/>(Supply: parent_prompt)"]
         
@@ -108,9 +107,9 @@ flowchart TD
     classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
     classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
-    class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR,SkillReaderIQG,Step5Gaps skill;
-    class ToolIngest,ToolSim,ToolKey,ToolRead,ToolPatch,ToolSuggest,ToolGit mcp;
-    class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
-    class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts council;
+    class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillReaderIQG,Step5Gaps skill;
+    class ToolIngest,ToolSim,ToolKey,ToolRead,ToolPatch1,ToolSuggest,ToolPatch2,ToolGit mcp;
+    class RawJSON,IngestedClean,SplicedDraft,PatchedChapter,RemoteRepo,Manifest data;
+    class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,EpistemicAudit council;
     class InputsIQG,Step6Dialects steer;
 ```
