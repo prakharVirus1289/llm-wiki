@@ -30,8 +30,7 @@ flowchart TD
     %% ==========================================
     subgraph S2 ["Stage 2: Adversarial Curation & Ingestion (filtering-raw-dump)"]
         RawJSON --> SkillFRD["Skill: filtering-raw-dump"]
-        SkillFRD -->|"Applies 4-Point Filter"| ApprovedPosts["filtered_candidates.json (Approved Posts)"]
-        ApprovedPosts -->|"Tool Call: llm_wiki_firehose_ingest(items)"| ToolIngest["MCP Tool: llm_wiki_firehose_ingest"]
+        SkillFRD -->|"Applies 4-Point Filter & Tool Call: llm_wiki_firehose_ingest(approved)"| ToolIngest["MCP Tool: llm_wiki_firehose_ingest"]
         ToolIngest -->|"Returns: Ingested count, duplicates skipped"| IngestedClean["Clean Batch Stored in Central DB (raw_firehose)"]
     end
 
@@ -121,7 +120,7 @@ flowchart TD
 
     class SkillDWA,SkillFRD,SkillDPR,SkillReader,SkillPatch,SkillPR skill;
     class ToolIngest,ToolSearch,ToolRead,ToolPatch,ToolGit,ToolKW,ToolSim mcp;
-    class RawJSON,ApprovedPosts,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
+    class RawJSON,IngestedClean,PatchedChapter,RemoteRepo,Manifest data;
     class SubAgents,ReviewCouncil,InitialSynth,HardenedFacts,ChunkPartition council;
     class InputsIQG,Branch1,Branch2,CandidateSections,Step3Filter,Step4Audit,Step5Gaps,Step6Dialects steer;
 ```
