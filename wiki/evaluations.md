@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, twenty-two distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, twenty-three distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -245,6 +245,15 @@ Across empirical stress testing and continuous agent cycles, twenty-two distinct
      * *Low Leverage (Parameters):* Tweaking prices by 5% or modifying UI colors.
      * *Medium Leverage (Information Flows):* Making latent delays visible in real time (e.g. alerting engineers to support ticket escalation rates within 24 hours rather than waiting for quarterly reviews).
      * *High Leverage (System Rules & Goals):* Altering the rules of incentives and goals (e.g. shifting team compensation from raw feature velocity to zero-regression customer workflow completion). See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]].
+
+### 4.23 The Imaginary Scale Trap & The Two-Tiered Simulation Filter
+* **Symptom:** Technical founders spend months architecting Kubernetes clusters, distributed caching layers, and multi-region failover protocols for "imaginary scale," only to launch to ten users who do not care about the product. Conversely, teams launch promotional incentives (free credits, unbounded trials) that get weaponized by abusive actors in 48 hours.
+* **Root Cause:** Conflating Day-1 Terminal Risks with Elastic Scale Problems. Operators burn cognitive bandwidth anticipating high-scale infrastructure roadblocks (which can be solved with money once revenue exists) while ignoring fundamental adoption and incentive vulnerabilities.
+* **Systemic Fix & Two-Tiered Simulation Primitives:**
+  1. **The Two-Tiered Simulation Partition:** When mentally simulating a project, strictly separate risks into two buckets:
+     * *Tier 1: Day-1 Terminal Risks (Simulate & Eliminate Upfront):* Customer willingness-to-pay, non-zero unit economics, platform custody killswitches, regulatory compliance, and incentive abuse vectors. If any of these fail, the venture dies immediately regardless of traffic.
+     * *Tier 2: Elastic Scale Roadblocks (Explicitly Defer):* Database auto-sharding, microservice decomposition, and multi-region edge caching. Prohibit spending planning capital on Tier 2 until Tier 1 invariants are empirically proven with 100 active users.
+  2. **Negative Utility Gating (Incentive Abuse Invariant):** When simulating any promotional acquisition mechanism (free credits, onboarding tokens, referral bounties), assume as a baseline that adversarial actors will automate exploitation. Always simulate the worst-case abuse vector: *"If a malicious user runs 10,000 automated sessions against this free tier, what is our maximum financial liability?"* Gate all compute-intensive features behind friction gates (SMS auth, credit card hold, strict token throttling). See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures|Agent Cognitive Architectures]].
 
 ---
 
