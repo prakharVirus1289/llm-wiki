@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, fifteen distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, sixteen distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -181,6 +181,14 @@ Across empirical stress testing and continuous agent cycles, fifteen distinct sy
   1. **The Inconvenient Commitment Invariant:** Demand is not waitlist signups, polite compliments, or positive replies. Demand is someone doing something inconvenient right now: prepaying with a credit card, granting access to private internal data, or using an ugly prototype to fix an urgent pain this week. Require at least one inconvenient commitment before writing application code or wiring external APIs.
   2. **Irreversible Asset Audit:** Before changing product direction, calculate the non-code cost: data loss, plumbing rebuild time, and burnt user goodwill. If the pivot destroys your accumulated data moat and burns your bridge with key adopters, stop and rethink the entire market thesis.
   3. **The "Demand Pull vs. Object Iteration" Test:** Regularly audit whether you are iterating on the product object (adding features, polishing screens, rewording copy) or iterating on demand (getting someone to commit to a specific, measurable change in their daily work). If you cannot write a five-line email explaining exactly who suffers from the problem and what breaks if they ignore it, you do not understand the problem well enough to build. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
+
+### 4.16 The Linear Checklist Fragility & DAG-Driven Counterfactual Execution (The Makefile Invariant)
+* **Symptom:** Operators simulate project execution as a sequential step-by-step checklist (Step 1 $\rightarrow$ Step 2 $\rightarrow$ Step 3). When real-world disruptions strike (a customer rejects an interface, a dependency doubles its API pricing, or a key hire drops out), the operator's mental plan collapses into chaotic "GOTO" loops, causing them to repeat already solved steps or bypass vital prerequisites.
+* **Root Cause:** Treating execution workflows as linear procedures rather than Directed Acyclic Graphs (DAGs) of physical artifacts. Furthermore, when evaluating lists with 5+ prerequisites, cognitive systems (both human brains and LLMs) suffer from *Verification Momentum*—they rubber-stamp the later checks without genuine scrutiny once the early steps pass.
+* **Systemic Fix & DAG Execution Primitives:**
+  1. **The Makefile Invariant (Artifact Dependency Modeling):** Structure project simulation strictly as an artifact DAG: every target outcome (e.g. `paying-pilot`, `v1-deployment`) depends solely on concrete, verified artifacts (e.g. `signed-loi`, `dirty-tree-clean`), not calendar days or positive sentiments. When an underlying condition alters, the graph node is marked "dirty," which mechanically invalidates all dependent targets and forces re-evaluation back to the root prerequisite.
+  2. **The Two-Item Prerequisite Decoupling:** To eliminate verification momentum, never attach more than two prerequisites to a single decision milestone. Decouple all gates into strict `(Artifact State, Adversarial Disproof Gate)` pairs.
+  3. **Counterfactual Shock Propagation:** Model enterprise failure propagation along dependency edges: if a supplier or key distribution channel experiences a shock ($S$), calculate downstream ripple effects ($S \rightarrow \text{inventory} \rightarrow \text{fulfillment} \rightarrow \text{cash flow}$) across the entire balance sheet before committing investment capital. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
