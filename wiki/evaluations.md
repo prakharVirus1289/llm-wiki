@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, thirteen distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, fourteen distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -154,6 +154,14 @@ Across empirical stress testing and continuous agent cycles, thirteen distinct s
      * *The Domain SME:* Attacks operational edge cases, data compliance barriers, and regulatory edge cases.
      * *The Stubborn End-User:* Attacks habit inertia, workflow switching costs, and the friction of adopting another standalone tool.
   2. **The Distribution-First Proof Invariant:** Require evidence of pre-existing distribution or active community pull (e.g. users begging for a solution in existing public forums) before authorizing software repository creation. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
+
+### 4.14 The Feature Accumulation Liability & Subtractive Via Negativa (Strategic Chaos Injection)
+* **Symptom:** Project roadmaps continuously expand in scope, product messaging becomes convoluted, development timelines triple, and prototypes collapse under the weight of edge-case regressions before validating core value.
+* **Root Cause:** Additive planning bias. Operators instinctively attempt to resolve uncertainty by accumulating features and speculative capabilities (*"What if a customer also needs X?"*), ignoring the non-linear second-order costs of complexity (support overhead, UI cognitive friction, maintenance surface area).
+* **Systemic Fix & Subtractive Primitives:**
+  1. **The Subtractive Invariant (Taleb's Via Negativa):** Define the project by what it strictly refuses to do. Write down the user's primary outcome on a single regular weekday in one sentence. If any feature can be deleted without breaking that core utility, it must be removed rather than built or optimized.
+  2. **The "What Actually Breaks?" Test:** Invert the prioritization prompt. Replace *"What is the risk of not building this?"* with *"What concrete workflow halts if this is omitted?"* If the consequence is non-fatal, purge it immediately.
+  3. **Strategic Chaos Injection:** Stress-test the design by deliberately simulating the sudden failure of primary dependencies (e.g. key API provider shutdown, 3x latency increase, or channel block). If failure destroys the entire business without recovery options, architect structural isolation before writing feature code. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
