@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, twelve distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, thirteen distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -144,6 +144,16 @@ Across empirical stress testing and continuous agent cycles, twelve distinct sys
   1. **Mandatory Dual-Path Articulation:** Evaluators must require the presentation of at least two mutually exclusive execution models, explicitly contrasting why the rejected path was dropped.
   2. **The Adversarial Pressure Gate:** Apply explicit stress tests (e.g., immediate 50% loss of runway or a sudden platform policy shift). If an analytical model collapses or changes recommendation under mild pushback, the strategic thesis lacks foundational grounding.
   3. **Inspection of Uncertainty Envelopes:** Require explicit bounds on what remains unknown, verifying that risk mitigation buffers exist for variance rather than planning purely for the median case. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
+
+### 4.13 The Code Velocity Mirage & The Three-Persona Adversarial Triangle
+* **Symptom:** Founders leverage modern AI coding tools and rapid frameworks to build functional software products in 24 hours, yet experience zero customer adoption and complete commercial silence upon release.
+* **Root Cause:** Confusing *construction velocity* with *strategic validation*. Accelerating the speed of software construction does not accelerate market demand or distribution. Building faster merely produces unvalidated software inventory faster. Furthermore, founders fall prey to the "Prompt-as-a-Moat" illusion, where their entire value proposition is defenseless against underlying platform updates.
+* **Systemic Fix & Strategic Verification Primitives:**
+  1. **The Three-Persona Adversarial Simulation Triangle:** Before writing any code, mentally or systematically interrogate the proposal through three distinct conflicting personas:
+     * *The Cynical Investor:* Attacks customer acquisition economics ($CAC$), total addressable market, and defensibility against foundation model releases.
+     * *The Domain SME:* Attacks operational edge cases, data compliance barriers, and regulatory edge cases.
+     * *The Stubborn End-User:* Attacks habit inertia, workflow switching costs, and the friction of adopting another standalone tool.
+  2. **The Distribution-First Proof Invariant:** Require evidence of pre-existing distribution or active community pull (e.g. users begging for a solution in existing public forums) before authorizing software repository creation. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
