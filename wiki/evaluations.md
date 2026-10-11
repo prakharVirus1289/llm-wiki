@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, nine distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, ten distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -117,6 +117,14 @@ Across empirical stress testing and continuous agent cycles, nine distinct syste
   1. **Zero-Mock Boundary Invariants:** Mandate validation against real external environments, unmocked database transaction boundaries, and unscripted user environments.
   2. **Independent Skeptical Arbiters:** Require that validation criteria be reviewed or executed by external adversarial observers tasked specifically with disproving viability.
   3. **Rapid Empirical Reality Probes:** Replace protracted theoretical modeling with immediate, observable commitments (e.g. asking for payment or workflow displacement within 48 hours). See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
+
+### 4.10 The Expertise Trap & Extreme Parameter Sensitivity Stress-Testing (Cynefin Protocol)
+* **Symptom:** Founders with deep technical expertise build exhaustive multi-year analytical models and execution simulations, yet experience complete commercial failure because customer and market adoption operates contrary to the model.
+* **Root Cause:** The Expertise Trap (Dave Snowden's Cynefin Framework). Treating a *Complex* domain (markets, human adoption, emergent system dynamics) as if it were a *Complicated* domain (compiler design, database optimization). In a Complicated system, cause and effect are knowable through expert analysis (*Sense-Analyze-Respond*). In a Complex system, cause and effect are only knowable in hindsight through emergent behavior (*Probe-Sense-Respond*). Attempting to mentally simulate a complex emergent market from start to finish without micro-probing creates fatal overconfidence.
+* **Systemic Fix & Stress-Testing Primitives:**
+  1. **The Cynefin Domain Partition:** Categorize project layers into closed technical components (Complicated: analyze and verify) versus human adoption components (Complex: probe, sense, and respond).
+  2. **The $10\times$ Extreme Parameter Sensitivity Test:** Stress-test every business and operational spreadsheet by applying $10\times$ multiplier penalties to key assumptions (e.g. what if CAC is $10\times$ higher? What if onboarding takes $5\times$ longer? What if customer churn reaches $50\%$?). If model outputs fail to react realistically, the simulation formula is fundamentally disconnected from operational reality.
+  3. **Short-Cycle Probing:** Replace multi-month predictive simulation with low-cost bounded probes that extract unambiguous empirical data from the market. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
