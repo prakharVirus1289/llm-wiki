@@ -56,7 +56,7 @@ Deploying dense vector retrieval (embedding generation + cosine similarity matri
 
 ## 4. Production Failure Modes & Root-Cause Analysis
 
-Across empirical stress testing and continuous agent cycles, eleven distinct systemic failure modes recur in complex engineering and strategic environments:
+Across empirical stress testing and continuous agent cycles, twelve distinct systemic failure modes recur in complex engineering and strategic environments:
 
 ### 4.1 The Lock Escalation Deadlock Cascade
 * **Symptom:** Concurrent agent workers stall indefinitely, logging recurring `sqlite3.OperationalError: database is locked` errors despite generous busy timeouts.
@@ -136,6 +136,14 @@ Across empirical stress testing and continuous agent cycles, eleven distinct sys
      * *The Rejected Counterfactual:* What alternative paths were deliberately abandoned.
      * *The Falsification Trigger:* A precise, quantifiable signal (e.g. zero paid signups in 7 days, or customer onboarding time exceeding 2 hours) that proves the thesis false and triggers an immediate pivot.
      * *Calendar Review Checkpoint:* Scheduled retrospective to grade prediction accuracy against reality, eliminating hindsight bias. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
+
+### 4.12 The Rubber-Stamp Simulation Fallacy & Meaningful Oversight Gates
+* **Symptom:** Strategic planning sessions and AI-assisted simulation runs produce articulate roadmaps and proposal summaries that evaluators rubber-stamp without exercising genuine discernment, resulting in predictable execution blindspots detonating post-launch.
+* **Root Cause:** Passive rubber-stamping and absence of discarded counterfactual evaluation. Evaluators review project proposals looking for superficial coherence and positive sentiment rather than testing uncertainty limits and discarded alternatives. Without an active obligation and explicit tools to challenge assumptions, human oversight is purely cosmetic.
+* **Systemic Fix & Verification Primitives:**
+  1. **Mandatory Dual-Path Articulation:** Evaluators must require the presentation of at least two mutually exclusive execution models, explicitly contrasting why the rejected path was dropped.
+  2. **The Adversarial Pressure Gate:** Apply explicit stress tests (e.g., immediate 50% loss of runway or a sudden platform policy shift). If an analytical model collapses or changes recommendation under mild pushback, the strategic thesis lacks foundational grounding.
+  3. **Inspection of Uncertainty Envelopes:** Require explicit bounds on what remains unknown, verifying that risk mitigation buffers exist for variance rather than planning purely for the median case. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
 
 ---
 
