@@ -3,8 +3,8 @@ flowchart TD
     %% STAGE 1: WEB RESEARCH & HARVESTING
     %% ==========================================
     subgraph S1 ["Stage 1: Web Research & Harvesting"]
-        User["User or Scheduled Timer"] -->|"Starts cycle"| SkillDWA["Skill: deep-web-analysis"]
-        SkillDWA -->|"Runs script"| Runner["runner.py (Portable Scraper)"]
+        User["User / Timer / Manifest"] -->|"Starts cycle"| SkillDWA["Skill: deep-web-analysis"]
+        SkillDWA -->|"Runs script with mutated queries"| Runner["runner.py (Portable Scraper)"]
         Runner -->|"Scrapes Reddit, Twitter, GitHub"| RawJSON["harvested_candidates.json (Raw Posts)"]
     end
 
@@ -94,14 +94,33 @@ flowchart TD
     end
 
     %% ==========================================
-    %% STAGE 7: DISCOVER GAPS FOR NEXT ITERATION
+    %% STAGE 7: 4-WAY DYNAMIC QUERY STEERING
     %% ==========================================
-    subgraph S7 ["Stage 7: Spot Missing Topics for Next Round"]
+    subgraph S7 ["Stage 7: 4-Way Dynamic Query Steering (iteration-reasoning)"]
         GitHub -->|"Skill: iteration-reasoning"| SkillReasoning["Skill: iteration-reasoning"]
-        SkillReasoning -->|"Tool Call: llm_wiki_get_graph(action='dangling')"| MCPServer6["llm_wiki_mcp.py"]
-        MCPServer6 -->|"Query knowledge gaps"| SQL_Gaps["SELECT * FROM wiki_dangling_links"]
-        SQL_Gaps -->|"Identifies concepts linked often with no page"| NextTargets["New Priority Search Topics"]
-        NextTargets -->|"Feeds into next iteration's search list"| SkillDWA
+        
+        %% Stream 1: Dangling Links
+        SkillReasoning -->|"Stream 1: llm_wiki_get_graph(action='dangling')"| MCPServer6["llm_wiki_mcp.py"]
+        MCPServer6 -->|"1. Dangling Links"| SQL_Gaps["SELECT * FROM wiki_dangling_links"]
+        SQL_Gaps -->|"Identifies unwritten concept bookmarks"| GapTargets["1. Missing Chapter Queries"]
+        
+        %% Stream 2: Contradictions
+        SkillReasoning -->|"Stream 2: llm_wiki_search_hybrid('Epistemic Conflict')"| MCPServer7["llm_wiki_mcp.py"]
+        MCPServer7 -->|"2. Contradiction Hunt"| SQL_Conflicts["SELECT FROM wiki_sections_fts MATCH 'Epistemic Conflict'"]
+        SQL_Conflicts -->|"Identifies technical disagreements"| ConflictTargets["2. Adversarial Benchmark Queries"]
+        
+        %% Stream 3: Stale Results / Query Mutation
+        SkillReasoning -->|"Stream 3: Novelty Check on current batch"| NoveltyFilter["Evaluates result redundancy"]
+        NoveltyFilter -->|"Pivots platform: Reddit to GitHub PRs"| MutatedTargets["3. Mutated Deep Code Queries"]
+        
+        %% Stream 4: Blind Spots (Negative Space)
+        SkillReasoning -->|"Stream 4: Platform Telemetry Audit"| MCPServer8["llm_wiki_mcp.py"]
+        MCPServer8 -->|"4. Negative Space"| SQL_Audit["SELECT platform, COUNT(*) FROM raw_firehose GROUP BY platform"]
+        SQL_Audit -->|"Spots unrepresented OS / hardware"| BlindSpotTargets["4. Negative Space / OS Gap Queries"]
+        
+        %% Convergence into Query Manifest
+        GapTargets & ConflictTargets & MutatedTargets & BlindSpotTargets -->|"Synthesizes into next priority backlog"| Manifest["query_manifest.json (Next Round Backlog)"]
+        Manifest -->|"Feeds next iteration queries"| SkillDWA
     end
 
     %% Styling
@@ -110,9 +129,11 @@ flowchart TD
     classDef sql fill:#2c5282,stroke:#3182ce,color:#fff,stroke-width:2px;
     classDef disk fill:#276749,stroke:#38a169,color:#fff,stroke-width:2px;
     classDef council fill:#553c9a,stroke:#805ad5,color:#fff,stroke-width:2px;
+    classDef steer fill:#744210,stroke:#d69e2e,color:#fff,stroke-width:2px;
 
     class SkillDWA,SkillDPR,SkillReader,SkillPatch,SkillReasoning skill;
-    class MCPServer1,MCPServer2,MCPServer3,MCPServer4,MCPServer5,MCPServer6 mcp;
-    class SQL_Dedup,SQL_InsertPost,SQL_RebuildFTS1,FTS_Match,VEC_Match,SQL_UpdateSec,SQL_Embed,SQL_RebuildFTS2,SQL_Links,SQL_Gaps sql;
-    class RawJSON,DiskFile,GitLocal,GitHub disk;
+    class MCPServer1,MCPServer2,MCPServer3,MCPServer4,MCPServer5,MCPServer6,MCPServer7,MCPServer8 mcp;
+    class SQL_Dedup,SQL_InsertPost,SQL_RebuildFTS1,FTS_Match,VEC_Match,SQL_UpdateSec,SQL_Embed,SQL_RebuildFTS2,SQL_Links,SQL_Gaps,SQL_Conflicts,SQL_Audit sql;
+    class RawJSON,DiskFile,GitLocal,GitHub,Manifest disk;
     class SubAgents1,ReviewCouncil,InitialSynth,HardenedFacts council;
+    class GapTargets,ConflictTargets,MutatedTargets,BlindSpotTargets,NoveltyFilter steer;
