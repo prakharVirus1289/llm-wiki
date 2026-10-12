@@ -367,6 +367,19 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
   2. **Direct Audience Custody Invariant:** Prohibit business models where the platform owns the sole channel to the customer. Every transaction or user registration must capture a direct, unmediated communication channel (verified email, SMS, or self-hosted identity) so users remain reachable if the platform revokes access.
   3. **Vendor-Agnostic Abstraction Layers:** Never leak vendor-specific API structures into core business logic. Maintain an adapter layer isolating third-party dependencies from domain models. See [[agent_architectures/the-mcp-rug-pull-attack|MCP Security & Tool Interception]] and [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
 
+### 4.33 Co-Founder Governance Deadlock & The Dynamic Vesting Tie-Breaker (The 50/50 Trap)
+* **Symptom:** Six to twelve months into development, the two co-founders experience a fundamental disagreement over product strategy, work ethic, or market pivot. Because they divided equity 50/50 at inception with no tie-breaking mechanism, the company enters an unresolvable corporate deadlock: bills cannot be paid, investors refuse funding, and development freezes permanently.
+* **Root Cause:** **Symmetric Governance Fragility & Unvested Equity Gifts**. Founders view equal 50/50 splits as a polite demonstration of trust, failing to recognize that symmetric voting power creates an un-steerable ship during inevitable crises. Furthermore, gifting equity upfront without dynamic time-and-milestone vesting creates "dead equity" if one partner disengages early.
+* **Systemic Fix & Governance Simulation Primitives:**
+  1. **The Asymmetric Tie-Breaker Invariant:** Prohibit 50/50 voting control. Every venture must establish an explicit operational tie-breaker before writing code:
+     * Designated CEO sole operational authority on strategic direction.
+     * Pre-assigned third-party advisory tie-breaker (a trusted independent mentor with a 1% deciding vote in board deadlocks).
+  2. **Standard 4-Year Vesting with 1-Year Cliff:** All founder equity must vest over a minimum of 48 months with a strict 12-month cliff. If a co-founder departs in month 6, 100% of their equity returns to the unallocated company pool.
+  3. **The Pre-Mortem Partnership Covenant:** Co-founders must conduct a structured pre-mortem before incorporation:
+     * *"If one of us burns out or stops working 40 hours a week in month 4, what is the exact buyout formula?"*
+     * *"Under what explicit conditions does the company pivot or dissolve?"*
+     Resolving governance failure modes on paper prevents catastrophic structural death later. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
