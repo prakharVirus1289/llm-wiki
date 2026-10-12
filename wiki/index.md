@@ -44,8 +44,13 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 
 ### [[evaluations|7. Empirical Evaluations & Failure Modes]]
 * **File:** `wiki/evaluations.md`
-* **Focus:** Benchmarking agent architectures, token burn curves, context saturation, retrieval trade-offs, 34 production failure modes, and entrepreneurial mental simulation frameworks.
-* **Core Mechanisms:** Token burn vs accuracy curves, the 60% context saturation cliff, surgical AST slicing benchmark (95% token savings vs full-file loading), dense vector vs SQLite FTS5 latency comparison, empirical root-cause analysis of 34 production failure modes, Gary Klein's prospective hindsight pre-mortem, the Two-Tiered Simulation Partition (Day-1 Terminal Invariants vs Elastic Scale), Causal Loop Delays (Meadows Protocol), Strategic Chaos Injection (Simian Strategy), Motor Priming action deconstruction, Adversarial Role Inversion, the 70% Information Stopping Rule, the Peters-Taleb Non-Ergodic Absorbing Barrier audit (20% capital ceiling), the Gigerenzer Fast-and-Frugal Tree (sub-10-minute strategic calibration), Singular Trajectory Rehearsal (Klein RPD mental movie), Counter-Metric Pairing (Goodhart-Cobra incentive simulation), the Hostile Landlord Invariant (Platform Custody Risk insulation), the Asymmetric Tie-Breaker Invariant (50/50 Governance Deadlock prevention), and the Concierge Inversion (20-Manual-Transactions Threshold).
+* **Focus:** Benchmarking agent architectures, token burn curves, context saturation, retrieval trade-offs, and multi-agent production failure modes.
+* **Core Mechanisms:** Token burn vs accuracy curves, the 60% context saturation cliff, surgical AST slicing benchmark (95% token savings vs full-file loading), dense vector vs SQLite FTS5 latency comparison, and empirical root-cause analysis of 5 production failure modes (lock escalation deadlocks, unbounded WAL bloat, semantic merge collisions, InjecMEM prompt injections, and whole-file rewrite corruption).
+
+### [[strategic_simulation|8. Strategic Simulation & Entrepreneurial Failure Anticipation]]
+* **File:** `wiki/strategic_simulation.md`
+* **Focus:** Structured mental simulation frameworks, cognitive pre-mortems, non-ergodic survival boundaries, counterfactual reasoning, and venture failure anticipation.
+* **Core Mechanisms:** Gary Klein's prospective hindsight pre-mortem, Two-Tiered Simulation Partition (Day-1 Terminal Invariants vs Elastic Scale), Causal Loop Delays (Meadows Protocol), Strategic Chaos Injection (Simian Strategy), Motor Priming action deconstruction, Adversarial Role Inversion, the 70% Information Stopping Rule, the Peters-Taleb Non-Ergodic Absorbing Barrier audit (20% capital ceiling), the Gigerenzer Fast-and-Frugal Tree (sub-10-minute strategic calibration), Singular Trajectory Rehearsal (Klein RPD mental movie), Counter-Metric Pairing (Goodhart-Cobra incentive simulation), the Hostile Landlord Invariant (Platform Custody Risk insulation), the Asymmetric Tie-Breaker Invariant (50/50 Governance Deadlock prevention), and the Concierge Inversion (20-Manual-Transactions Threshold).
 
 ## 3. Master Invariants Matrix
 
