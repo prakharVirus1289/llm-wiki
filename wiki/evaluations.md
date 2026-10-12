@@ -380,6 +380,16 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
      * *"Under what explicit conditions does the company pivot or dissolve?"*
      Resolving governance failure modes on paper prevents catastrophic structural death later. See [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]] and [[evaluations|Empirical Evaluations]].
 
+### 4.34 Premature Automation Debt & The Concierge Inversion (The Manual-First Threshold)
+* **Symptom:** An engineering founder spends three to six months building a sophisticated self-serve application complete with multi-tenant authentication, automated payment processing, and complex background workers. When deployed, zero users sign up, and the founder discovers that the core problem was misunderstood, rendering months of custom infrastructure worthless.
+* **Root Cause:** **Premature Automation Debt (The Programmer's Comfort Zone Trap)**. Software engineers naturally seek comfort in writing code rather than enduring the discomfort of manual customer interaction. Automating a workflow before understanding the exact human edge cases freezes flawed assumptions into rigid database schemas and complex codebases that are expensive to refactor.
+* **Systemic Fix & Concierge MVP Primitives:**
+  1. **The Concierge Inversion (Do Things That Don't Scale):** Before writing automated software pipelines, deliver the intended value proposition completely by hand (*The Human Concierge Protocol*):
+     * If building an automated report generator, research and type the first 10 reports manually in Google Docs and email them directly to paying clients.
+     * If building an automated recommendation engine, make recommendations by hand.
+  2. **The 20-Manual-Transactions Threshold:** Enforce a hard architectural rule: **Prohibit writing automated production pipelines until the founder has manually executed the end-to-end workflow at least 20 times for real customers.** Manual execution exposes unpredicted edge cases, willingness to pay, and true user bottlenecks at zero code cost.
+  3. **The Throwaway Prototype Rule:** Treat early software strictly as disposable probes. If code must be written, design it for deletion rather than enterprise scalability. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[knowledge_compiler/ast-driven-surgical-section-patching|AST Surgical Patching]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
