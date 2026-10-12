@@ -52,6 +52,11 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 * **Focus:** Structured mental simulation frameworks, cognitive pre-mortems, non-ergodic survival boundaries, counterfactual reasoning, and venture failure anticipation.
 * **Core Mechanisms:** Gary Klein's prospective hindsight pre-mortem, Two-Tiered Simulation Partition (Day-1 Terminal Invariants vs Elastic Scale), Causal Loop Delays (Meadows Protocol), Strategic Chaos Injection (Simian Strategy), Motor Priming action deconstruction, Adversarial Role Inversion, the 70% Information Stopping Rule, the Peters-Taleb Non-Ergodic Absorbing Barrier audit (20% capital ceiling), the Gigerenzer Fast-and-Frugal Tree (sub-10-minute strategic calibration), Singular Trajectory Rehearsal (Klein RPD mental movie), Counter-Metric Pairing (Goodhart-Cobra incentive simulation), the Hostile Landlord Invariant (Platform Custody Risk insulation), the Asymmetric Tie-Breaker Invariant (50/50 Governance Deadlock prevention), and the Concierge Inversion (20-Manual-Transactions Threshold).
 
+### [[political_governance_india|9. Indian Political Governance, Coalition Dynamics & Civic Movements]]
+* **File:** `wiki/political_governance_india.md`
+* **Focus:** Comparative governance records of the Indian National Congress (INC) and Bharatiya Janata Party (BJP), regional coalition leverage, civil unrest responses, and civic pressure outfits.
+* **Core Mechanisms:** Green/White Revolution institutional food security, 1991 structural economic liberalization, physical and digital public infrastructure velocity (Bharatmala, JAM Trinity, UPI), emergency executive detentions (1975 MISA), 1984 anti-Sikh violence state failure, 2016 demonetisation liquidity shock, unconstitutional electoral bonds scheme (2024), highway border containment of mass protests (Farm Laws, CAA), regional coalition veto arbitrage (Left Front CMP veto, DMK/TMC portfolio leverage, 2024 TDP/JD-U dependence), and civil society legal pressure mechanisms (Citizens for Justice and Peace / CJP Supreme Court PIL activism).
+
 ## 3. Master Invariants Matrix
 
 | Domain | Architectural Invariant | Enforcement Mechanism |
@@ -73,6 +78,8 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 | **Custody** | Hostile Landlord Invariant | Retain direct unmediated customer channels; vendor-agnostic adapter layers |
 | **Governance** | Asymmetric Tie-Breaker Invariant | Prohibit 50/50 voting control; enforce 4-year vesting with 1-year cliff |
 | **Validation** | Concierge Inversion (20-Manual Threshold) | Prohibit automated pipelines until executing 20 manual workflows for paying users |
+| **Coalition** | Regional Coalition Veto Invariant | Parliamentary minority executives face deterministic policy vetoes from regional sub-coalition allies |
+| **Civic Action** | Public Interest Legal Pressure Invariant | Extra-parliamentary civil society fronts (e.g. CJP, ADR) leverage Supreme Court PILs as judicial counter-weights against executive overreach |
 
 ## 4. Navigation & Retrieval Protocol
 
