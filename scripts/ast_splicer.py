@@ -88,6 +88,14 @@ class ASTSplicer:
                 logger.info("Found section '%s' (%d bytes, range %d-%d) in %s", 
                             sec['title'], sec['length'], sec['start_byte'], sec['end_byte'], file_path.name)
                 return content[sec["start_byte"]:sec["end_byte"]]
+
+        # Fuzzy match fallback
+        for sec in sections:
+            sec_norm = sec["title"].lower().strip()
+            if sec_norm.startswith(norm_target) or norm_target.startswith(sec_norm):
+                logger.info("Fuzzy matched section '%s' to '%s' in %s", heading_title, sec['title'], file_path.name)
+                return content[sec["start_byte"]:sec["end_byte"]]
+
         logger.warning("Section '%s' not found in %s", heading_title, file_path.name)
         return None
 
@@ -109,12 +117,35 @@ class ASTSplicer:
             if sec["title"].lower().strip() == norm_target:
                 target_sec = sec
                 break
+
+        # Fuzzy match fallback if exact match not found
+        if not target_sec:
+            for sec in sections:
+                sec_norm = sec["title"].lower().strip()
+                if sec_norm.startswith(norm_target) or norm_target.startswith(sec_norm):
+                    target_sec = sec
+                    logger.info("Fuzzy matched section '%s' to '%s'", heading_title, sec['title'])
+                    break
                 
         if not target_sec:
-            # If section doesn't exist, append cleanly at end of file
-            logger.info("Section '%s' does not exist in %s; appending to EOF", heading_title, file_path.name)
-            separator = "\n\n" if content and not content.endswith("\n\n") else ""
-            final_content = content + separator + new_content.strip() + "\n"
+            # Check if there is a footer section (e.g., 'Cross-Chapter Connections' or 'Architectural Invariants')
+            # to insert before, so footer sections remain at the bottom of the chapter
+            footer_sec = None
+            for sec in sections:
+                if any(k in sec["title"].lower() for k in ["cross-chapter", "architectural invariants"]):
+                    footer_sec = sec
+                    break
+            
+            if footer_sec:
+                logger.info("Section '%s' does not exist in %s; inserting before footer '%s'", 
+                            heading_title, file_path.name, footer_sec['title'])
+                before = content[:footer_sec["start_byte"]].rstrip()
+                after = content[footer_sec["start_byte"]:]
+                final_content = before + "\n\n" + new_content.strip() + "\n\n" + after
+            else:
+                logger.info("Section '%s' does not exist in %s; appending to EOF", heading_title, file_path.name)
+                separator = "\n\n" if content and not content.endswith("\n\n") else ""
+                final_content = content + separator + new_content.strip() + "\n"
         else:
             # Surgical replacement of exact byte slice
             logger.info("Surgically replacing %d bytes for section '%s' in %s", 

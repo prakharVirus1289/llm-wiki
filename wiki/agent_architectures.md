@@ -123,3 +123,6 @@ If an agent executes a plan that introduces syntax errors, breaks regression sui
 * **[[caching/the-deterministic-prefix-invariant|The Deterministic Prefix Invariant]]:** Outlines the strict prompt construction rules needed to maximize hardware KV-cache reuse across agent turns.
 * **[[knowledge_compiler/three-tier-hierarchical-reading-protocol|Three-Tier Hierarchical Reading Protocol]]:** Documents how agents retrieve section-bounded context without blowing their token budget.
 * **[[evaluations/token-burn-vs-accuracy-saturation-curve|Evaluation Saturation & Token Burn]]:** Details the empirical accuracy degradation curves when agent context exceeds the 60% saturation boundary.
+* **[[evaluations#46-strategic-mental-simulation--pre-mortem-failure-anticipation|Strategic Pre-Mortem & Cognitive Simulation]]:** Gary Klein's prospective hindsight protocol, Cynefin domain partitioning, and adversarial role inversion for anticipatory agent planning and validation.
+* **[[evaluations#48-the-synthetic-simulation-sycophancy-cliff-futuresim-invariants|Synthetic Simulation Sycophancy Cliff]]:** FutureSim benchmark results on persona swarm fragility, zero-inertia bias, and uncalibrated LLM market simulation traps.
+

@@ -44,10 +44,8 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 
 ### [[evaluations|7. Empirical Evaluations & Failure Modes]]
 * **File:** `wiki/evaluations.md`
-* **Focus:** Benchmarking agent architectures, token burn curves, context saturation, retrieval trade-offs, and production failure modes.
-* **Core Mechanisms:** Token burn vs accuracy curves, the 60% context saturation cliff, surgical AST slicing benchmark (95% token savings vs full-file loading), dense vector vs SQLite FTS5 latency comparison, and empirical root-cause analysis of production failure modes.
-
----
+* **Focus:** Benchmarking agent architectures, token burn curves, context saturation, retrieval trade-offs, 27 production failure modes, and entrepreneurial mental simulation frameworks.
+* **Core Mechanisms:** Token burn vs accuracy curves, the 60% context saturation cliff, surgical AST slicing benchmark (95% token savings vs full-file loading), dense vector vs SQLite FTS5 latency comparison, empirical root-cause analysis of 27 production failure modes, Gary Klein's prospective hindsight pre-mortem, the Two-Tiered Simulation Partition (Day-1 Terminal Invariants vs Elastic Scale), Causal Loop Delays (Meadows Protocol), Strategic Chaos Injection (Simian Strategy), Motor Priming action deconstruction, Adversarial Role Inversion, and the 70% Information Stopping Rule.
 
 ## 3. Master Invariants Matrix
 
@@ -60,8 +58,9 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 | **Agents** | Three-Valued Epistemic Memory | Discrete tracking of `Settled`, `Indeterminate`, and `Refuted` assertions |
 | **Compiler** | Surgical Section AST Patching | CST byte offset replacement (`start_line` to `end_line`) |
 | **Evaluations** | Context Window Compaction Boundary | Bounded session compaction triggered at 60% context saturation |
-
----
+| **Strategy** | Two-Tiered Simulation Partition | Eliminate Day-1 Terminal Risks upfront; defer Elastic Scale to $\ge 100$ users |
+| **Simulation** | Prospective Hindsight Pre-Mortem | Gary Klein protocol: assume 100% failure at Turn 100 and work backward |
+| **Velocity** | 70% Information Stopping Rule | Terminate mental simulation at 70% data for Type 2 reversible decisions |
 
 ## 4. Navigation & Retrieval Protocol
 

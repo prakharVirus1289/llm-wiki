@@ -31,6 +31,14 @@ LOG_DIR = WORKSPACE_ROOT / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 LOG_FILE = LOG_DIR / "mcp_server.log"
 
+def resolve_wiki_file(name: str) -> Path:
+    cleaned = (name or "").replace("\\", "/").strip()
+    if cleaned.startswith("wiki/"):
+        cleaned = cleaned[5:]
+    elif cleaned.startswith("/wiki/"):
+        cleaned = cleaned[6:]
+    return WIKI_DIR / cleaned
+
 # IMPORTANT: Logger MUST ONLY write to sys.stderr or file handler, NEVER stdout (stdout is reserved for JSON-RPC messages)
 logger = logging.getLogger("llm_wiki_mcp")
 if not logger.handlers:
@@ -263,12 +271,12 @@ def handle_read_section(params: dict) -> dict:
         None (read-only disk file access).
     """
     file_name = params.get("file", "")
-    file_path = WIKI_DIR / file_name
+    file_path = resolve_wiki_file(file_name)
     heading = params.get("heading", "")
-    logger.info("MCP read_section: file='%s', heading='%s'", file_name, heading)
+    logger.info("MCP read_section: file='%s' (resolved='%s'), heading='%s'", file_name, file_path, heading)
 
     if not file_path.exists():
-        return {"found": False, "error": f"File '{file_name}' does not exist in wiki/"}
+        return {"found": False, "error": f"File '{file_name}' does not exist in wiki/ (resolved to '{file_path}')"}
 
     text = ASTSplicer.read_section(file_path, heading)
     if text is None:
@@ -310,10 +318,10 @@ def handle_patch_section(params: dict) -> dict:
         - Updates wiki_links table with all parsed wikilinks.
     """
     file_name = params.get("file", "")
-    file_path = WIKI_DIR / file_name
+    file_path = resolve_wiki_file(file_name)
     heading = params.get("heading", "")
     content = params.get("content", "")
-    logger.info("MCP patch_section: file='%s', heading='%s' (%d chars)", file_name, heading, len(content))
+    logger.info("MCP patch_section: file='%s' (resolved='%s'), heading='%s' (%d chars)", file_name, file_path, heading, len(content))
 
     try:
         ASTSplicer.splice_section(file_path, heading, content)
@@ -357,6 +365,14 @@ def handle_suggest_links(params: dict) -> dict:
             - suggestions (list[dict]): Candidate pairs.
     """
     file_name = params.get("file", "").strip() or None
+    if file_name:
+        cleaned = file_name.replace("\\", "/").strip()
+        if cleaned.startswith("wiki/"):
+            file_name = cleaned[5:]
+        elif cleaned.startswith("/wiki/"):
+            file_name = cleaned[6:]
+        else:
+            file_name = cleaned
     heading = params.get("heading", "").strip() or None
     threshold = params.get("threshold", 0.82)
     limit = params.get("limit", 20)
@@ -472,16 +488,35 @@ def handle_git_commit_and_push(params: dict) -> dict:
     logger.info("MCP git_commit_and_push: file='%s', msg='%s', branch='%s'", file_name, message, branch)
 
     try:
-        subprocess.run(["git", "add", file_name], cwd=WORKSPACE_ROOT, check=True)
+        res_add = subprocess.run(["git", "add", file_name], cwd=WORKSPACE_ROOT, capture_output=True, text=True)
+        if res_add.returncode != 0:
+            err = (res_add.stderr or res_add.stdout or "git add failed").strip()
+            logger.error("Git add failed: %s", err)
+            return {"status": "error", "error": f"git add failed: {err}"}
+
         res_commit = subprocess.run(["git", "commit", "-m", message], cwd=WORKSPACE_ROOT, capture_output=True, text=True)
         res_push = subprocess.run(["git", "push", "origin", branch], cwd=WORKSPACE_ROOT, capture_output=True, text=True)
+        
+        commit_out = ((res_commit.stdout or "") + "\n" + (res_commit.stderr or "")).strip()
+        push_out = ((res_push.stdout or "") + "\n" + (res_push.stderr or "")).strip()
+        
+        if res_push.returncode != 0:
+            logger.error("Git push failed: %s", push_out)
+            return {
+                "status": "error",
+                "branch": branch,
+                "commit_output": commit_out,
+                "push_output": push_out,
+                "error": f"git push exited with code {res_push.returncode}: {push_out}"
+            }
+
         return {
             "status": "success",
             "branch": branch,
-            "commit_output": res_commit.stdout.strip(),
-            "push_output": res_push.stdout.strip()
+            "commit_output": commit_out,
+            "push_output": push_out
         }
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         logger.error("Git error: %s", e)
         return {"status": "error", "error": str(e)}
 
@@ -834,8 +869,41 @@ def main():
             params = request.get("params", {})
             logger.debug("Received MCP request: id=%s, method='%s'", req_id, method)
 
+            # JSON-RPC / MCP Notifications (no response expected)
+            if method and method.startswith("notifications/"):
+                logger.debug("Received MCP notification: %s (ignoring cleanly)", method)
+                continue
+
+            # Standard MCP initialize handshake
+            if method == "initialize":
+                proto_ver = params.get("protocolVersion", "2024-11-05")
+                response = {
+                    "jsonrpc": "2.0",
+                    "id": req_id,
+                    "result": {
+                        "protocolVersion": proto_ver,
+                        "capabilities": {
+                            "tools": {
+                                "listChanged": False
+                            }
+                        },
+                        "serverInfo": {
+                            "name": "llm-wiki-mcp",
+                            "version": "1.0.0"
+                        }
+                    }
+                }
+
+            # Standard MCP ping
+            elif method == "ping":
+                response = {"jsonrpc": "2.0", "id": req_id, "result": {}}
+
+            # Server discovery alias
+            elif method == "server/discover":
+                response = {"jsonrpc": "2.0", "id": req_id, "result": {"server": "llm-wiki-mcp", "version": "1.0.0"}}
+
             # MCP tools/list
-            if method == "tools/list":
+            elif method == "tools/list":
                 response = {"jsonrpc": "2.0", "id": req_id, "result": {"tools": TOOL_SCHEMAS}}
 
             # Direct method dispatch
