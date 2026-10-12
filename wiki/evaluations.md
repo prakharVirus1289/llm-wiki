@@ -341,6 +341,22 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
   2. **Snag Identification & Immediate Modification:** Use mental simulation strictly as a macro-sensor for friction. The moment the mental movie jams (e.g. realizing the user must configure complicated DNS records before seeing value), stop the simulation immediately. Either patch that specific step (e.g. automate DNS via a hosted proxy) or discard the trajectory.
   3. **Expectancy Validation Gates:** Every frame in the mental simulation must generate an explicit, measurable expectation. If empirical reality diverges from the expectation during early rollout, halt and re-simulate rather than pushing forward blindly. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
 
+### 4.31 Perverse Incentive Gaming & The Counter-Metric Pair Invariant (The Goodhart-Cobra Simulation)
+* **Symptom:** A founder sets a clear primary goal for a project (such as "acquire 1,000 signups" or "ship 20 features this month"). The team hits the target easily, but the business deteriorates: the signups are empty bot accounts that never activate, and the shipped features introduce hundreds of regressions that destroy existing customer trust.
+* **Root Cause:** **Goodhart's Law & The Cobra Effect in Operational Metrics**. 
+  * Goodhart's Law states: *"When a measure becomes a target, it ceases to be a good measure."* 
+  * The Cobra Effect describes situations where an incentive designed to solve a problem inadvertently rewards behaviors that make the problem worse (derived from the historical colonial bounty on dead cobras, which caused citizens to breed cobras for profit).
+  * In mental simulation, founders assume actors (contractors, employees, and users) will pursue the spirit of a goal. In reality, actors optimize for the explicit measurement mechanism, discovering low-effort shortcuts that satisfy the metric while inflicting catastrophic second-order damage on the system.
+* **Systemic Fix & Counter-Metric Simulation Primitives:**
+  1. **The Adversarial Compliance Simulation:** Before finalizing any project milestone or performance metric, simulate how an unprincipled or lazy actor would hit the target with zero real work:
+     * *"If I reward sales reps solely on closed contract count, how will they game customer qualification?"* (They will discount prices to zero and sign non-viable customers).
+     * *"If I reward engineers solely on closed bug tickets, how will they game issue resolution?"* (They will mark complex issues as duplicate or close them without regression tests).
+  2. **Mandatory Counter-Metric Pairing:** Prohibit any solitary, single-dimensional metric. Every primary velocity or quantity metric must be paired with an opposing tension metric:
+     * *Feature Velocity* MUST be paired with *Defect Escape Rate* and *Production Regression Count*.
+     * *New User Signups* MUST be paired with *Day-30 Retention* and *Organic Activation Percentage*.
+     * *Gross Sales Bookings* MUST be paired with *Cash Collected* and *First-Quarter Churn Rate*.
+  3. **Simulation of Incentive Drift:** Mentally project the behavior of the organization 6 months into the future under the proposed reward structure. If the easiest path to personal reward diverges from long-term customer value, redesign the mechanism design before launch. See [[agent_architectures/the-mcp-rug-pull-attack|MCP Security & Tool Interception]] and [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
