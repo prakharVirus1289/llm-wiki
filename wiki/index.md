@@ -80,6 +80,8 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 | **Validation** | Concierge Inversion (20-Manual Threshold) | Prohibit automated pipelines until executing 20 manual workflows for paying users |
 | **Coalition** | Regional Coalition Veto Invariant | Parliamentary minority executives face deterministic policy vetoes from regional sub-coalition allies |
 | **Civic Action** | Public Interest Legal Pressure Invariant | Extra-parliamentary civil society fronts (e.g. CJP, ADR) leverage Supreme Court PILs as judicial counter-weights against executive overreach |
+| **Regulatory** | Foreign Funding Compliance Invariant | Civil society organizations face centralized statutory scrutiny (FCRA 2020) and judicial validation (*Noel Harper*) |
+
 
 ## 4. Navigation & Retrieval Protocol
 

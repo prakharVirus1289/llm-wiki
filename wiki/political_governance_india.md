@@ -20,27 +20,26 @@ graph TD
 
 ---
 
-## 2. Core Achievements: Comparative Tenures (INC vs. BJP)
-
 ### 2.1 Indian National Congress (INC) Milestones
-* **Institutional Foundation & Scientific Infrastructure (1947–1964)**:
+* **Institutional Foundation & Scientific Infrastructure (1947â€“1964)**:
   * Established premier scientific, educational, and technical institutions: Indian Institutes of Technology (IIT Kharagpur 1951 through Delhi 1961), IIMs, and AIIMS (1956).
   * Institutionalized atomic energy (Atomic Energy Commission 1948 under Homi Bhabha) and space research (INCOSPAR 1962 / ISRO 1969 under Vikram Sarabhai).
   * Built public-sector river valley infrastructure: Bhakra Nangal, Hirakud, and DVC dams.
-* **Agricultural Self-Sufficiency (1960s–1970s)**:
+* **Agricultural Self-Sufficiency (1960sâ€“1970s)**:
   * **Green Revolution**: Introduction of High-Yielding Variety (HYV) seeds, subsidized inputs, minimum support prices (MSP), and Food Corporation of India (FCI, 1965), transitioning India from PL-480 food-aid dependency to grain self-sufficiency.
   * **White Revolution (Operation Flood, 1970)**: Setup of NDDB under Verghese Kurien, establishing smallholder cooperative networks that made India the world's leading dairy producer.
 * **Geopolitical & Strategic Milestones**:
+  * **Non-Aligned Movement (NAM) & Cold War Balancing**: Spearheaded NAM following the 1955 Bandung Conference alongside Yugoslavia and Egypt; navigated Cold War bipolarity via the 1971 Indo-Soviet Treaty of Friendship and Peace while avoiding formal treaty alliances; initiated the Look East policy in 1991.
   * **1971 Bangladesh Liberation War**: Decisive military victory over Pakistan leading to the surrender of 93,000 Pakistani personnel in Dhaka and the creation of Bangladesh.
   * **Pokhran-I (1974)**: Inaugurated indigenous nuclear testing (*Smiling Buddha*).
   * **Indo-US Civil Nuclear Agreement (2008)**: Prime Minister Dr. Manmohan Singh negotiated the 123 Agreement and secured an unconditional NSG waiver, ending 34 years of global nuclear isolation.
-* **1991 Economic Liberalization & Rights-Based Welfare (2004–2014)**:
+* **1991 Economic Liberalization & Rights-Based Welfare (2004â€“2014)**:
   * **Structural Reforms (1991)**: Prime Minister P.V. Narasimha Rao and Finance Minister Dr. Manmohan Singh dismantled the industrial licensing "License Raj", reduced peak tariffs from >300% to 50%, devalued the rupee, and initiated current account convertibility.
   * **Rights-Based Entitlements**: Enacted the Right to Information Act (RTI 2005), MGNREGA (2005) guaranteeing 100 days of rural wage labor, RTE (2009), NFSA (2013), and initiated the biometric [[aadhaar_identity_stack|Aadhaar identity architecture]] in 2009.
 
 ### 2.2 Bharatiya Janata Party (BJP) Milestones
 * **Physical Infrastructure Velocity & Modernization**:
-  * **Highways & Connectivity**: Launched the National Highways Development Project (Golden Quadrilateral) under Atal Bihari Vajpayee. Under Narendra Modi, national highway network expanded from 91,287 km (2014) to >146,000 km (2024) under Bharatmala Pariyojana, raising construction pacing from ~12 km/day to ~28–34 km/day.
+  * **Highways & Connectivity**: Launched the National Highways Development Project (Golden Quadrilateral) under Atal Bihari Vajpayee. Under Narendra Modi, national highway network expanded from 91,287 km (2014) to >146,000 km (2024) under Bharatmala Pariyojana, raising construction pacing from ~12 km/day to ~28â€“34 km/day.
   * **Railways & Rural Roads**: Achieved >95% broad-gauge rail electrification, operationalized Western and Eastern Dedicated Freight Corridors (DFCs), and deployed indigenous Vande Bharat semi-high-speed trainsets.
 * **Digital Public Infrastructure (India Stack) & Saturation Transfers**:
   * **Financial Inclusion (PMJDY)**: Opened >510 million no-frills Jan Dhan bank accounts (>55% women-owned).
@@ -50,30 +49,29 @@ graph TD
   * **Pokhran-II (May 1998)**: Conducted five underground nuclear tests (*Operation Shakti*), formally declaring India an operational nuclear-weapon state under a doctrine of "Credible Minimum Deterrence" and "No First Use".
   * **Kargil War (1999)**: Recaptured mountain posts during *Operation Vijay* with diplomatic isolation of the adversary.
   * **Active Deterrence & Indigenization**: Cross-LoC surgical strikes (2016) and Balakot airstrikes (2019); commissioned first indigenous aircraft carrier INS Vikrant (2022); raised defense exports past Rs 21,000 crore ($2.5B) in FY24.
+* **Strategic Multi-Alignment & Geopolitical Expansion**:
+  * Transitioned strategic doctrine from non-alignment to active multi-alignment; elevated the Quadrilateral Security Dialogue (Quad) with the United States, Japan, and Australia; institutionalized the I2U2 grouping and India-Middle East-Europe Economic Corridor (IMEC).
+  * Maintained strategic autonomy by procuring discounted energy from Russia amid Western sanctions while simultaneously deepening US defense and technology transfers (iCET).
 * **Structural Fiscal & Tax Modernization**:
   * Enacted the Goods and Services Tax (GST, 2017) unifying 17 central and state taxes into a common market.
   * Enacted the Insolvency and Bankruptcy Code (IBC, 2016), recovering >Rs 3 lakh crore and bringing banking gross NPAs from >11% to ~2.8% by 2024.
   * Saturation amenities: Constructed >110M household latrines (Swachh Bharat), provided piped water to >150M rural households (Jal Jeevan Mission), and granted Rs 5 lakh health coverage to 550M citizens (Ayushman Bharat).
 
----
-
-## 3. Major Criticisms, Controversies & Institutional Failures
-
 ### 3.1 Indian National Congress (INC)
-* **Internal Emergency (1975–1977)**: Invoked Article 352, suspended fundamental rights (Articles 14, 19, 21), detained >110,000 opposition leaders and activists under MISA, imposed press pre-censorship, enacted the 42nd Amendment curtailing judicial review, and executed forced sterilization drives (documented by the Shah Commission).
+* **Internal Emergency (1975â€“1977)**: Invoked Article 352, suspended fundamental rights (Articles 14, 19, 21), detained >110,000 opposition leaders and activists under MISA, imposed press pre-censorship, enacted the 42nd Amendment curtailing judicial review, and executed forced sterilization drives (documented by the Shah Commission).
+* **Judicial Supersession & Institutional Overreach**: Systemic executive conflict with judicial independence under Indira Gandhi, highlighted by the 1973 supersession of three senior Supreme Court justices (J.M. Shelat, K.S. Hegde, and A.N. Grover) to appoint A.N. Ray as Chief Justice following the *Kesavananda Bharati* basic structure ruling, and the 1977 supersession of Justice H.R. Khanna following his lone dissent in *ADM Jabalpur v. Shivkant Shukla*.
 * **Operation Blue Star & 1984 Anti-Sikh Violence**: Military assault on the Golden Temple in June 1984 followed by the October 1984 anti-Sikh pogrom (~3,000 killed in Delhi); Justice Nanavati Commission (2005) confirmed systemic police inaction and complicity of local Congress leaders.
-* **Shah Bano Reversal & Communal Concessions (1985–1986)**: Legislative overturning of the Supreme Court alimony verdict in *Mohd. Ahmed Khan v. Shah Bano Begum* via the Muslim Women Act 1986, accompanied by the reopening of the Babri Masjid locks in Ayodhya in 1986.
+* **Shah Bano Reversal & Communal Concessions (1985â€“1986)**: Legislative overturning of the Supreme Court alimony verdict in *Mohd. Ahmed Khan v. Shah Bano Begum* via the Muslim Women Act 1986, accompanied by the reopening of the Babri Masjid locks in Ayodhya in 1986.
 * **License-Permit Raj Stagnation & 1991 Crisis**: State monopolization, nationalization of banks (1969/1980), and MRTP Act suppressed private growth, culminating in the 1991 balance-of-payments crisis where forex reserves dropped to $1.2B, requiring pledging 67 tonnes of gold.
-* **Corruption Allegations & UPA-II Policy Paralysis**: Bofors kickback allegations (1987); CAG audit findings of presumptive losses in 2G Spectrum (Rs 1.76 lakh crore) and Coal Block allocations (2012–2014); CWG 2010 financial mismanagement.
+* **Corruption Allegations & UPA-II Policy Paralysis**: Bofors kickback allegations (1987); CAG audit findings of presumptive losses in 2G Spectrum (Rs 1.76 lakh crore) and Coal Block allocations (2012â€“2014); CWG 2010 financial mismanagement.
 
 ### 3.2 Bharatiya Janata Party (BJP)
 * **Demonetisation (November 8, 2016)**: Abrupt invalidation of 86% of currency notes in circulation (Rs 500 and Rs 1,000) with 4-hour notice. RBI confirmed 99.3% of extinguished currency returned to banks, generating severe liquidity disruption in the informal sector, MSME closures, temporary GDP contraction, and prolonged bank queues.
-* **Electoral Bonds Scheme (2017–2024)**: Introduced via Finance Bill (Money Bill route) allowing unlimited anonymous corporate funding to political parties. Struck down unanimously by a 5-judge Supreme Court Constitution Bench (*ADR v. Union of India*, Feb 2024) as unconstitutional and violative of voter right to information under Article 19(1)(a); SBI records revealed BJP received >Rs 6,060 crore (~55% of all bonds).
-* **Macroeconomic Employment & Manufacturing Gaps**: Manufacturing share of GDP remained flat at ~14–17% despite "Make in India" 25% target; persistent youth and graduate unemployment documented by PLFS/CMIE; rising public debt-to-GDP (~81% post-COVID).
-* **Selective Investigative Agency Enforcement**: Parliamentary data revealed >90% of Enforcement Directorate (ED) money-laundering probes and CBI actions against political figures between 2014 and 2024 targeted opposition parties. Dilution of RTI Commission tenures via 2019 amendments.
-* **COVID-19 Second Wave Management (April–May 2021)**: Delta wave health system strain, severe medical oxygen and ICU bed shortages in northern and western urban centers, alongside widespread controversy over preceding mass electoral and religious gatherings.
-
----
+* **Electoral Bonds Scheme (2017â€“2024)**: Introduced via Finance Bill (Money Bill route) allowing unlimited anonymous corporate funding to political parties. Struck down unanimously by a 5-judge Supreme Court Constitution Bench (*ADR v. Union of India*, Feb 2024) as unconstitutional and violative of voter right to information under Article 19(1)(a); SBI records revealed BJP received >Rs 6,060 crore (~55% of all bonds).
+* **Election Commission Appointment Restructuring (2023)**: Following the Supreme Court's landmark Constitution Bench ruling in *Anoop Baranwal v. Union of India* (March 2023)â€”which placed the Chief Justice of India (CJI) alongside the Prime Minister and Leader of the Opposition on the CEC selection panelâ€”Parliament passed the *Chief Election Commissioner and Other Election Commissioners Act, 2023*, substituting the CJI with a nominated Union Cabinet Minister. This restored an executive 2:1 numerical majority in appointing election arbiters, triggering petitions challenging institutional independence.
+* **Macroeconomic Employment & Manufacturing Gaps**: Manufacturing share of GDP remained flat at ~14â€“17% despite "Make in India" 25% target; persistent youth and graduate unemployment documented by PLFS/CMIE; rising public debt-to-GDP (~81% post-COVID).
+* **Selective Investigative Agency Enforcement & Audit Friction**: Parliamentary data revealed >90% of Enforcement Directorate (ED) money-laundering probes and CBI actions against political figures between 2014 and 2024 targeted opposition parties. Dilution of RTI Commission tenures via 2019 amendments. Tensions over CAG 2023 performance audits reporting cost escalations on Bharatmala projects (Dwarka Expressway) and Ayushman Bharat data discrepancies, followed by administrative reassignments of auditing personnel.
+* **COVID-19 Second Wave Management (Aprilâ€“May 2021)**: Delta wave health system strain, severe medical oxygen and ICU bed shortages in northern and western urban centers, alongside widespread controversy over preceding mass electoral and religious gatherings.
 
 ## 4. Handling of Mass Protests & Civil Unrest
 
@@ -112,26 +110,30 @@ Beyond traditional student political wings, new socio-economic pressure formatio
   * Tens of thousands of educated unemployed youth launched spontaneous demonstrations across Bihar and eastern Uttar Pradesh, blocking railway tracks and setting trains ablaze to protest multi-stage exam irregularities in Non-Technical Popular Categories (RRB NTPC) recruitment.
   * **Executive Response**: The Ministry of Railways formed a high-level committee, suspended scheduled second-tier exams, and subsequently revised normalization methodologies to concede candidate demands.
 
-### 5.2 Civil Society Litigators, Youth Pressure Fronts & The Role of CJP
 Extra-parliamentary pressure groups, public interest litigation (PIL) networks, and youth movements have systematically checked executive authority across Indian political history:
 
 * **Citizens for Justice and Peace (CJP) & Human Rights Litigation**:
   * **Origins & Mandate**: Co-founded by journalist-activist Teesta Setalvad, Javed Anand, and prominent citizens (including Father Cedric Prakash and Alyque Padamsee) in April 2002 to secure legal justice for victims of the 2002 Gujarat communal riots.
   * **Landmark Supreme Court Interventions**:
     * *Best Bakery Trial Transfer (2004)*: In *Zahira Habibullah Sheikh v. State of Gujarat*, CJP petitions established that witnesses had turned hostile due to local intimidation; the Supreme Court quashed acquittals and ordered a retrial in Maharashtra, establishing a precedent for inter-state trial transfers.
-    * *SIT Reinvestigation of 9 Major Massacres (2008–2009)*: CJP interventions in *NHRC v. State of Gujarat* led the Supreme Court to constitute a Special Investigation Team (headed by former CBI Director R.K. Raghavan), resulting in historic convictions in the Naroda Patiya (32 convicted, including former minister Maya Kodnani) and Gulbarg Society massacres.
+    * *SIT Reinvestigation of 9 Major Massacres (2008â€“2009)*: CJP interventions in *NHRC v. State of Gujarat* led the Supreme Court to constitute a Special Investigation Team (headed by former CBI Director R.K. Raghavan), resulting in historic convictions in the Naroda Patiya (32 convicted, including former minister Maya Kodnani) and Gulbarg Society massacres.
     * *The Zakia Jafri Petition*: Challenged the SIT's closure report exonerating top state executive leadership regarding a broader administrative conspiracy. In June 2022, a 3-judge Supreme Court bench dismissed the appeal (*Zakia Ahsan Jafri v. State of Gujarat*), affirming the SIT findings and observing that those who kept the pot boiling should be in the dock.
   * **State Backlash & Counter-Litigation**: Following the June 2022 Supreme Court ruling, Gujarat Police arrested Teesta Setalvad on allegations of fabricating evidence and criminal conspiracy. Concurrently, central agencies initiated FCRA cancellations and CBI investigations into donor fund management. Setalvad was subsequently granted regular bail by a Supreme Court bench headed by Justice B.R. Gavai in July 2023.
 
 * **Electoral Transparency & Institutional Watchdogs (ADR & Common Cause)**:
   * **Association for Democratic Reforms (ADR)**: Founded by IIM Ahmedabad professors in 1999. Landmark Supreme Court victories include:
     * *Union of India v. ADR (2002)*: Mandated compulsory affidavit disclosures of candidates' criminal records, assets, and educational qualifications.
-    * *ADR v. Union of India (2024)*: Struck down the opaque Electoral Bonds scheme as unconstitutional and violative of voter transparency under Article 19(1)(a).
+    * *ADR v. Union of India (2024)*: Struck down the opaque [[electoral_bonds_transparency_jurisprudence|Electoral Bonds scheme]] as unconstitutional and violative of voter transparency under Article 19(1)(a).
   * **Common Cause & Center for Public Interest Litigation (CPIL)**: Spearheaded Supreme Court PILs cancelling 122 telecom licenses in the 2G spectrum allocation case (2012) and 214 coal captive mining blocks (2014).
 
+* **Civil Society Regulatory Architecture & FCRA Oversight**:
+  * **Statutory Evolution**: Transition from the Emergency-era Foreign Contribution (Regulation) Act of 1976 to the comprehensive FCRA 2010 enacted under UPA. Under NDA, the *FCRA Amendment Act, 2020* introduced strict statutory guardrails: mandating foreign inflows exclusively via designated accounts at the State Bank of India (SBI) New Delhi Main Branch, completely prohibiting sub-granting between registered NGOs, and lowering administrative expense caps from 50% to 20%.
+  * **Constitutional Validation**: In *Noel Harper v. Union of India* (April 2022), the Supreme Court upheld the 2020 FCRA amendments, ruling that receiving foreign donations is not a fundamental right and that the state holds sovereign authority to prevent foreign influence in domestic affairs.
+  * **Impact on Advocacy Infrastructure**: Heightened regulatory compliance and cancellation/non-renewal of licenses affected >6,000 civil entities, including think tanks (Centre for Policy Research / CPR), international organizations (Amnesty International, Oxfam India), and human rights groups, shifting civil society funding mechanisms toward domestic philanthropic capital.
+
 * **Youth, Student & Protest Fronts**:
-  * **Historical Trajectory**: The student-led Navnirman movement (Gujarat 1974) and AASU (Assam 1979–1985) established student collectives as formidable forces capable of dissolving state assemblies and forcing national constitutional accords.
-  * **Modern Youth & University Fronts**: Contemporary youth and student collectives (Pinjra Tod, Jamia Coordination Committee, JNU Students' Union, AISF, SFI, and ABVP) spearheaded street mobilization during the anti-CAA/NRC demonstrations (2019–2020) and university fee protests. The state apparatus responded with extensive application of UAPA, preventive arrests, and university disciplinary proceedings.
+  * **Historical Trajectory**: The student-led Navnirman movement (Gujarat 1974) and AASU (Assam 1979â€“1985) established student collectives as formidable forces capable of dissolving state assemblies and forcing national constitutional accords.
+  * **Modern Youth & University Fronts**: Contemporary youth and student collectives (Pinjra Tod, Jamia Coordination Committee, JNU Students' Union, AISF, SFI, and ABVP) spearheaded street mobilization during the anti-CAA/NRC demonstrations (2019â€“2020) and university fee protests. The state apparatus responded with extensive application of UAPA, preventive arrests, and university disciplinary proceedings.
 
 ## 6. Master Governance Invariants Matrix
 
