@@ -44,8 +44,8 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 
 ### [[evaluations|7. Empirical Evaluations & Failure Modes]]
 * **File:** `wiki/evaluations.md`
-* **Focus:** Benchmarking agent architectures, token burn curves, context saturation, retrieval trade-offs, 27 production failure modes, and entrepreneurial mental simulation frameworks.
-* **Core Mechanisms:** Token burn vs accuracy curves, the 60% context saturation cliff, surgical AST slicing benchmark (95% token savings vs full-file loading), dense vector vs SQLite FTS5 latency comparison, empirical root-cause analysis of 27 production failure modes, Gary Klein's prospective hindsight pre-mortem, the Two-Tiered Simulation Partition (Day-1 Terminal Invariants vs Elastic Scale), Causal Loop Delays (Meadows Protocol), Strategic Chaos Injection (Simian Strategy), Motor Priming action deconstruction, Adversarial Role Inversion, and the 70% Information Stopping Rule.
+* **Focus:** Benchmarking agent architectures, token burn curves, context saturation, retrieval trade-offs, 31 production failure modes, and entrepreneurial mental simulation frameworks.
+* **Core Mechanisms:** Token burn vs accuracy curves, the 60% context saturation cliff, surgical AST slicing benchmark (95% token savings vs full-file loading), dense vector vs SQLite FTS5 latency comparison, empirical root-cause analysis of 31 production failure modes, Gary Klein's prospective hindsight pre-mortem, the Two-Tiered Simulation Partition (Day-1 Terminal Invariants vs Elastic Scale), Causal Loop Delays (Meadows Protocol), Strategic Chaos Injection (Simian Strategy), Motor Priming action deconstruction, Adversarial Role Inversion, the 70% Information Stopping Rule, the Peters-Taleb Non-Ergodic Absorbing Barrier audit (20% capital ceiling), the Gigerenzer Fast-and-Frugal Tree (sub-10-minute strategic calibration), Singular Trajectory Rehearsal (Klein RPD mental movie), and Counter-Metric Pairing (Goodhart-Cobra incentive simulation).
 
 ## 3. Master Invariants Matrix
 
