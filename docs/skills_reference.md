@@ -118,18 +118,20 @@ To do this reliably without human micro-management, eight specialized **skills**
 
 ### Step-by-Step Logic:
 1. **Read-Before-Write:** Reads the existing section via `llm_wiki_read_section` to verify current claims and avoid duplicate text.
-2. **Surgical Splice:** Calls `llm_wiki_patch_section`. The server uses a Concrete Syntax Tree (CST) parser to cut out only the target section's bytes and splice in the new text, leaving the rest of the file 100% byte-identical.
+2. **Surgical Splice:** Calls `llm_wiki_patch_section`. The server uses a Concrete Syntax Tree (CST) parser to cut out only the target section's bytes and splice in the new text, leaving the rest of the file 100% byte-identical. The indexer incrementally re-indexes only this single modified file.
 3. **Syntax Validation:** Checks that all code blocks (```` ``` ````) and brackets are balanced.
 4. **Cross-Link Discovery:** Calls `llm_wiki_suggest_links(file, heading)` to find other chapters that discuss related ideas.
-5. **4-Point Epistemic Link Audit:** Vets suggested link pairs:
-   * *Purity:* Does this link connect a real architectural dependency, or just share casual words?
-   * *Directionality:* Does the link make sense in this direction?
-   * *Non-Triviality:* Is the connected concept substantively explained?
-   * *Anchor Integrity:* Does the target heading actually exist?
-6. **Weave Wikilinks & Atomic Push:** Slices the verified `[[wikilinks]]` into the text and immediately calls `llm_wiki_git_commit_and_push` to push directly to GitHub.
+5. **5-Point Epistemic Link Audit:** Vets suggested link pairs:
+   * *Point 1 (Causal Dependency):* Does one concept directly configure, rely on, or solve an issue described in the other? (Buzzword matches $\rightarrow$ **Reject**).
+   * *Point 2 (Permanent Target):* Is the target an existing, permanent chapter section?
+   * *Point 3 (Substantive Names):* Does it link a specific named mechanism rather than casual text?
+   * *Point 4 (Explicit 1-Sentence Rationale):* The agent formulates a mandatory single sentence explaining *why* the connection exists.
+   * *Point 5 (Cross-Domain Metaphor Ban):* Strictly bans linking across different engineering or discipline boundaries based on loose metaphors (e.g., no linking software lock contention to human company disputes).
+6. **Weave Wikilinks & Register with Rationale:** Slices the verified `[[wikilinks]]` into the text via `llm_wiki_patch_section`, and immediately calls `llm_wiki_register_link` to store the link edge along with its 1-sentence rationale in the SQLite database.
+7. **Atomic Remote Push:** Calls `llm_wiki_git_commit_and_push` to commit and push the updated chapter directly to GitHub.
 
 ### Interaction with `[[wikilinks]]`:
-* It is the **primary creator and validator of `[[wikilinks]]`**. It parses, audits, and writes bidirectional links like `[[storage/the-single-writer-invariant|SQLite Single-Writer Concurrency]]` and registers them in the database's `wiki_links` table.
+* It is the **primary creator and validator of `[[wikilinks]]`**. It audits each link against the 5-Point Audit, writes the link text into markdown, and explicitly registers the edge and its rationale in the SQLite `wiki_links` table via `llm_wiki_register_link`. The database graph is never populated mechanically by regex scanners.
 
 ---
 
