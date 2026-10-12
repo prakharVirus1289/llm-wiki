@@ -329,6 +329,18 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
      * *Cue 3 (3x Stress Tolerance):* Does the unit model stay solvent if customer acquisition costs are 3 times higher and churn is double what you hope? If **NO** $\rightarrow$ **REDESIGN VALUE PROPOSITION**. If **YES** $\rightarrow$ **PROCEED TO BUILD MINIMAL PROTOTYPE**.
   2. **Sub-10-Minute Decision Speed:** If a strategic initiative cannot pass the 3-Cue Fast-and-Frugal Tree within 10 minutes of analysis, reject it. Spending weeks "simulating" an idea that fails basic reality checks is unhedged procrastination. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]].
 
+### 4.30 Singular Trajectory Rehearsal & The Recognition-Primed Sandbox (The Klein RPD Model)
+* **Symptom:** Founders attempt to evaluate strategic directions by creating comparative matrices (Option A vs Option B vs Option C), leading to combinatorial explosion and decision paralysis. Alternatively, they jump impulsively into building without testing how the sequence fits together in practice.
+* **Root Cause:** **Comparative Evaluation Trap vs Naturalistic Decision-Making**. Extensive cognitive research (Gary Klein's Recognition-Primed Decision studies across high-stakes domains) demonstrates that seasoned operators rarely compare alternatives in parallel. Comparative scoring creates false precision. True expertise relies on *singular evaluation*: selecting the single most intuitive course of action and mentally running a dynamic, step-by-step movie of its execution from start to finish.
+* **Systemic Fix & Singular Simulation Primitives:**
+  1. **The Dynamic Mental Walkthrough:** Instead of ranking theoretical options, take the leading option and mentally play the movie frame-by-frame:
+     * Frame 1: Exactly how does the first user discover the product?
+     * Frame 2: What exact screen do they see, and what single action do they take?
+     * Frame 3: Where does data travel, what third-party API is called, and what happens when that API times out?
+     * Frame 4: What operational burden does this create for the founder on day 30 when 100 users hit this workflow simultaneously?
+  2. **Snag Identification & Immediate Modification:** Use mental simulation strictly as a macro-sensor for friction. The moment the mental movie jams (e.g. realizing the user must configure complicated DNS records before seeing value), stop the simulation immediately. Either patch that specific step (e.g. automate DNS via a hosted proxy) or discard the trajectory.
+  3. **Expectancy Validation Gates:** Every frame in the mental simulation must generate an explicit, measurable expectation. If empirical reality diverges from the expectation during early rollout, halt and re-simulate rather than pushing forward blindly. See [[agent_architectures|Agent Cognitive Architectures]] and [[evaluations|Empirical Evaluations]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
