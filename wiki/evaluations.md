@@ -309,6 +309,16 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
 
 ---
 
+### 4.28 The Non-Ergodic Absorbing Barrier & Fat-Tailed Simulation Trap (The Peters-Taleb Protocol)
+* **Symptom:** Founders calculate the "expected value" of their business strategy on a spreadsheet (e.g. 80% chance of making $100K, 20% chance of total loss), decide the math looks favorable, and launch. Months later, a single setback wipes out their entire bank balance, instantly killing the company despite the "positive average."
+* **Root Cause:** **The Ergodicity Illusion & Ignoring Absorbing Barriers**. 
+  * An *absorbing barrier* is a point of no return—such as running out of money, receiving a fatal regulatory cease-and-desist, or suffering extreme health burnout. Once you hit an absorbing barrier, the project dies permanently.
+  * In standard statistics, an *ensemble average* calculates what happens across 1,000 independent people simultaneously. But an individual founder lives along a single, continuous timeline (*time average*). If experiment #3 drains your last dollar, you never reach experiments #4 through #10. Positive average returns mean nothing if a single step contains a path to zero.
+* **Systemic Fix & Non-Ergodic Simulation Primitives:**
+  1. **The Absorbing Barrier Audit:** Before evaluating the upside of any strategy, mentally trace the worst-case path to its absolute bottom. Ask: *"Does any branch of this plan end in a state from which recovery is mathematically impossible?"* If yes, you must redesign the mechanism to eliminate the ruin state before analyzing profitability.
+  2. **The 20% Capital Ceiling (Kelly Criterion Boundary):** Never allocate more than 20% of your remaining capital, developer hours, or core reputation to a single irreversible hypothesis. Keeping 80% of resources insulated ensures you survive consecutive negative outcomes.
+  3. **Blast-Radius Isolation:** Decouple speculative experiments from core operations using hard boundaries (e.g. separate cloud billing accounts, isolated sandbox environments, and capped legal liability entities). A total catastrophe in a new feature must not be able to pull down the parent system. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[storage/the-lock-escalation-deadlock-hazard|Lock Escalation Deadlock Hazard]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
