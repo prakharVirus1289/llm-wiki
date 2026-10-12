@@ -33,6 +33,8 @@ from .graph import (
     get_backlinks,
     get_related_concepts,
     get_dangling_links,
+    register_link,
+    remove_link,
 )
 from .cross_linker import (
     build_concept_dictionary,
@@ -63,6 +65,8 @@ __all__ = [
     "get_backlinks",
     "get_related_concepts",
     "get_dangling_links",
+    "register_link",
+    "remove_link",
     "build_concept_dictionary",
     "scan_and_link_text",
     "find_cross_chapter_similarities",

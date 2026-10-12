@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Wiki Markdown Indexer & AST Section Parser
-Parses Markdown files into headings, extracts [[wikilinks]], rebuilds FTS5, and manages embeddings.
+Parses Markdown files into headings, rebuilds FTS5, and manages embeddings.
+Link edges and rationales are managed intentionally via graph.py / MCP tools.
 """
 
 import re
@@ -55,30 +56,45 @@ def parse_wikilink(raw_target: str, default_domain: str = None) -> tuple[str, st
     return domain, slug, raw_target
 
 
-def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
-    """Indexes all Markdown files in wiki_dir into SQLite FTS5 and topological wiki_links graph."""
+def index_wiki(db_path: Path, wiki_dir: Path, target_file: str | Path = None, embed: bool = False):
+    """
+    Indexes Markdown files in wiki_dir into SQLite FTS5 and vector index.
+    If target_file is provided, incrementally indexes only that specific file.
+    Link graph edges are intentionally managed via graph.py, never wiped by indexer.
+    """
     init_db(db_path)
-    logger.info("Starting wiki indexing pass for directory: %s (embed=%s)", wiki_dir, embed)
     t0 = time.perf_counter()
     heading_regex = re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE)
-    # Support [[target#anchor|alias]] or [[domain/concept#anchor|alias]]
-    wikilink_regex = re.compile(r'\[\[([^\]#|]+)(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]')
-    
+
+    # Resolve target file list
+    if target_file:
+        target_path = Path(target_file)
+        if not target_path.is_absolute():
+            # If target_file starts with wiki/ or is bare filename
+            cleaned = str(target_file).replace("\\", "/")
+            if cleaned.startswith("wiki/"):
+                cleaned = cleaned[5:]
+            target_path = wiki_dir / cleaned
+        if not target_path.exists():
+            logger.warning("Target file %s does not exist; skipping incremental index.", target_path)
+            return
+        files_to_index = [target_path]
+        logger.info("Incremental wiki indexing pass for file: %s (embed=%s)", target_path.name, embed)
+    else:
+        files_to_index = list(wiki_dir.glob("*.md"))
+        logger.info("Full wiki indexing pass for directory: %s (%d files, embed=%s)", wiki_dir, len(files_to_index), embed)
+
     conn = get_connection(db_path)
     try:
-        # Clear existing graph links to refresh topological edges
-        conn.execute("DELETE FROM wiki_links;")
-        
         count = 0
-        link_count = 0
         active_sections = []
-        for md_file in wiki_dir.glob("*.md"):
+
+        for md_file in files_to_index:
             rel_path = md_file.name
-            default_domain = md_file.stem
             content = md_file.read_text(encoding="utf-8")
             matches = list(heading_regex.finditer(content))
             file_sections = 0
-            
+
             for i, match in enumerate(matches):
                 level = len(match.group(1))
                 heading = match.group(2).strip()
@@ -102,35 +118,26 @@ def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
                 """, (rel_path, heading, section_slug, level, section_text))
                 count += 1
                 file_sections += 1
-                
-                # Extract [[wikilinks]] with slug normalization, anchors, aliases, and domain scoping
-                # Mask fenced code blocks and inline code backticks so code examples are not indexed as graph edges
-                text_without_code = re.sub(r'```[\s\S]*?```', '', section_text)
-                text_without_code = re.sub(r'`[^`\n]+`', '', text_without_code)
-                for wl in wikilink_regex.finditer(text_without_code):
-                    raw_target = wl.group(1).strip()
-                    anchor = wl.group(2).strip() if wl.group(2) else ""
-                    alias = wl.group(3).strip() if wl.group(3) else None
-                    
-                    if raw_target:
-                        domain, slug, display = parse_wikilink(raw_target, default_domain=default_domain)
-                        if slug and slug != normalize_slug(heading):
-                            conn.execute(
-                                """INSERT OR IGNORE INTO wiki_links 
-                                   (source_file, source_heading, target_concept, target_anchor, link_alias, domain_scope) 
-                                   VALUES (?, ?, ?, ?, ?, ?)""",
-                                (rel_path, heading, slug, anchor, alias or display, domain)
-                            )
-                            link_count += 1
+
             logger.debug("Indexed %d sections from %s", file_sections, rel_path)
 
-        # Prune deleted sections
-        existing_rows = conn.execute("SELECT file_path, heading FROM wiki_sections_index;").fetchall()
-        active_set = set(active_sections)
-        to_delete = [r for r in existing_rows if (r[0], r[1]) not in active_set]
-        if to_delete:
-            conn.executemany("DELETE FROM wiki_sections_index WHERE file_path = ? AND heading = ?", to_delete)
-                        
+        # Prune deleted sections: scoped to target file if incremental, or all files if full
+        if target_file and files_to_index:
+            target_name = files_to_index[0].name
+            existing_rows = conn.execute("SELECT heading FROM wiki_sections_index WHERE file_path = ?;", (target_name,)).fetchall()
+            active_set = {h for f, h in active_sections if f == target_name}
+            to_delete = [(target_name, r[0]) for r in existing_rows if r[0] not in active_set]
+            if to_delete:
+                conn.executemany("DELETE FROM wiki_sections_index WHERE file_path = ? AND heading = ?", to_delete)
+                logger.info("Pruned %d deleted sections from %s", len(to_delete), target_name)
+        else:
+            existing_rows = conn.execute("SELECT file_path, heading FROM wiki_sections_index;").fetchall()
+            active_set = set(active_sections)
+            to_delete = [r for r in existing_rows if (r[0], r[1]) not in active_set]
+            if to_delete:
+                conn.executemany("DELETE FROM wiki_sections_index WHERE file_path = ? AND heading = ?", to_delete)
+                logger.info("Pruned %d deleted sections repository-wide", len(to_delete))
+
         # Synchronize FTS5 external content table cleanly
         logger.debug("Rebuilding FTS5 external content index...")
         conn.execute("INSERT INTO wiki_sections_fts(wiki_sections_fts) VALUES('rebuild');")
@@ -138,7 +145,11 @@ def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
 
         # If embedding requested, calculate embeddings for any new or updated sections
         if embed:
-            cursor = conn.execute("SELECT file_path, heading, content FROM wiki_sections_index WHERE embedding IS NULL;")
+            if target_file and files_to_index:
+                target_name = files_to_index[0].name
+                cursor = conn.execute("SELECT file_path, heading, content FROM wiki_sections_index WHERE file_path = ? AND embedding IS NULL;", (target_name,))
+            else:
+                cursor = conn.execute("SELECT file_path, heading, content FROM wiki_sections_index WHERE embedding IS NULL;")
             unembedded = cursor.fetchall()
             if unembedded:
                 logger.info("[EMBEDDING] Generating vector embeddings for %d new/modified sections using all-MiniLM-L6-v2...", len(unembedded))
@@ -163,9 +174,9 @@ def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
                 emb_elapsed = time.perf_counter() - t_emb0
                 logger.info("[OK] Successfully generated embeddings for %d sections in %.2fs.", len(unembedded), emb_elapsed)
             else:
-                logger.debug("[EMBEDDING] All sections already have up-to-date embeddings.")
+                logger.debug("[EMBEDDING] All indexed sections have up-to-date embeddings.")
     finally:
         conn.close()
-    elapsed_ms = (time.perf_counter() - t0) * 1000
-    logger.info("Wiki indexing completed: %d sections, %d graph edges in %.2f ms", count, link_count, elapsed_ms)
 
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    logger.info("Wiki indexing completed: %d files, %d sections in %.2f ms", len(files_to_index), count, elapsed_ms)

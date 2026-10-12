@@ -65,6 +65,9 @@ def init_db(db_path: Path):
             if "target_anchor" not in cols or "domain_scope" not in cols:
                 logger.info("Migrating wiki_links table schema to include target_anchor and domain_scope")
                 conn.execute("DROP TABLE wiki_links;")
+            elif "rationale" not in cols:
+                logger.info("Migrating wiki_links table schema to include rationale column")
+                conn.execute("ALTER TABLE wiki_links ADD COLUMN rationale TEXT;")
 
         # Check if wiki_sections_index needs schema migration for embedding and heading_slug columns
         cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='wiki_sections_index';")
@@ -116,6 +119,7 @@ def init_db(db_path: Path):
                 target_anchor TEXT NOT NULL DEFAULT '',
                 link_alias TEXT,
                 domain_scope TEXT,
+                rationale TEXT,
                 PRIMARY KEY (source_file, source_heading, target_concept, target_anchor)
             );
             CREATE INDEX IF NOT EXISTS idx_wiki_links_target ON wiki_links(target_concept, source_file);
@@ -176,6 +180,7 @@ def init_db(db_path: Path):
                 l.target_anchor,
                 l.link_alias,
                 l.domain_scope,
+                l.rationale,
                 CASE WHEN (s.file_path IS NOT NULL OR s_file.file_path IS NOT NULL) THEN 1 ELSE 0 END AS is_resolved,
                 CASE WHEN l.source_file != COALESCE(s.file_path, s_file.file_path) THEN 1 ELSE 0 END AS is_cross_chapter
             FROM wiki_links l

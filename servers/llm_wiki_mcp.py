@@ -69,6 +69,8 @@ from sqlite_manager import (
     get_backlinks,
     get_related_concepts,
     get_dangling_links,
+    register_link,
+    remove_link,
     build_concept_dictionary,
     scan_and_link_text,
     find_cross_chapter_similarities,
@@ -327,7 +329,7 @@ def handle_patch_section(params: dict) -> dict:
         ASTSplicer.splice_section(file_path, heading, content)
         errs = ASTSplicer.lint_file(file_path)
         try:
-            index_wiki(DB_PATH, WIKI_DIR, embed=True)
+            index_wiki(DB_PATH, WIKI_DIR, target_file=file_path.name, embed=True)
         except Exception as ex_idx:
             logger.warning("Fast index_wiki sync after patch_section failed: %s", ex_idx)
         return {
@@ -456,6 +458,90 @@ def handle_get_graph(params: dict) -> dict:
         return {"error": f"Unknown graph action '{action}'. Use 'backlinks', 'related', or 'dangling'."}
 
 
+def handle_register_link(params: dict) -> dict:
+    """
+    Explicitly registers or updates a verified link edge in the knowledge graph along with its 1-sentence rationale.
+
+    Args:
+        params: Dictionary containing:
+            - source_file (str, required): Source chapter file name (e.g. 'storage.md').
+            - source_heading (str, required): Source section heading (e.g. 'WAL Checkpoint Starvation').
+            - target_concept (str, required): Target concept slug or chapter/slug (e.g. 'wal_reader_pinning' or 'consensus/leases').
+            - rationale (str, required): 1-sentence explanation of why this link exists and what dependency it represents.
+            - target_anchor (str, optional): Target sub-heading anchor. Default: ''.
+            - link_alias (str, optional): Visual display label inside the wikilink.
+            - domain_scope (str, optional): Topic domain slug (e.g. 'storage', 'consensus').
+
+    Returns:
+        dict: Status dictionary confirming registration.
+    """
+    source_file = params.get("source_file", "").strip()
+    source_heading = params.get("source_heading", "").strip()
+    target_concept = params.get("target_concept", "").strip()
+    rationale = params.get("rationale", "").strip()
+    target_anchor = params.get("target_anchor", "").strip()
+    link_alias = params.get("link_alias")
+    domain_scope = params.get("domain_scope")
+
+    if not source_file or not source_heading or not target_concept:
+        return {"status": "error", "error": "source_file, source_heading, and target_concept are required."}
+    if not rationale:
+        return {"status": "error", "error": "A 1-sentence technical rationale is required explaining why this link exists."}
+
+    # Clean file name
+    cleaned_file = source_file.replace("\\", "/").strip()
+    if cleaned_file.startswith("wiki/"):
+        cleaned_file = cleaned_file[5:]
+
+    logger.info("MCP register_link: %s (%s) -> %s (rationale: %s)", cleaned_file, source_heading, target_concept, rationale)
+    return register_link(
+        DB_PATH,
+        source_file=cleaned_file,
+        source_heading=source_heading,
+        target_concept=target_concept,
+        target_anchor=target_anchor,
+        link_alias=link_alias,
+        domain_scope=domain_scope,
+        rationale=rationale
+    )
+
+
+def handle_remove_link(params: dict) -> dict:
+    """
+    Removes a link edge from the knowledge graph when an agent intentionally deletes a link from a section.
+
+    Args:
+        params: Dictionary containing:
+            - source_file (str, required): Source chapter file name.
+            - source_heading (str, required): Source section heading.
+            - target_concept (str, required): Target concept slug.
+            - target_anchor (str, optional): Target sub-heading anchor. Default: ''.
+
+    Returns:
+        dict: Status dictionary confirming link deletion.
+    """
+    source_file = params.get("source_file", "").strip()
+    source_heading = params.get("source_heading", "").strip()
+    target_concept = params.get("target_concept", "").strip()
+    target_anchor = params.get("target_anchor", "").strip()
+
+    if not source_file or not source_heading or not target_concept:
+        return {"status": "error", "error": "source_file, source_heading, and target_concept are required."}
+
+    cleaned_file = source_file.replace("\\", "/").strip()
+    if cleaned_file.startswith("wiki/"):
+        cleaned_file = cleaned_file[5:]
+
+    logger.info("MCP remove_link: %s (%s) -> %s", cleaned_file, source_heading, target_concept)
+    return remove_link(
+        DB_PATH,
+        source_file=cleaned_file,
+        source_heading=source_heading,
+        target_concept=target_concept,
+        target_anchor=target_anchor
+    )
+
+
 def handle_git_commit_and_push(params: dict) -> dict:
     """
     Atomically stages modified chapter files, commits to Git, and pushes to remote tracking branch.
@@ -581,6 +667,8 @@ TOOL_REGISTRY = {
     "llm_wiki_scan_links": handle_scan_links,
     "llm_wiki_git_commit_and_push": handle_git_commit_and_push,
     "llm_wiki_reindex": handle_reindex,
+    "llm_wiki_register_link": handle_register_link,
+    "llm_wiki_remove_link": handle_remove_link,
 
     # Short aliases for convenience
     "firehose_ingest": handle_firehose_ingest,
@@ -595,6 +683,8 @@ TOOL_REGISTRY = {
     "scan_links": handle_scan_links,
     "git_commit_and_push": handle_git_commit_and_push,
     "reindex": handle_reindex,
+    "register_link": handle_register_link,
+    "remove_link": handle_remove_link,
 }
 
 TOOL_SCHEMAS = [
@@ -851,6 +941,72 @@ TOOL_SCHEMAS = [
                     "description": "If true, computes fastembed vector embeddings for all new or updated sections (default: false)."
                 }
             }
+        }
+    },
+    {
+        "name": "llm_wiki_register_link",
+        "description": "Explicitly registers or updates a verified link edge in the knowledge graph along with its 1-sentence technical rationale.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "source_file": {
+                    "type": "string",
+                    "description": "Source chapter file name (e.g. 'storage.md')."
+                },
+                "source_heading": {
+                    "type": "string",
+                    "description": "Exact section heading containing the link (e.g. 'WAL Checkpoint Starvation')."
+                },
+                "target_concept": {
+                    "type": "string",
+                    "description": "Target concept slug or chapter/slug (e.g. 'wal_reader_pinning' or 'consensus/leases')."
+                },
+                "rationale": {
+                    "type": "string",
+                    "description": "Mandatory 1-sentence technical rationale explaining why this link exists and what dependency it represents."
+                },
+                "target_anchor": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional sub-heading anchor inside the target chapter."
+                },
+                "link_alias": {
+                    "type": "string",
+                    "description": "Optional visual display label inside the wikilink."
+                },
+                "domain_scope": {
+                    "type": "string",
+                    "description": "Optional topic domain slug (e.g. 'storage', 'consensus')."
+                }
+            },
+            "required": ["source_file", "source_heading", "target_concept", "rationale"]
+        }
+    },
+    {
+        "name": "llm_wiki_remove_link",
+        "description": "Removes a link edge from the knowledge graph when an agent intentionally deletes a link from a section.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "source_file": {
+                    "type": "string",
+                    "description": "Source chapter file name."
+                },
+                "source_heading": {
+                    "type": "string",
+                    "description": "Source section heading."
+                },
+                "target_concept": {
+                    "type": "string",
+                    "description": "Target concept slug."
+                },
+                "target_anchor": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional sub-heading anchor."
+                }
+            },
+            "required": ["source_file", "source_heading", "target_concept"]
         }
     }
 ]
