@@ -37,15 +37,16 @@ def ingest_candidates(db_path: Path, items: list[dict]) -> dict:
                     continue
 
                 conn.execute("""
-                    INSERT OR IGNORE INTO raw_firehose (id, platform, title, content, canonical_url, processed, created_at)
-                    VALUES (?, ?, ?, ?, ?, 0, ?);
+                    INSERT OR IGNORE INTO raw_firehose (id, platform, title, content, canonical_url, processed, created_at, domain)
+                    VALUES (?, ?, ?, ?, ?, 0, ?, ?);
                 """, (
                     cid,
                     item.get("platform", "Unknown"),
                     item.get("title", "") or "Untitled",
                     item.get("content", "") or item.get("text", "") or item.get("summary", ""),
                     curl,
-                    now
+                    now,
+                    item.get("domain", "general")
                 ))
                 ingested += 1
 

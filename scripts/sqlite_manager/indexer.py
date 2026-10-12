@@ -141,7 +141,7 @@ def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
             cursor = conn.execute("SELECT file_path, heading, content FROM wiki_sections_index WHERE embedding IS NULL;")
             unembedded = cursor.fetchall()
             if unembedded:
-                print(f"[EMBEDDING] Generating vector embeddings for {len(unembedded)} new/modified sections using all-MiniLM-L6-v2...")
+                logger.info("[EMBEDDING] Generating vector embeddings for %d new/modified sections using all-MiniLM-L6-v2...", len(unembedded))
                 from .search import get_embedding_model
                 model = get_embedding_model()
                 import numpy as np
@@ -161,11 +161,11 @@ def index_wiki(db_path: Path, wiki_dir: Path, embed: bool = False):
                     )
                     conn.commit()
                 emb_elapsed = time.perf_counter() - t_emb0
-                print(f"[OK] Successfully generated embeddings for {len(unembedded)} sections in {emb_elapsed:.2f}s.")
+                logger.info("[OK] Successfully generated embeddings for %d sections in %.2fs.", len(unembedded), emb_elapsed)
             else:
-                print("[EMBEDDING] All sections already have up-to-date embeddings.")
+                logger.debug("[EMBEDDING] All sections already have up-to-date embeddings.")
     finally:
         conn.close()
     elapsed_ms = (time.perf_counter() - t0) * 1000
     logger.info("Wiki indexing completed: %d sections, %d graph edges in %.2f ms", count, link_count, elapsed_ms)
-    print(f"[OK] Indexed {count} sections and {link_count} graph edges into SQLite FTS5 & wiki_links.")
+

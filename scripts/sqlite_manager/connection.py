@@ -78,6 +78,15 @@ def init_db(db_path: Path):
                 logger.info("Migrating wiki_sections_index table schema to include heading_slug column")
                 conn.execute("ALTER TABLE wiki_sections_index ADD COLUMN heading_slug TEXT NOT NULL DEFAULT '';")
 
+        # Check if raw_firehose needs schema migration for domain column
+        cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='raw_firehose';")
+        if cursor.fetchone():
+            col_cursor = conn.execute("PRAGMA table_info(raw_firehose);")
+            cols = {row[1] for row in col_cursor.fetchall()}
+            if "domain" not in cols:
+                logger.info("Migrating raw_firehose table schema to include domain column")
+                conn.execute("ALTER TABLE raw_firehose ADD COLUMN domain TEXT NOT NULL DEFAULT 'general';")
+
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS raw_firehose (
                 id TEXT PRIMARY KEY,
@@ -86,9 +95,11 @@ def init_db(db_path: Path):
                 content TEXT NOT NULL,
                 canonical_url TEXT UNIQUE NOT NULL,
                 processed INTEGER DEFAULT 0,
-                created_at INTEGER NOT NULL
+                created_at INTEGER NOT NULL,
+                domain TEXT NOT NULL DEFAULT 'general'
             );
             CREATE INDEX IF NOT EXISTS idx_firehose_processed ON raw_firehose(processed);
+            CREATE INDEX IF NOT EXISTS idx_firehose_domain ON raw_firehose(domain);
 
             CREATE TABLE IF NOT EXISTS active_leases (
                 file_path TEXT NOT NULL,
