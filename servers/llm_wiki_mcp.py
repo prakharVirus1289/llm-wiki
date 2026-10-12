@@ -618,7 +618,8 @@ TOOL_SCHEMAS = [
                             "title": {"type": "string", "description": "Title of the post, issue, or discussion."},
                             "content": {"type": "string", "description": "Full text body or summary of the post."},
                             "text": {"type": "string", "description": "Alternative alias for content."},
-                            "summary": {"type": "string", "description": "Alternative alias for content."}
+                            "summary": {"type": "string", "description": "Alternative alias for content."},
+                            "domain": {"type": "string", "description": "Topic domain slug (e.g. 'storage', 'distributed_systems', 'strategic_simulation'). Default: 'general'."}
                         },
                         "required": ["canonical_url"]
                     }
