@@ -65,6 +65,9 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 | **Heuristics** | Fast-and-Frugal 3-Cue Decision Tree | Lexicographic binary exits (Workaround -> Distribution -> 3x Stress); sub-10m filter |
 | **Rehearsal** | Singular Trajectory RPD Rehearsal | Step-by-step mental movie playback of the single leading option to spot execution snags |
 | **Incentives** | Counter-Metric Pairing Invariant | Never track solitary volume targets; pair velocity with defect escape and retention |
+| **Custody** | Hostile Landlord Invariant | Retain direct unmediated customer channels; vendor-agnostic adapter layers |
+| **Governance** | Asymmetric Tie-Breaker Invariant | Prohibit 50/50 voting control; enforce 4-year vesting with 1-year cliff |
+| **Validation** | Concierge Inversion (20-Manual Threshold) | Prohibit automated pipelines until executing 20 manual workflows for paying users |
 
 ## 4. Navigation & Retrieval Protocol
 
