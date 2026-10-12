@@ -61,6 +61,10 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 | **Strategy** | Two-Tiered Simulation Partition | Eliminate Day-1 Terminal Risks upfront; defer Elastic Scale to $\ge 100$ users |
 | **Simulation** | Prospective Hindsight Pre-Mortem | Gary Klein protocol: assume 100% failure at Turn 100 and work backward |
 | **Velocity** | 70% Information Stopping Rule | Terminate mental simulation at 70% data for Type 2 reversible decisions |
+| **Ergodicity** | Non-Ergodic Absorbing Barrier Invariant | Enforce 20% capital ceiling; eliminate path-dependent ruin states before upside |
+| **Heuristics** | Fast-and-Frugal 3-Cue Decision Tree | Lexicographic binary exits (Workaround -> Distribution -> 3x Stress); sub-10m filter |
+| **Rehearsal** | Singular Trajectory RPD Rehearsal | Step-by-step mental movie playback of the single leading option to spot execution snags |
+| **Incentives** | Counter-Metric Pairing Invariant | Never track solitary volume targets; pair velocity with defect escape and retention |
 
 ## 4. Navigation & Retrieval Protocol
 
