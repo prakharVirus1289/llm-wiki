@@ -357,6 +357,16 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
      * *Gross Sales Bookings* MUST be paired with *Cash Collected* and *First-Quarter Churn Rate*.
   3. **Simulation of Incentive Drift:** Mentally project the behavior of the organization 6 months into the future under the proposed reward structure. If the easiest path to personal reward diverges from long-term customer value, redesign the mechanism design before launch. See [[agent_architectures/the-mcp-rug-pull-attack|MCP Security & Tool Interception]] and [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
 
+### 4.32 Platform Custody Risk & The Dependency Chokepoint (The Hostile Landlord Protocol)
+* **Symptom:** A founder builds a profitable software workflow on top of an external centralized ecosystem (e.g. Chrome Extension store, Google Search SEO, Shopify App Store, or a proprietary LLM API). Overnight, the platform changes its terms of service, de-indexes the domain, or releases a native feature clone, driving revenue to zero in 24 hours.
+* **Root Cause:** **The Hostile Landlord Fallacy & Tenant Blindspot**. Founders treat access to centralized platforms as permanent utilities rather than precarious tenant leases. In digital ecosystems, platform operators act as sovereign landlords: they capture distribution, harvest usage data from popular third-party tools, and commoditize complementors without legal appeal.
+* **Systemic Fix & Custody Insulation Primitives:**
+  1. **The Hostile Landlord Mental Simulation:** When evaluating system viability, mentally simulate that the platform has designated your product as a direct competitive threat:
+     * *"What happens to our business if the platform raises API prices by $3\times$ and bans affiliate/redirect links tomorrow?"*
+     * *"Can our application switch to an open-source or self-hosted alternative in $< 48$ hours without user data loss?"*
+  2. **Direct Audience Custody Invariant:** Prohibit business models where the platform owns the sole channel to the customer. Every transaction or user registration must capture a direct, unmediated communication channel (verified email, SMS, or self-hosted identity) so users remain reachable if the platform revokes access.
+  3. **Vendor-Agnostic Abstraction Layers:** Never leak vendor-specific API structures into core business logic. Maintain an adapter layer isolating third-party dependencies from domain models. See [[agent_architectures/the-mcp-rug-pull-attack|MCP Security & Tool Interception]] and [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
