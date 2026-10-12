@@ -100,16 +100,25 @@ Between 1989 and 2014 (and returning in 2024), neither national party secured a 
 * **NDA-III (2024–present, Narendra Modi)**: Following BJP winning 240 seats (short of the 272 majority threshold), governance returned to structural coalition dependency on the Telugu Desam Party (TDP, 16 seats) and Janata Dal (United) (JD-U, 12 seats), resulting in enhanced central financial allocations for Andhra Pradesh capital development and Bihar infrastructure.
 
 ### 5.2 Civil Society Litigators, Youth Pressure Fronts & The Role of CJP
-Extra-parliamentary pressure groups, public interest litigation (PIL) networks, and youth movements have systematically checked executive authority:
-* **Citizens for Justice and Peace (CJP)**:
-  * Founded by civil rights activist Teesta Setalvad and Javed Anand following the 2002 Gujarat communal violence.
-  * **Legal Activism & Accountability**: Acted as a premier institutional pressure group pursuing judicial intervention in the Supreme Court of India. CJP's sustained petitions led the Supreme Court to transfer key riot trials outside Gujarat (Best Bakery case to Maharashtra), institute a Special Investigation Team (SIT) to reinvestigate major massacre cases (Naroda Patiya, Gulbarg Society), and challenge executive immunity (the Zakia Jafri petition).
-  * **State Backlash & Regulatory Scrutiny**: Under the post-2014 BJP administration, CJP and its trustees faced intensive legal scrutiny, including CBI and Gujarat Police FIRs alleging FCRA (Foreign Contribution Regulation Act) violations, misuse of donor funds, and perjury. Following the Supreme Court's June 2022 judgment dismissing the Zakia Jafri petition, Teesta Setalvad was arrested by Gujarat Police (subsequently granted regular bail by the Supreme Court in July 2023).
-* **Youth & Student Movements**:
-  * **Historical Trajectory**: The Navnirman movement (Gujarat 1974) and AASU (Assam 1979–1985) established student bodies as formidable political forces capable of unseating state assemblies and forcing national accords.
-  * **Contemporary Fronts**: Student and youth collectives (JNU Students' Union, Pinjra Tod, Jamia Coordination Committee, SFI, and ABVP) spearheaded the frontline mobilization against the CAA/NRC in 2019–2020. Simultaneously, civil society legal watchdogs like the Association for Democratic Reforms (ADR) successfully utilized Supreme Court litigation to compel mandatory disclosure of political candidate criminal records and dismantle the Electoral Bonds scheme.
+Extra-parliamentary pressure groups, public interest litigation (PIL) networks, and youth movements have systematically checked executive authority across Indian political history:
 
----
+* **Citizens for Justice and Peace (CJP) & Human Rights Litigation**:
+  * **Origins & Mandate**: Co-founded by journalist-activist Teesta Setalvad, Javed Anand, and prominent citizens (including Father Cedric Prakash and Alyque Padamsee) in April 2002 to secure legal justice for victims of the 2002 Gujarat communal riots.
+  * **Landmark Supreme Court Interventions**:
+    * *Best Bakery Trial Transfer (2004)*: In *Zahira Habibullah Sheikh v. State of Gujarat*, CJP petitions established that witnesses had turned hostile due to local intimidation; the Supreme Court quashed acquittals and ordered a retrial in Maharashtra, establishing a precedent for inter-state trial transfers.
+    * *SIT Reinvestigation of 9 Major Massacres (2008–2009)*: CJP interventions in *NHRC v. State of Gujarat* led the Supreme Court to constitute a Special Investigation Team (headed by former CBI Director R.K. Raghavan), resulting in historic convictions in the Naroda Patiya (32 convicted, including former minister Maya Kodnani) and Gulbarg Society massacres.
+    * *The Zakia Jafri Petition*: Challenged the SIT's closure report exonerating top state executive leadership regarding a broader administrative conspiracy. In June 2022, a 3-judge Supreme Court bench dismissed the appeal (*Zakia Ahsan Jafri v. State of Gujarat*), affirming the SIT findings and observing that those who kept the pot boiling should be in the dock.
+  * **State Backlash & Counter-Litigation**: Following the June 2022 Supreme Court ruling, Gujarat Police arrested Teesta Setalvad on allegations of fabricating evidence and criminal conspiracy. Concurrently, central agencies initiated FCRA cancellations and CBI investigations into donor fund management. Setalvad was subsequently granted regular bail by a Supreme Court bench headed by Justice B.R. Gavai in July 2023.
+
+* **Electoral Transparency & Institutional Watchdogs (ADR & Common Cause)**:
+  * **Association for Democratic Reforms (ADR)**: Founded by IIM Ahmedabad professors in 1999. Landmark Supreme Court victories include:
+    * *Union of India v. ADR (2002)*: Mandated compulsory affidavit disclosures of candidates' criminal records, assets, and educational qualifications.
+    * *ADR v. Union of India (2024)*: Struck down the opaque Electoral Bonds scheme as unconstitutional and violative of voter transparency under Article 19(1)(a).
+  * **Common Cause & Center for Public Interest Litigation (CPIL)**: Spearheaded Supreme Court PILs cancelling 122 telecom licenses in the 2G spectrum allocation case (2012) and 214 coal captive mining blocks (2014).
+
+* **Youth, Student & Protest Fronts**:
+  * **Historical Trajectory**: The student-led Navnirman movement (Gujarat 1974) and AASU (Assam 1979–1985) established student collectives as formidable forces capable of dissolving state assemblies and forcing national constitutional accords.
+  * **Modern Youth & University Fronts**: Contemporary youth and student collectives (Pinjra Tod, Jamia Coordination Committee, JNU Students' Union, AISF, SFI, and ABVP) spearheaded street mobilization during the anti-CAA/NRC demonstrations (2019–2020) and university fee protests. The state apparatus responded with extensive application of UAPA, preventive arrests, and university disciplinary proceedings.
 
 ## 6. Master Governance Invariants Matrix
 
