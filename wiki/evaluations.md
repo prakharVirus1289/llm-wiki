@@ -319,6 +319,16 @@ Across empirical stress testing and continuous agent cycles, twenty-seven distin
   2. **The 20% Capital Ceiling (Kelly Criterion Boundary):** Never allocate more than 20% of your remaining capital, developer hours, or core reputation to a single irreversible hypothesis. Keeping 80% of resources insulated ensures you survive consecutive negative outcomes.
   3. **Blast-Radius Isolation:** Decouple speculative experiments from core operations using hard boundaries (e.g. separate cloud billing accounts, isolated sandbox environments, and capped legal liability entities). A total catastrophe in a new feature must not be able to pull down the parent system. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[storage/the-lock-escalation-deadlock-hazard|Lock Escalation Deadlock Hazard]].
 
+### 4.29 Overfitting Simulation Paralysis & Fast-and-Frugal Decision Trees (The Gigerenzer Protocol)
+* **Symptom:** In an effort to predict every possible roadblock, founders build massive spreadsheets and multi-variable simulation models containing dozens of assumptions. The team spends weeks debating fine-grained scenarios, but when the product launches, it fails for an obvious, basic reason that the complex model completely obscured.
+* **Root Cause:** **The Bias-Variance Tradeoff in Strategy (Overfitting to Uncertainty)**. In high-uncertainty environments (such as new products or emerging markets), adding more variables to a mental simulation does not increase accuracy—it increases estimation noise. Complex models overfit to subjective guesses, whereas simple, non-compensatory heuristics consistently outperform complex models out-of-sample.
+* **Systemic Fix & Fast-and-Frugal Tree (FFT) Primitives:**
+  1. **Lexicographic 3-Cue Decision Filters:** Replace complex scoring matrices with a Fast-and-Frugal Tree having exactly three binary, exit-capable questions. Evaluate cues in strict order of predictive power:
+     * *Cue 1 (Existing Workaround Verification):* Are target customers currently spending either money or at least 2 hours a week manually hacking together an imperfect solution to this specific problem? If **NO** $\rightarrow$ **TERMINATE IMMEDIATELY** (No real demand exists).
+     * *Cue 2 (Proprietary Channel Access):* Do you possess a direct, non-ad channel to put the product in front of 50 qualified users in the next 14 days? If **NO** $\rightarrow$ **HALT & SOLVE DISTRIBUTION FIRST** (Building software without distribution is dead inventory).
+     * *Cue 3 (3x Stress Tolerance):* Does the unit model stay solvent if customer acquisition costs are 3 times higher and churn is double what you hope? If **NO** $\rightarrow$ **REDESIGN VALUE PROPOSITION**. If **YES** $\rightarrow$ **PROCEED TO BUILD MINIMAL PROTOTYPE**.
+  2. **Sub-10-Minute Decision Speed:** If a strategic initiative cannot pass the 3-Cue Fast-and-Frugal Tree within 10 minutes of analysis, reject it. Spending weeks "simulating" an idea that fails basic reality checks is unhedged procrastination. See [[evaluations/the-fallacy-of-the-infinite-context-window|Empirical Evaluations]] and [[agent_architectures/three-valued-epistemic-state-machine|Epistemic Memory]].
+
 ## 5. Architectural Invariants & Benchmark Thresholds
 
 | Invariant / Metric | Target Threshold | Hard Failure Boundary | Diagnostic Tool |
