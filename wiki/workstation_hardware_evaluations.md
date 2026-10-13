@@ -51,48 +51,54 @@ Ergonomic Clearance Model:
 
 ---
 
-## 4. Sub-20,000 INR Master Setup Combinations
+## 4. Amazon India Verified Sub-20,000 INR Master Setup Combinations
 
-Combining table and chair within a rigid **INR 20,000 combined ceiling** requires strategic budget partitioning:
+Combining table and chair within a rigid **INR 20,000 combined ceiling** on **Amazon India (amazon.in)** with active Festival Deals and domestic shipping:
 
-| Setup Configuration | Selected Chair | Selected Table | Total Cost (INR) | Primary Advantage |
-| :--- | :--- | :--- | :--- | :--- |
-| **Option 1: Gaming Comfort + Height Workstation** | GTPLAYER Gaming Chair w/ Footrest (`B08B12P6CS`) | GTPLAYER Pneumatic Height-Adjustable (`B0GRYGF8FW`) | **~INR 18,038** | Sit-stand flexibility + 135° footrest recline; proven 16.7K reviews |
-| **Option 2: Multi-Laptop L-Shaped Power Setup** | LUCKRACER High-Back Gaming Chair (`B0HFRTDVHP`) | Pamray 43"/47" L-Shaped Desk (`B0CW1BCZF4`) | **~INR 17,359** | Massive surface area for multiple laptops + corner cable organization |
-| **Option 3: Heavy-Duty Big & Tall Comfort** | GTPLAYER Big & Tall Wide-Seat (`B0GXYVDFZV`) | GTPLAYER Mobile Adjustable Desk (`B0GRYGF8FW`) | **~INR 16,891** | Extra seat width + heavy load capacity with INR 3,109 budget headroom |
-| **Option 4: All-Electric Sit-Stand + Gaming Setup** | LUCKRACER Gaming Chair (`B0HKV6RNB8`) | Homall 48" Electric Standing Desk (`B0FYMR93VM`) | **~INR 19,317** | Motorized push-button height presets + monitor riser + gaming bucket chair under 20k |
+| Setup Configuration | Selected Chair | Selected Table | Total Cost (INR) | Headroom / Savings | Primary Advantage |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Setup A: Best-Seller Multi-Laptop Battle-Station** | DROGO Aura Ergonomic Gaming Chair (`B0F9X7Q776`) | White Mulberry 260cm L-Shaped Desk (`B0BFWD6SNF`) | **INR 14,798** | **INR 5,202 SAVED** | Amazon.in #1 Best Seller chair + sprawling 130+130cm desk accommodating 3 laptops and external displays. |
+| **Setup B: Massage Recliner + Storage Workstation** | ValorX Striker Dual-Massager Chair (`B0FL1ZFWDB`) | TEKAVO Tonny L-Shaped w/ Bookshelf (`B0HHN51X79`) | **INR 15,998** | **INR 4,002 SAVED** | Vibrating lumbar massage & retractable footrest paired with built-in tiered shelf tower for laptop docks. |
+| **Setup C: Maximum Budget Saver Setup** | Warrior by ValorX Gaming Chair (`B0GGJ31622`) | Callas 50" L-Shaped Desk (`B0DNMJRV8S`) | **INR 11,448** | **INR 8,552 SAVED** | Complete ergonomic gaming chair + L-shaped corner desk with over INR 8,500 budget remaining. |
+| **Setup D: True Motorized Electric Sit-Stand Setup** | Savya Home Apollo Ergonomic Chair | JIN OFFICE EcoSmart Electric Desk (`B0GFN3X25W`) | **INR 19,880** | **INR 120 SAVED** | Motorized push-button sit-stand with 4 digital presets from India's ergonomic leader, strictly within INR 20k. |
 
 ---
 
-## 5. Verified Product Catalog & Direct Procurement
+## 5. Verified Domestic Amazon India Product Catalog & Procurement
 
-1. **[[GTPLAYER Gaming Chair with Footrest]] (`B08B12P6CS`):**
-   * *Specs:* Faux leather, 360° swivel, lumbar pillow, headrest, retractable footrest, height adjustable.
-   * *Price:* ~INR 11,422.93 | *Rating:* 4.4 / 5.0 (16,700+ reviews).
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B08B12P6CS)
+1. **[[DROGO Aura Ergonomic Gaming Chair]] (`B0F9X7Q776`):**
+   * *Specs:* High-density molded foam, breathable PU leather, heavy-duty alloy star base, linkage armrests that recline synchronously, detachable lumbar & cervical headrest pillows, 90°–135° recline lock, Class 4 hydraulic gas lift, 120 kg weight capacity.
+   * *Price:* INR 7,599 (M.R.P. INR 18,999 - 60% Festival Discount).
+   * *Popularity:* Amazon India #1 Best Seller in Gaming Chairs (400+ units bought last month).
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0F9X7Q776)
 
-2. **[[GTPLAYER Pneumatic Height-Adjustable Desk]] (`B0GRYGF8FW`):**
-   * *Specs:* Pneumatic mobile standing desk, hidden caster wheels, height adjustable 28"–45", 28" W x 16" D surface.
-   * *Price:* ~INR 6,615.35 | *Rating:* 4.3 / 5.0 (216 reviews).
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0GRYGF8FW)
+2. **[[White Mulberry Sprawling L-Shaped Computer Table]] (`B0BFWD6SNF`):**
+   * *Specs:* Massive dual-wing layout: 130 cm left wing + 130 cm right wing (260 cm total edge perimeter), 48 cm deep surface, elevated monitor riser shelf, water-resistant carbon-fiber texture finish, heavy-gauge alloy steel K-frame with diagonal sway bracing. Easily fits 3 laptops plus monitor and peripherals simultaneously.
+   * *Price:* INR 7,199.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0BFWD6SNF)
 
-3. **[[Pamray L-Shaped Multi-Laptop Desk]] (`B0CW1BCZF4`):**
-   * *Specs:* 43"–47" L-shaped dual wing surface, reversible storage shelves, carbon steel frame, cable pass-through.
-   * *Price:* ~INR 7,850.00 | *Rating:* 4.6 / 5.0 (1,600+ reviews).
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0CW1BCZF4)
+3. **[[ValorX USA Striker 2026 Edition Gaming Chair]] (`B0FL1ZFWDB`):**
+   * *Specs:* USB-powered dual vibrating massagers embedded in lumbar cushion, retractable padded fold-out footrest, Ergo-Sync padded linkage armrests, 135° recline mechanism, high-back ergonomic bucket shell, Class 4 pneumatic cylinder.
+   * *Price:* INR 7,999 (Coupon applied from INR 27,999).
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0FL1ZFWDB)
 
-4. **[[LUCKRACER High-Back Gaming Chair]] (`B0HFRTDVHP` / `B0HKV6RNB8`):**
-   * *Specs:* High-back ergonomic office/gaming chair, adjustable height, thick padded cushion, heavy-duty nylon base.
-   * *Price:* ~INR 9,467.30 – 9,509.43 | *Rating:* 4.4–4.5 / 5.0.
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0HKV6RNB8)
+4. **[[TEKAVO Tonny L-Shaped Desk with Multi-Tier Bookshelf]] (`B0HHN51X79`):**
+   * *Specs:* 124 cm x 48 cm L-shaped workstation with integrated multi-tier side storage shelving tower and monitor riser. Forest wood finish with powder-coated anti-scratch steel frame. Designed to store laptop docks, charging stations, and work notebooks off the main surface.
+   * *Price:* INR 7,999.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0HHN51X79)
 
-5. **[[Homall 48" Electric Standing Desk with Drawers]] (`B0FYMR93VM`):**
-   * *Specs:* Motorized height adjustment with digital memory presets, integrated dual storage drawers, elevated monitor riser shelf (48" W x 24" D).
-   * *Price:* ~INR 9,850.00 | *Rating:* 4.5 / 5.0 (606 reviews).
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0FYMR93VM)
+5. **[[JIN OFFICE EcoSmart Electric Height Adjustable Standing Desk]] (`B0GFN3X25W`):**
+   * *Specs:* True motorized motorized sit-to-stand desk by JIN OFFICE (India). 1200 mm x 700 mm seamless solid desktop, dual-stage motorized lifting column (720 mm to 1180 mm height range), digital LED handset with 4 programmable memory presets, anti-collision sensor, 80 kg dynamic load rating.
+   * *Price:* INR 14,990 (Special Limited Deal).
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0GFN3X25W)
 
-6. **[[Acrolix 51" L-Shaped Electric Standing Desk]] (`B0FJMWGJ55`):**
-   * *Specs:* 51" x 31.5" reversible L-shaped corner top, motorized height adjustment, steel legs.
-   * *Price:* ~INR 10,500.00 | *Rating:* 4.4 / 5.0 (942 reviews).
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0FJMWGJ55)
+6. **[[Warrior by ValorX High-Back Gaming Chair]] (`B0GGJ31622`):**
+   * *Specs:* High-back ergonomic gaming chair with butterfly tilt mechanism, Class 4 gas lift, 3-year manufacturer warranty, dense cushion padding.
+   * *Price:* INR 7,499.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0GGJ31622)
+
+7. **[[Callas 50-Inch L-Shaped Corner Workstation]] (`B0DNMJRV8S`):**
+   * *Specs:* 50.8" x 18" L-shaped corner computer desk with included elevated laptop/CPU stand, sturdy steel tube frame, engineered wood surface.
+   * *Price:* INR 3,949.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0DNMJRV8S)
 
