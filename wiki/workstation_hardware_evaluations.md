@@ -60,6 +60,7 @@ Combining table and chair within a rigid **INR 20,000 combined ceiling** require
 | **Option 1: Gaming Comfort + Height Workstation** | GTPLAYER Gaming Chair w/ Footrest (`B08B12P6CS`) | GTPLAYER Pneumatic Height-Adjustable (`B0GRYGF8FW`) | **~INR 18,038** | Sit-stand flexibility + 135° footrest recline; proven 16.7K reviews |
 | **Option 2: Multi-Laptop L-Shaped Power Setup** | LUCKRACER High-Back Gaming Chair (`B0HFRTDVHP`) | Pamray 43"/47" L-Shaped Desk (`B0CW1BCZF4`) | **~INR 17,359** | Massive surface area for multiple laptops + corner cable organization |
 | **Option 3: Heavy-Duty Big & Tall Comfort** | GTPLAYER Big & Tall Wide-Seat (`B0GXYVDFZV`) | GTPLAYER Mobile Adjustable Desk (`B0GRYGF8FW`) | **~INR 16,891** | Extra seat width + heavy load capacity with INR 3,109 budget headroom |
+| **Option 4: All-Electric Sit-Stand + Gaming Setup** | LUCKRACER Gaming Chair (`B0HKV6RNB8`) | Homall 48" Electric Standing Desk (`B0FYMR93VM`) | **~INR 19,317** | Motorized push-button height presets + monitor riser + gaming bucket chair under 20k |
 
 ---
 
@@ -80,7 +81,18 @@ Combining table and chair within a rigid **INR 20,000 combined ceiling** require
    * *Price:* ~INR 7,850.00 | *Rating:* 4.6 / 5.0 (1,600+ reviews).
    * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0CW1BCZF4)
 
-4. **[[LUCKRACER High-Back Gaming Chair]] (`B0HFRTDVHP`):**
+4. **[[LUCKRACER High-Back Gaming Chair]] (`B0HFRTDVHP` / `B0HKV6RNB8`):**
    * *Specs:* High-back ergonomic office/gaming chair, adjustable height, thick padded cushion, heavy-duty nylon base.
-   * *Price:* ~INR 9,509.43 | *Rating:* 4.4 / 5.0.
-   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0HFRTDVHP)
+   * *Price:* ~INR 9,467.30 – 9,509.43 | *Rating:* 4.4–4.5 / 5.0.
+   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0HKV6RNB8)
+
+5. **[[Homall 48" Electric Standing Desk with Drawers]] (`B0FYMR93VM`):**
+   * *Specs:* Motorized height adjustment with digital memory presets, integrated dual storage drawers, elevated monitor riser shelf (48" W x 24" D).
+   * *Price:* ~INR 9,850.00 | *Rating:* 4.5 / 5.0 (606 reviews).
+   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0FYMR93VM)
+
+6. **[[Acrolix 51" L-Shaped Electric Standing Desk]] (`B0FJMWGJ55`):**
+   * *Specs:* 51" x 31.5" reversible L-shaped corner top, motorized height adjustment, steel legs.
+   * *Price:* ~INR 10,500.00 | *Rating:* 4.4 / 5.0 (942 reviews).
+   * *Procurement Link:* [Amazon Direct](https://www.amazon.com/dp/B0FJMWGJ55)
+
