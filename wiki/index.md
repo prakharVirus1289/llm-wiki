@@ -55,12 +55,16 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 ### [[political_governance_india|9. Indian Political Governance, Coalition Dynamics & Civic Movements]]
 * **File:** `wiki/political_governance_india.md`
 * **Focus:** Comparative governance records of the Indian National Congress (INC) and Bharatiya Janata Party (BJP), regional coalition leverage, civil unrest responses, and civic pressure outfits.
-* **Core Mechanisms:** Green/White Revolution institutional food security, 1991 structural economic liberalization, physical and digital public infrastructure velocity (Bharatmala, JAM Trinity, UPI), emergency executive detentions (1975 MISA), 1984 anti-Sikh violence state failure, 2016 demonetisation liquidity shock, unconstitutional electoral bonds scheme (2024), highway border containment of mass protests (Farm Laws, CAA), regional coalition veto arbitrage (Left Front CMP veto, DMK/TMC portfolio leverage, 2024 TDP/JD-U dependence), and civil society legal pressure mechanisms (Citizens for Justice and Peace / CJP Supreme Court PIL activism).
+### [[workstation_hardware_evaluations|10. Workstation Hardware & Ergonomic Setup Evaluations]]
+* **File:** `wiki/workstation_hardware_evaluations.md`
+* **Focus:** Empirical ergonomics, height-adjustable desk mechanics, L-shaped multi-laptop surface layouts, chair biomechanics, and sub-20k INR procurement combinations.
+* **Core Mechanisms:** The Ergonomic Clearance Model (90° elbow angle, 28"–45" sit-stand range), Carbon Steel frame rigidity, BIFMA Class 3/4 pneumatic gas lift safety, winged bucket foam vs breathable mesh heat dissipation, and strategic budget partitioning for sub-20,000 INR computer setups.
 
 ## 3. Master Invariants Matrix
 
 | Domain | Architectural Invariant | Enforcement Mechanism |
 | :--- | :--- | :--- |
+| **Hardware** | Ergonomic Height & Postural Alignment Invariant | Desks and chairs must provide independent vertical travel to maintain 90° elbow and neutral spine alignment |
 | **Storage** | Multi-Reader Single-Writer Isolation | Strict serialization of write transactions; `BEGIN IMMEDIATE` |
 | **Consensus** | Election Safety & Leader Lease | Quorum grants with synchronized monotonically bounded lease timers |
 | **Networking** | Bounded WAL Checkpoint Boundary | Autocheckpointing pinned at 16MB (4,000 pages) to prevent I/O stalls |
