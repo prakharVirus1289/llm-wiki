@@ -6,99 +6,99 @@
 
 ## 1. Ergonomic Biomechanics & Desk Setup Engineering
 
-Designing a productive computer workstation for long hours (8+ hours daily) requires balancing spine biomechanics, wrist ergonomics, and screen focal distance. When working across multiple laptops simultaneously, physical surface constraints and seating support directly impact posture and prevent musculoskeletal fatigue.
+### 1.1 Biomechanical Gap Analysis (5'10" – 5'11" User Metrics)
+* **User Profile:** Height 5'10" to 5'11" (178–180 cm), Popliteal / Ground-to-knee length ~19.5" (49.5 cm), Ground-to-waist ~39" (99 cm).
+* **The Ergonomic Pathology:** The current setup pairs a **31-inch (78.7 cm) fixed table** with a **17.5-inch (44.5 cm) chair seat height**. This yields an extreme relative vertical delta of **13.5 inches (34.3 cm)**!
+  * In biomechanics, neutral typing posture requires an elbow-to-seat height difference of **8.0 to 10.5 inches** so the humerus hangs naturally and forearms rest parallel to the floor at 90°–100°.
+  * A 13.5-inch differential forces the user to chronically elevate the scapulae (shoulder shrugging), hyper-extend the wrists upwards, and strain the upper trapezius and levator scapulae muscles, resulting in neck spasms and repetitive wrist fatigue.
+* **The Engineering Solution:**
+  1. *Desk Height Reduction:* Shift from 31" down to **27.5" – 29.5" (70–75 cm)** via standard desks or motorized sit-to-stand columns (e.g. JIN OFFICE at 28.3" min).
+  2. *Chair Height Elevation:* Utilize Class 4 pneumatic cylinders that adjust chair seat height upward into the **18.5" – 21.5" (47–54.5 cm)** range, equipped with linkage or 1D/2D armrests that align flush with the desk plane.
+
+### 1.2 Room Boundary Constraints (64" Length x 60" Width)
+* Maximum available footprint: **64 inches (162.5 cm) Length** x **~60 inches (152.4 cm) Width**.
+* **Space Compatibility Verification:**
+  * *White Mulberry L-Shape:* Measures 130 cm x 130 cm (51.2" x 51.2"). Easily clears the 64" x 60" boundary with ~12.8" and ~8.8" perimeter breathing room.
+  * *TEKAVO Kynes Rectangular:* Measures 120 cm x 60 cm (47.2" x 23.6"). Fits effortlessly along the 64" wall, leaving over 36 inches of open walking clearance.
+  * *JIN OFFICE EcoSmart Rectangular:* Measures 120 cm x 70 cm (47.2" x 27.5"). Fits comfortably within the room boundary.
 
 ```
-Ergonomic Clearance Model:
+Ergonomic Neutral Alignment Model:
 +-------------------------------------------------------+
-|  Multiple Laptops / Dual Monitor Surface (40"+ / L-Shape) |
-|  - Elbows at 90-degree angle to desk surface           |
-|  - Height-adjustable range: 28" to 45" (sit/stand)     |
+|  Table Working Surface: 27.5" to 29.5" (or Motorized)  |
+|  - Elbows at 90-100 degree angle parallel to desk     |
+|  - Neutral wrists, forearms supported by armrests     |
 +-------------------------------------------------------+
                            |
-                           v
+                           v (Delta: 8.5" - 10.5" optimal)
 +-------------------------------------------------------+
-|  Ergonomic / Gaming Chair Support Architecture        |
-|  - Dynamic lumbar cushion / S-curve spine alignment   |
-|  - Class 3/4 Gas Lift Height Adjustment (3-4" travel) |
-|  - Retractable footrest & multi-angle tilt recline     |
+|  Seat Height: 18.5" to 21.5" (Class 4 Gas Lift)        |
+|  - Feet flat on floor (or angled footrest)            |
+|  - Lumbar support engaged against L1-L5 lordosis      |
 +-------------------------------------------------------+
 ```
 
 ---
 
-## 2. Computer Table Engineering & Surface Trade-Offs
+## 2. Table Engineering: Rectangular vs. L-Shaped Architectures
 
-### 2.1 Tabletop Architecture: Straight vs. L-Shaped Multi-Laptop Desks
-* **L-Shaped Corner Workstations (e.g., Pamray 43"/47" Desks):** Provide two contiguous working planes. One wing hosts primary laptop/monitor setup, while the perpendicular wing accommodates secondary laptops, reference tablets, or writing notebooks. Reversible shelf configurations allow flexible positioning in room corners.
-* **Pneumatic / Mobile Height-Adjustable Workstations (e.g., GTPLAYER Rolling Stand):** Offer rapid sit-to-stand transitions without bulky motors. Hidden caster wheels provide mobility, though total surface area (28" x 16") is optimized for single-laptop setups rather than sprawling peripheral layouts.
-
-### 2.2 Structural Invariants: Stability & Load Ceilings
-* **Steel Frame Gauging:** Carbon steel framing with cross-bracing resists horizontal wobble under vigorous typing.
-* **Surface Coating:** Melamine or carbon-fiber textured laminate prevents heat degradation and scratches from laptop heat dissipation.
+* **L-Shaped Corner Workstations (e.g., White Mulberry 260cm):** Maximizes corner surface area within the 64"x60" footprint. Dual 130 cm wings allow 3 active laptops + 1 external monitor simultaneously without peripheral collisions.
+* **Standard Rectangular Workstations (e.g., TEKAVO Kynes 120x60cm, JIN OFFICE 120x70cm):** Preserves open room flow. Single contiguous work plane accommodating 2 full laptops and a central display. Lower height (28.3"–29.5") directly fixes the typing angle.
 
 ---
 
-## 3. Chair Engineering: Gaming Bucket Seats vs. High-Back Mesh
+## 3. Chair Engineering: High-Back Gaming Recliners vs. Breathable Mesh
 
-### 3.1 Seating Mechanism Trade-Offs
-* **Gaming Chairs with Retractable Footrests (e.g., GTPLAYER B08B12P6CS):** High-density cold-cured foam wrapped in breathable PU leather. Deep winged bucket design stabilizes the torso, while an external lumbar pillow and neck headrest maintain natural lordosis. Retractable footrests enable 90°–135° recline for cognitive decompression breaks.
-* **Ergonomic Mesh Chairs:** Provide superior airflow in warm environments, preventing perspiration during long desk sessions.
-
-### 3.2 Hardware Durability Invariants
-* **Gas Lift Cylinder:** SGS or BIFMA certified Class 3/4 pneumatic cylinder ensures safe height travel without pressure leak over multi-year cycles.
-* **Nylon / Steel Star Base:** 5-wheel star base rated for >= 300 lbs distributes load evenly and glides smoothly across tiled/hardwood flooring.
+* **Gaming Recliners (DROGO Aura, ValorX Striker):** Thick cold-cured foam bucket, synchronous linkage armrests, 135° recline with headrest and lumbar pillows. Best for leaning back during cognitive review breaks.
+* **Ergonomic Mesh Chairs (Green Soul Zodiac Lite, Savya Home Apollo):** Korean breathable mesh back, adjustable 2D headrest, BIFMA Class 4 gas cylinder, superior thermal ventilation for long 8+ hour coding days in warm Indian climates.
 
 ---
 
 ## 4. Amazon India Verified Sub-20,000 INR Master Setup Combinations
 
-Combining table and chair within a rigid **INR 20,000 combined ceiling** on **Amazon India (amazon.in)** with active Festival Deals and domestic shipping:
-
-| Setup Configuration | Selected Chair | Selected Table | Total Cost (INR) | Headroom / Savings | Primary Advantage |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Setup A: Best-Seller Multi-Laptop Battle-Station** | DROGO Aura Ergonomic Gaming Chair (`B0F9X7Q776`) | White Mulberry 260cm L-Shaped Desk (`B0BFWD6SNF`) | **INR 14,798** | **INR 5,202 SAVED** | Amazon.in #1 Best Seller chair + sprawling 130+130cm desk accommodating 3 laptops and external displays. |
-| **Setup B: Massage Recliner + Storage Workstation** | ValorX Striker Dual-Massager Chair (`B0FL1ZFWDB`) | TEKAVO Tonny L-Shaped w/ Bookshelf (`B0HHN51X79`) | **INR 15,998** | **INR 4,002 SAVED** | Vibrating lumbar massage & retractable footrest paired with built-in tiered shelf tower for laptop docks. |
-| **Setup C: Maximum Budget Saver Setup** | Warrior by ValorX Gaming Chair (`B0GGJ31622`) | Callas 50" L-Shaped Desk (`B0DNMJRV8S`) | **INR 11,448** | **INR 8,552 SAVED** | Complete ergonomic gaming chair + L-shaped corner desk with over INR 8,500 budget remaining. |
-| **Setup D: True Motorized Electric Sit-Stand Setup** | Savya Home Apollo Ergonomic Chair | JIN OFFICE EcoSmart Electric Desk (`B0GFN3X25W`) | **INR 19,880** | **INR 120 SAVED** | Motorized push-button sit-stand with 4 digital presets from India's ergonomic leader, strictly within INR 20k. |
+| Setup Configuration | Selected Chair | Selected Table | Total Cost (INR) | Headroom / Savings | Shape / Space Fit | Primary Ergonomic Advantage |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Setup 1: Ergonomic Mesh Champion** | Green Soul Zodiac Lite (`B0D473ZDPH`) [₹6,290] | TEKAVO Kynes Rectangular (`B0F3P53CLW`) [₹6,867] | **INR 13,157** | **INR 6,843 SAVED** | **Rectangular:** 47.2"x23.6" fits within 64"x60" with room to walk. | India's #1 brand Green Soul BIFMA Class 4 mesh chair; 29.5" desk height lowers typing plane from 31". |
+| **Setup 2: Multi-Laptop Power L-Shape** | DROGO Aura Gaming Chair (`B0F9X7Q776`) [₹7,599] | White Mulberry 260cm L-Shape (`B0BFWD6SNF`) [₹7,199] | **INR 14,798** | **INR 5,202 SAVED** | **L-Shaped:** 51.2"x51.2" corner layout fits within 64"x60". | 260cm perimeter holds 3 laptops simultaneously; Amazon India #1 Best Seller gaming chair with linkage armrests. |
+| **Setup 3: True Motorized Sit-Stand** | Savya Home Apollo Mesh Chair [₹4,890] | JIN OFFICE EcoSmart Electric Desk (`B0GFN3X25W`) [₹14,990] | **INR 19,880** | **INR 120 SAVED** | **Rectangular:** 47.2"x27.5" fits within 64"x60". | Push-button electric motor transitions from 28.3" to 46.5". 4.8/5 rating. Solves high-table pain instantly. |
+| **Setup 4: Massage Recliner + Gaming Desk** | ValorX Striker Dual-Massager (`B0FL1ZFWDB`) [₹7,999] | TEKAVO Jimmy Heavy-Duty Desk (`B0FZCP7CTG`) [₹6,799] | **INR 14,798** | **INR 5,202 SAVED** | **Rectangular:** 47.2"x23.6" fits within 64"x60". | Dual vibrating lumbar massagers & footrest for lower back recovery; heavy alloy steel rectangular desk. |
 
 ---
 
-## 5. Verified Domestic Amazon India Product Catalog & Procurement
+## 5. Verified Domestic Product Catalog & Procurement
 
-1. **[[DROGO Aura Ergonomic Gaming Chair]] (`B0F9X7Q776`):**
-   * *Specs:* High-density molded foam, breathable PU leather, heavy-duty alloy star base, linkage armrests that recline synchronously, detachable lumbar & cervical headrest pillows, 90°–135° recline lock, Class 4 hydraulic gas lift, 120 kg weight capacity.
-   * *Price:* INR 7,599 (M.R.P. INR 18,999 - 60% Festival Discount).
-   * *Popularity:* Amazon India #1 Best Seller in Gaming Chairs (400+ units bought last month).
+1. **[[Green Soul Zodiac Lite Ergonomic Chair]] (`B0D473ZDPH`):**
+   * *Specs:* Breathable Korean mesh back, BIFMA Class 4 gas lift, height-adjustable lumbar, 2D headrest, 1D padded arms, synchro-tilt lock (90°–135°), chrome steel wheelbase, 110 kg capacity.
+   * *Price:* INR 6,290 | *Rating:* 4.1 / 5.0.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0D473ZDPH)
+
+2. **[[TEKAVO Kynes Rectangular Computer Workstation]] (`B0F3P53CLW`):**
+   * *Specs:* 120 cm L x 60 cm D x 75 cm H (47.2" x 23.6" x 29.5"). Heavy-duty powder-coated steel frame, engineered wood top, lower under-desk storage shelf for laptop docks/books.
+   * *Price:* INR 6,867 | *Rating:* 4.2 / 5.0.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0F3P53CLW)
+
+3. **[[DROGO Aura Ergonomic Gaming Chair]] (`B0F9X7Q776`):**
+   * *Specs:* High-density molded foam, PU leather, alloy steel star base, linkage armrests, neck & lumbar pillows, 90°–135° recline lock, Class 4 hydraulic cylinder, 120 kg capacity.
+   * *Price:* INR 7,599 | *Rating:* 4.1 / 5.0 (823 ratings, Amazon #1 Best Seller).
    * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0F9X7Q776)
 
-2. **[[White Mulberry Sprawling L-Shaped Computer Table]] (`B0BFWD6SNF`):**
-   * *Specs:* Massive dual-wing layout: 130 cm left wing + 130 cm right wing (260 cm total edge perimeter), 48 cm deep surface, elevated monitor riser shelf, water-resistant carbon-fiber texture finish, heavy-gauge alloy steel K-frame with diagonal sway bracing. Easily fits 3 laptops plus monitor and peripherals simultaneously.
-   * *Price:* INR 7,199.
+4. **[[White Mulberry Sprawling L-Shaped Computer Table]] (`B0BFWD6SNF`):**
+   * *Specs:* 130 cm + 130 cm wings (51.2" x 51.2"), 48 cm depth, elevated monitor riser shelf, water-resistant carbon-fiber texture finish, alloy steel K-frame with diagonal sway bracing. Fits 3 laptops + monitor.
+   * *Price:* INR 7,199 | *Rating:* 4.2 / 5.0 (814 ratings).
    * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0BFWD6SNF)
 
-3. **[[ValorX USA Striker 2026 Edition Gaming Chair]] (`B0FL1ZFWDB`):**
-   * *Specs:* USB-powered dual vibrating massagers embedded in lumbar cushion, retractable padded fold-out footrest, Ergo-Sync padded linkage armrests, 135° recline mechanism, high-back ergonomic bucket shell, Class 4 pneumatic cylinder.
-   * *Price:* INR 7,999 (Coupon applied from INR 27,999).
-   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0FL1ZFWDB)
-
-4. **[[TEKAVO Tonny L-Shaped Desk with Multi-Tier Bookshelf]] (`B0HHN51X79`):**
-   * *Specs:* 124 cm x 48 cm L-shaped workstation with integrated multi-tier side storage shelving tower and monitor riser. Forest wood finish with powder-coated anti-scratch steel frame. Designed to store laptop docks, charging stations, and work notebooks off the main surface.
-   * *Price:* INR 7,999.
-   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0HHN51X79)
-
-5. **[[JIN OFFICE EcoSmart Electric Height Adjustable Standing Desk]] (`B0GFN3X25W`):**
-   * *Specs:* True motorized motorized sit-to-stand desk by JIN OFFICE (India). 1200 mm x 700 mm seamless solid desktop, dual-stage motorized lifting column (720 mm to 1180 mm height range), digital LED handset with 4 programmable memory presets, anti-collision sensor, 80 kg dynamic load rating.
-   * *Price:* INR 14,990 (Special Limited Deal).
+5. **[[JIN OFFICE EcoSmart Electric Standing Desk]] (`B0GFN3X25W`):**
+   * *Specs:* Motorized sit-to-stand desk. 1200 mm x 700 mm seamless solid top, dual-stage motor (720 mm to 1180 mm / 28.3" to 46.5"), digital LED handset with 4 memory presets, anti-collision sensor, 80 kg load, 2-year warranty.
+   * *Price:* INR 14,990 | *Rating:* 4.8 / 5.0 (128 ratings).
    * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0GFN3X25W)
 
-6. **[[Warrior by ValorX High-Back Gaming Chair]] (`B0GGJ31622`):**
-   * *Specs:* High-back ergonomic gaming chair with butterfly tilt mechanism, Class 4 gas lift, 3-year manufacturer warranty, dense cushion padding.
-   * *Price:* INR 7,499.
-   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0GGJ31622)
+6. **[[ValorX USA Striker 2026 Edition Gaming Chair]] (`B0FL1ZFWDB`):**
+   * *Specs:* USB dual vibrating lumbar massager, retractable footrest, Ergo-Sync linkage armrests, 135° recline, Class 4 cylinder.
+   * *Price:* INR 7,999 | *Rating:* 4.0 / 5.0 (232 ratings).
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0FL1ZFWDB)
 
-7. **[[Callas 50-Inch L-Shaped Corner Workstation]] (`B0DNMJRV8S`):**
-   * *Specs:* 50.8" x 18" L-shaped corner computer desk with included elevated laptop/CPU stand, sturdy steel tube frame, engineered wood surface.
-   * *Price:* INR 3,949.
-   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0DNMJRV8S)
+7. **[[TEKAVO Jimmy Heavy-Duty Gaming Desk]] (`B0FZCP7CTG`):**
+   * *Specs:* 120 cm x 60 cm x 75 cm (47.2" x 23.6" x 29.5"). Sturdy alloy steel frame, cable grommets, matte black wood top.
+   * *Price:* INR 6,799 | *Rating:* 4.4 / 5.0.
+   * *Procurement Link:* [Amazon India Direct](https://www.amazon.in/dp/B0FZCP7CTG)
 
