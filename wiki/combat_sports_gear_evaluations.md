@@ -61,3 +61,22 @@
    * **Cleto Reyes Traditional Lace-Up (14 oz or 16 oz)** (`B07SD9QX8K`): Unmatched wrist stiffness and leather quality. Best for serious boxing technique and tactile bag feedback.
 2. **Top Recommendation (Heavy Bag Knuckle Cushioning & Value):**
    * **Ringside Lace-Up IMF Tech (14 oz or 16 oz)** (`B0092TI12Y`): 2.5 inches of molded foam absorbs bone-rattling bag hits, completely protecting your joints at an accessible price point.
+
+---
+
+## 5. Disqualified Listings & E-Commerce Deceptions
+
+1. **The "Fake Lace-Up" Trap (Keyword-Stuffed Generic Sellers):**
+   * *Mechanism:* Budget sellers include "Lace Up" in the Amazon listing title to capture search traffic, while the underlying product specifications state: *"Strong hook-and-loop closure offers a snug fit"*. The customer receives a standard Velcro strap glove.
+   * *Mitigation:* Audited product specifications and review photo verification to purge mislabeled listings.
+2. **Sub-₹1,500 Synthetic/PVC Boxing Gloves:**
+   * *Failure Mode:* Utilization of low-density 10mm scrap foam that compresses completely under power impacts from a 70 kg puncher, transferring peak kinetic shock directly to the metacarpal heads, causing bone bruising and knuckle inflammation.
+
+---
+
+## 6. Audit Conclusion & Procurement Roadmap
+
+* **Monitoring Window Concluded:** `2026-10-14 18:00:00 IST`.
+* **Total Cycles Executed:** 5 cycles.
+* **Top Overall Pick (Heavy Bag Shock Absorption):** `Ringside Lace-Up IMF Tech` (`B0092TI12Y`) confirmed In Stock at **INR 5,155.98** ($54.16).
+* **Top Heritage Pick (Mexican Handcrafted Leather):** `Cleto Reyes Traditional Lace-Up` (`B07SD9QX8K`) confirmed at 4.7★ across 396+ ratings.
