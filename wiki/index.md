@@ -60,10 +60,16 @@ The LLM-Wiki living technical textbook organizes software engineering principles
 * **Focus:** Empirical ergonomics, height-adjustable desk mechanics, L-shaped multi-laptop surface layouts, chair biomechanics, and sub-20k INR procurement combinations.
 * **Core Mechanisms:** The Ergonomic Clearance Model (90° elbow angle, 28"–45" sit-stand range), Carbon Steel frame rigidity, BIFMA Class 3/4 pneumatic gas lift safety, winged bucket foam vs breathable mesh heat dissipation, and strategic budget partitioning for sub-20,000 INR computer setups.
 
+### [[combat_sports_gear_evaluations|11. Combat Sports Gear & Boxing Glove Evaluations]]
+* **File:** `wiki/combat_sports_gear_evaluations.md`
+* **Focus:** Impact dynamics, heavy bag knuckle shock absorption, wrist stabilization mechanics, lace-up vs. velcro engineering, and 14oz/16oz glove sizing for 70kg fighters.
+* **Core Mechanisms:** 360° cylindrical lace wrist casting, Injected Molded Foam (IMF) cell density, cowhide vs synthetic durability, and locked-thumb alignment.
+
 ## 3. Master Invariants Matrix
 
 | Domain | Architectural Invariant | Enforcement Mechanism |
 | :--- | :--- | :--- |
+| **Combat Sports** | Wrist Alignment & Knuckle Deceleration Invariant | Heavy bag impact forces require 360° cylindrical lace-up wrist stabilization and minimum 2" multi-layer/IMF knuckle foam to prevent carpal hyperextension |
 | **Hardware** | Ergonomic Height & Postural Alignment Invariant | Desks and chairs must provide independent vertical travel to maintain 90° elbow and neutral spine alignment |
 | **Storage** | Multi-Reader Single-Writer Isolation | Strict serialization of write transactions; `BEGIN IMMEDIATE` |
 | **Consensus** | Election Safety & Leader Lease | Quorum grants with synchronized monotonically bounded lease timers |
